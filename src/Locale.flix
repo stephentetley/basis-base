@@ -32,18 +32,6 @@ instance ToString[Locale] {
     pub def toString(x: Locale): String = Locale.toString(x)
 }
 
-/*
-instance FromString[Locale] {
-    pub def fromString(x: String): Option[Locale] =
-        import new java.util.Locale(String): ##java.util.Locale & Pure as newLocale;
-        try {
-            Some(Locale(newLocale(x)))
-        } catch {
-            case _: ##java.lang.Exception => None
-        }
-}
-*/
-
 instance Eq[Locale] {
     pub def eq(x: Locale, y: Locale): Bool = Locale.equals(x, y)
 }
@@ -348,13 +336,12 @@ namespace Locale {
         }
 
 
-    pub def getIsoCountries(): Result[Array[String], String] & Impure =
+    pub def getIsoCountries(): Array[String] & Impure =
         import static java.util.Locale.getISOCountries(): Array[String] & Impure;
         try {
-            let arr = getISOCountries();
-            Ok(arr)
+            getISOCountries()
         } catch {
-            case _: ##java.lang.Exception => Err("getIsoCountries")
+            case _: ##java.lang.Exception => []
         }
 
     pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[Set[String], String] & Impure =
@@ -376,6 +363,21 @@ namespace Locale {
             case _: ##java.lang.Exception => Err("getIsoLanguages")
         }
 
+
+    pub def getExtensionKeys(x: Locale): Set[Char] & Impure =
+        import java.util.Locale.getExtensionKeys(): ##java.util.Set & Impure;
+        try {
+            let Locale(x1) = x;
+            let sjava = getExtensionKeys(x1);
+            let s1 = Marshal.unmarshalSet(x -> charValue(x as ##java.lang.Character), sjava);
+            s1
+        } catch {
+            case _: ##java.lang.Exception => Set.empty()
+        }
+
+    def charValue(c: ##java.lang.Character): Char = 
+        import java.lang.Character.charValue(): Char & Pure;
+        charValue(c)
 
     pub def getUnicodeLocaleAttributes(x: Locale): Result[Set[String], String] & Impure =
         import java.util.Locale.getUnicodeLocaleAttributes(): ##java.util.Set & Impure;

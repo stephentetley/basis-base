@@ -28,10 +28,6 @@ instance ToString[Charset] {
         toString(cs1)
 }
 
-instance FromString[Charset] {
-    pub def fromString(x: String): Option[Charset] =
-        Charset.forName(x)
-}
 
 instance Eq[Charset] {
     pub def eq(x: Charset, y: Charset): Bool = Charset.equals(x, y)
@@ -141,5 +137,17 @@ namespace Charset {
         let Charset(x1) = x;
         let Charset(y1) = y;
         contains(x1, y1)
+
+    pub def aliases(x: Charset): Set[String] =
+        import java.nio.charset.Charset.aliases(): ##java.util.Set & Pure;
+        let Charset(x1) = x;
+        (aliases(x1) |> Marshal.unmarshalSet(k -> k as String)) as & Pure
+
+
+    pub def availableCharsets(): Map[String, Charset] =
+        import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & Pure;
+        let downcastV = x1 -> Charset(x1 as ##java.nio.charset.Charset);
+        (availableCharsets() |> Marshal.unmarshalSortedMap(k -> k as String, downcastV)) as & Pure
+
 
 }

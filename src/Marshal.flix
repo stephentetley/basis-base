@@ -109,4 +109,43 @@ namespace Marshal {
         loop(Map.empty())
 
 
+    pub def marshalSortedMap(upcastKey: k -> ##java.lang.Object & ef, upcastValue: v -> ##java.lang.Object & ef,  m: Map[k, v]): ##java.util.SortedMap & Impure =
+        import new java.util.TreeMap(): ##java.util.TreeMap & Impure as new1;
+        import java.util.TreeMap.put(##java.lang.Object, ##java.lang.Object): ##java.lang.Object & Impure; 
+        let javam = new1();
+        let addElem = (k, v) -> {
+            let k1 = upcastKey(k) as & Impure;
+            let v1 = upcastValue(v) as & Impure;
+            let _ = put(javam, k1, v1);
+            ()
+        };
+        Map.foreach(addElem, m);
+        javam as ##java.util.SortedMap
+
+
+    pub def unmarshalSortedMap(downcastKey: ##java.lang.Object -> k & ef, downcastValue: ##java.lang.Object -> v & ef, javam: ##java.util.SortedMap): Map[k, v] & Impure with Order[k] =
+        import java.util.SortedMap.entrySet(): ##java.util.Set & Impure;
+        import java.util.Set.iterator(): ##java.util.Iterator & Impure;
+        import java.util.Iterator.hasNext(): Bool & Impure;
+        import java.util.Iterator.next(): ##java.lang.Object & Impure;
+        import java.util.Map$Entry.getKey(): ##java.lang.Object & Impure;
+        import java.util.Map$Entry.getValue(): ##java.lang.Object & Impure;        
+        let set1 = entrySet(javam);
+        let iter = iterator(set1);
+        def loop(acc: Map[k, v]) = {
+            if (hasNext(iter)) {
+                let entry = next(iter) as ##java.util.Map$Entry;
+                let k = getKey(entry);
+                let v = getValue(entry);                
+                let k1 = downcastKey(k) as & Impure;
+                let v1 = downcastValue(v) as & Impure;
+                loop(Map.insert(k1, v1, acc))
+            } else
+                acc
+        };
+        loop(Map.empty())
+
+
+
+
 }

@@ -16,14 +16,11 @@
 
 namespace TestLocale { 
 
-/*
+
 @test
-def test01(): Unit & Impure = 
-    match Locale.getIsoCountries() {
-        case Ok(l) => Array.foreach(println, l) 
-        case Err(msg) => println("Err: ${msg}")
-    }
-*/
+def getIsoCountries01(): Unit & Impure = 
+    Locale.getIsoCountries() |> Array.foreach(println)
+
 
 @test
 def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
@@ -32,7 +29,7 @@ def getIsoCountriesWithIsoCountryCode01(): Unit & Impure =
         case Err(msg) => println("Err: ${msg}")
     }
 
-/*
+
 @test
 def test03(): Unit & Impure = 
     match Locale.getIsoLanguages() {
@@ -45,7 +42,7 @@ def test03(): Unit & Impure =
 def test04(): Unit & Impure = 
     Locale.getAvailableLocales()
         |> Array.foreach(println) 
-*/
+
 
 @test
 def testCanada(): Unit & Impure = 
