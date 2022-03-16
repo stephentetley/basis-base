@@ -16,12 +16,22 @@
 
 
 
-
+/// 
+/// Locale is a wrapper over the Java class `java.util.Locale`.
+///
+/// A Locale is typically used to supply regional / language information
+/// to formatting functions that print dates, times, numbers, etc or to help
+/// localize user interfaces.
+///
+/// This module generally follows `java.util.Locale` so the Javadoc documentation 
+/// is relevant.
+///
 pub opaque type Locale = ##java.util.Locale
 
 instance ToString[Locale] {
     pub def toString(x: Locale): String = Locale.toString(x)
 }
+
 /*
 instance FromString[Locale] {
     pub def fromString(x: String): Option[Locale] =
@@ -48,25 +58,36 @@ instance Hash[Locale] {
 namespace Locale {
 
 
-    /// use X.Cursor;
-    /// use X.Cursor.{Cursor};
-    /// use I18n.Locale;
-    /// use I18n.Locale.{Locale};
-
     /// `new` functions should not return Result as there isn't a tangible notion of failure.
     /// Unrecognized locales can be built - operations on them just don't produce results.
 
-    pub def new(language: String): Locale =
-        import new java.util.Locale(String): ##java.util.Locale & Pure as newLocale;
-        Locale(newLocale(language))
 
-    pub def newWithCountry(language: String, country: String): Locale =
-        import new java.util.Locale(String, String): ##java.util.Locale & Pure as newLocale;
-        Locale(newLocale(language, country))
+    ///
+    /// Returns a new Locale for the supplied language.
+    ///
+    pub def newLocale(language: String): Locale =
+        import new java.util.Locale(String): ##java.util.Locale & Pure as new1;
+        Locale(new1(language))
 
-    pub def newWithVariant(language: String, country: String, variant: String): Locale =
-        import new java.util.Locale(String, String, String): ##java.util.Locale & Pure as newLocale;
-        Locale(newLocale(language, country, variant))
+    ///
+    /// Returns a new Locale for the supplied language and country.
+    ///
+    pub def newLocaleWithCountry(r: {language :: String, country :: String}): Locale =
+        import new java.util.Locale(String, String): ##java.util.Locale & Pure as new1;
+        Locale(new1(r.language, r.country))
+
+    ///
+    /// Returns a new Locale for the supplied language, country and variant.
+    ///
+    /// `variant` is an arbitrary tag to distinguish this Locale from other locales 
+    /// representing the same country and language.
+    ///
+    /// For guidelines to the formatting of a valid tag see the Javadoc for `java.util.Locale`.
+    /// 
+    pub def newLocaleWithVariant(r: {language :: String, country :: String, variant :: String}): Locale =
+        import new java.util.Locale(String, String, String): ##java.util.Locale & Pure as new1;
+        Locale(new1(r.language, r.country, r.variant))
+
 
     pub def getDefault(): Locale & Impure =
         import static java.util.Locale.getDefault(): ##java.util.Locale & Impure;
@@ -82,7 +103,13 @@ namespace Locale {
             case _: ##java.lang.Exception => Err("setJvmDefaultLocale! failed")
         }
 
-
+    /// 
+    /// `Category` is an enum for Locale categories.
+    /// 
+    /// Case `Display` represents the default locale for displaying user interfaces.
+    //
+    /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
+    //
     pub enum Category with Eq, Order, ToString {
         case Display
         case Format
@@ -130,10 +157,25 @@ namespace Locale {
         let Locale(x1) = x;
         hashCode(x1)
 
+    ///
+    /// Returns the "root" locale.
+    /// 
+    /// The root locale has empty string for country, language and variant.
+    ///
+    pub def root(): Locale =
+        import static get java.util.Locale.ROOT: ##java.util.Locale & Pure as getROOT;
+        Locale(getROOT())
+
+    ///
+    /// Returns the locale for country Canada with language English.
+    /// 
     pub def canada(): Locale =
         import static get java.util.Locale.CANADA: ##java.util.Locale & Pure as getCANADA;
         Locale(getCANADA())
 
+    ///
+    /// Returns the locale for country Canada with language French.
+    /// 
     pub def canada_french(): Locale =
         import static get java.util.Locale.CANADA_FRENCH: ##java.util.Locale & Pure as getCANADA_FRENCH;
         Locale(getCANADA_FRENCH())
@@ -194,9 +236,6 @@ namespace Locale {
         import static get java.util.Locale.PRC: ##java.util.Locale & Pure as getPRC;
         Locale(getPRC())
 
-    pub def root(): Locale =
-        import static get java.util.Locale.ROOT: ##java.util.Locale & Pure as getROOT;
-        Locale(getROOT())
 
     pub def simplified_chinese(): Locale =
         import static get java.util.Locale.SIMPLIFIED_CHINESE: ##java.util.Locale & Pure as getSIMPLIFIED_CHINESE;
@@ -320,27 +359,13 @@ namespace Locale {
 
     pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[Set[String], String] & Impure =
         import static java.util.Locale.getISOCountries(##java.util.Locale$IsoCountryCode): ##java.util.Set & Impure;
-        import java.util.Set.iterator(): ##java.util.Iterator & Impure;
         try {
             let icc1 = isoCountryCodeToNative(icc);
-            let sjava = getISOCountries(icc1);
-            let iter = iterator(sjava);
-            let xs = iterateListOfString(iter, ks -> ks);
-            Ok(List.toSet(xs))
+            let s1 = getISOCountries(icc1);
+            Ok(Marshal.unmarshalSet(x -> x as String,s1))
         } catch {
             case _: ##java.lang.Exception => Err("getIsoCountriesWithIsoCountryCode")
         }
-
-
-    def iterateListOfString(iter: ##java.util.Iterator, k: List[String] -> List[String]): List[String] & Impure =
-        import java.util.Iterator.hasNext(): Bool & Impure;
-        import java.util.Iterator.next(): ##java.lang.Object & Impure;
-        if (hasNext(iter))
-            let entry = next(iter) as String;
-            iterateListOfString(iter, ks -> k(entry :: ks))
-        else
-            k(Nil)
-
 
     pub def getIsoLanguages(): Result[List[String], String] & Impure =
         import static java.util.Locale.getISOLanguages(): Array[String] & Impure;
@@ -351,28 +376,24 @@ namespace Locale {
             case _: ##java.lang.Exception => Err("getIsoLanguages")
         }
 
+
     pub def getUnicodeLocaleAttributes(x: Locale): Result[Set[String], String] & Impure =
         import java.util.Locale.getUnicodeLocaleAttributes(): ##java.util.Set & Impure;
-        import java.util.Set.iterator(): ##java.util.Iterator & Impure;
         try {
             let Locale(x1) = x;
-            let sjava = getUnicodeLocaleAttributes(x1);
-            let iter = iterator(sjava);
-            let xs = iterateListOfString(iter, ks -> ks);
-            Ok(List.toSet(xs))
+            let s1 = getUnicodeLocaleAttributes(x1);
+            Ok(Marshal.unmarshalSet(x -> x as String,s1))
         } catch {
             case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
         }
 
+
     pub def getUnicodeLocaleKeys(x: Locale): Result[Set[String], String] & Impure =
         import java.util.Locale.getUnicodeLocaleKeys(): ##java.util.Set & Impure;
-        import java.util.Set.iterator(): ##java.util.Iterator & Impure;
         try {
             let Locale(x1) = x;
-            let sjava = getUnicodeLocaleKeys(x1);
-            let iter = iterator(sjava);
-            let xs = iterateListOfString(iter, ks -> ks);
-            Ok(List.toSet(xs))
+            let s1 = getUnicodeLocaleKeys(x1);
+            Ok(Marshal.unmarshalSet(x -> x as String,s1))
         } catch {
             case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
         }

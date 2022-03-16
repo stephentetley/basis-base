@@ -16,21 +16,23 @@
 
 namespace TestLocale { 
 
-
+/*
 @test
 def test01(): Unit & Impure = 
     match Locale.getIsoCountries() {
         case Ok(l) => Array.foreach(println, l) 
         case Err(msg) => println("Err: ${msg}")
     }
+*/
 
 @test
-def test02(): Unit & Impure = 
+def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
     match Locale.getIsoCountriesWithIsoCountryCode(Locale/IsoCountryCode.Part1Alpha2) {
         case Ok(s) => Set.foreach(println, s) 
         case Err(msg) => println("Err: ${msg}")
     }
 
+/*
 @test
 def test03(): Unit & Impure = 
     match Locale.getIsoLanguages() {
@@ -38,9 +40,34 @@ def test03(): Unit & Impure =
         case Err(msg) => println("Err: ${msg}")
     }
 
+
 @test
 def test04(): Unit & Impure = 
     Locale.getAvailableLocales()
         |> Array.foreach(println) 
+*/
+
+@test
+def testCanada(): Unit & Impure = 
+    let l1 = Locale.canada();
+    println("Canada: ${l1}");
+    ()
+
+
+@test
+def getUnicodeLocaleAttributes01(): Unit & Impure =
+    let l1 = Locale.japan();
+    match Locale.getUnicodeLocaleAttributes(l1) { 
+        case Ok(s) => Set.foreach(x1 -> println("Attr: ${x1}"), s)
+        case Err(msg) => println("Err: ${msg}")
+    }
+
+@test
+def getUnicodeLocaleKeys01(): Unit & Impure =
+    let l1 = Locale.japan();
+    match Locale.getUnicodeLocaleKeys(l1) { 
+        case Ok(s) => Set.foreach(x1 -> println("Key: ${x1}"), s)
+        case Err(msg) => println("Err: ${msg}")
+    }
 
 }
