@@ -48,6 +48,61 @@ namespace Locale {
     use Locale.LanguageRange;
     use Locale.LanguageRange.{LanguageRange};
 
+
+    /// 
+    /// `Category` is an enum for Locale categories.
+    /// 
+    /// Case `Display` represents the default locale for displaying user interfaces.
+    //
+    /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
+    //
+    pub enum Category with Eq, Order, Boxable, Hash, ToString {
+        case Display
+        case Format
+    }
+
+
+    pub enum FilteringMode with Eq, Order, Boxable, Hash, ToString {
+        case AutoselectFiltering
+        case ExtendedFiltering
+        case IgnoreExtendedRanges
+        case MapExtendedRanges
+        case RejectExtendedRanges
+    }
+
+    pub def marshalFilteringMode(x: FilteringMode): ##java.util.Locale$FilteringMode =
+        import static get java.util.Locale$FilteringMode.AUTOSELECT_FILTERING: ##java.util.Locale$FilteringMode & Pure as get_AUTOSELECT_FILTERING;
+        import static get java.util.Locale$FilteringMode.EXTENDED_FILTERING: ##java.util.Locale$FilteringMode & Pure as get_EXTENDED_FILTERING;
+        import static get java.util.Locale$FilteringMode.IGNORE_EXTENDED_RANGES: ##java.util.Locale$FilteringMode & Pure as get_IGNORE_EXTENDED_RANGES;
+        import static get java.util.Locale$FilteringMode.MAP_EXTENDED_RANGES: ##java.util.Locale$FilteringMode & Pure as get_MAP_EXTENDED_RANGES;
+        import static get java.util.Locale$FilteringMode.REJECT_EXTENDED_RANGES: ##java.util.Locale$FilteringMode & Pure as get_REJECT_EXTENDED_RANGES;
+        match x {
+            case AutoselectFiltering    => get_AUTOSELECT_FILTERING()
+            case ExtendedFiltering      => get_EXTENDED_FILTERING()
+            case IgnoreExtendedRanges   => get_IGNORE_EXTENDED_RANGES()
+            case MapExtendedRanges      => get_MAP_EXTENDED_RANGES()
+            case RejectExtendedRanges   => get_REJECT_EXTENDED_RANGES()
+        }
+
+    pub enum IsoCountryCode with Eq, Order, Boxable, Hash, ToString {
+        case Part1Alpha2
+        case Part1Alpha3
+        case Part3
+    }
+
+    pub def marshalIsoCountryCode(x: IsoCountryCode): ##java.util.Locale$IsoCountryCode =
+        import static get java.util.Locale$IsoCountryCode.PART1_ALPHA2: ##java.util.Locale$IsoCountryCode & Pure as get_PART1_ALPHA2;
+        import static get java.util.Locale$IsoCountryCode.PART1_ALPHA3: ##java.util.Locale$IsoCountryCode & Pure as get_PART1_ALPHA3;
+        import static get java.util.Locale$IsoCountryCode.PART3: ##java.util.Locale$IsoCountryCode & Pure as get_PART3;
+        match x {
+            case Part1Alpha2    => get_PART1_ALPHA2()
+            case Part1Alpha3    => get_PART1_ALPHA3()
+            case Part3          => get_PART3()
+        }
+
+
+
+
     /// Design note
     /// `new` functions should not return Result as there isn't a tangible notion of failure.
     /// Unrecognized locales can be built - operations on them won't produce results.
@@ -94,17 +149,7 @@ namespace Locale {
             case _: ##java.lang.Exception => Err("setJvmDefaultLocale! failed")
         }
 
-    /// 
-    /// `Category` is an enum for Locale categories.
-    /// 
-    /// Case `Display` represents the default locale for displaying user interfaces.
-    //
-    /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
-    //
-    pub enum Category with Eq, Order, ToString {
-        case Display
-        case Format
-    }
+
 
 
     pub def getDefaultWithCategory(x: Category): Locale & Impure =
@@ -322,22 +367,6 @@ namespace Locale {
         let arr = getAvailableLocales();
         Array.map(Locale, arr)
 
-    pub enum IsoCountryCode with Eq, Order, Boxable, Hash, ToString {
-        case Part1Alpha2
-        case Part1Alpha3
-        case Part3
-    }
-
-    pub def isoCountryCodeToNative(x: IsoCountryCode): ##java.util.Locale$IsoCountryCode =
-        import static get java.util.Locale$IsoCountryCode.PART1_ALPHA2: ##java.util.Locale$IsoCountryCode & Pure as getPart1Alpha2;
-        import static get java.util.Locale$IsoCountryCode.PART1_ALPHA3: ##java.util.Locale$IsoCountryCode & Pure as getPart1Alpha3;
-        import static get java.util.Locale$IsoCountryCode.PART3: ##java.util.Locale$IsoCountryCode & Pure as getPart3;
-        match x {
-            case Part1Alpha2    => getPart1Alpha2()
-            case Part1Alpha3    => getPart1Alpha3()
-            case Part3          => getPart3()
-        }
-
 
     pub def getIsoCountries(): Array[String] & Impure =
         import static java.util.Locale.getISOCountries(): Array[String] & Impure;
@@ -350,7 +379,7 @@ namespace Locale {
     pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[Set[String], String] & Impure =
         import static java.util.Locale.getISOCountries(##java.util.Locale$IsoCountryCode): ##java.util.Set & Impure;
         try {
-            let icc1 = isoCountryCodeToNative(icc);
+            let icc1 = marshalIsoCountryCode(icc);
             let s1 = getISOCountries(icc1);
             Ok(Marshal.unmarshalSet(x -> x as String,s1))
         } catch {
@@ -417,5 +446,78 @@ namespace Locale {
             case _: ##java.lang.Exception => None
         }
 
+    pub def lookupTag(priorityList: List[LanguageRange], tags: List[String]): Option[String] = 
+        import static java.util.Locale.lookupTag(##java.util.List, ##java.util.Collection): String & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+            let ans = lookupTag(ls, col);
+            if (Object.isNull(ans))
+                None
+            else 
+                Some(ans)
+        } catch {
+            case _: ##java.lang.Exception => None
+        }
+
+
+    pub def filter(priorityList: List[LanguageRange], locales: List[Locale]): List[Locale] = 
+        import static java.util.Locale.filter(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+            let ans = filter(ls, col);
+            if (Object.isNull(ans))
+                Nil
+            else 
+                Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+        } catch {
+            case _: ##java.lang.Exception => Nil
+        }
+
+    pub def filterWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, locales: List[Locale]): List[Locale] = 
+        import static java.util.Locale.filter(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+            let mode1 = marshalFilteringMode(mode);
+            let ans = filter(ls, col, mode1);
+            if (Object.isNull(ans))
+                Nil
+            else 
+                Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+        } catch {
+            case _: ##java.lang.Exception => Nil
+        }
+
+
+    pub def filterTags(priorityList: List[LanguageRange], tags: List[String]): List[String] = 
+        import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+            let ans = filterTags(ls, col);
+            if (Object.isNull(ans))
+                Nil
+            else 
+                Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
+        } catch {
+            case _: ##java.lang.Exception => Nil
+        }
+
+    pub def filterTagsWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, tags: List[String]): List[String] = 
+        import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+            let mode1 = marshalFilteringMode(mode);
+            let ans = filterTags(ls, col, mode1);
+            if (Object.isNull(ans))
+                Nil
+            else 
+                Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
+        } catch {
+            case _: ##java.lang.Exception => Nil
+        }
 
 }
