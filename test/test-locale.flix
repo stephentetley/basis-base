@@ -67,4 +67,13 @@ def getUnicodeLocaleKeys01(): Unit & Impure =
         case Err(msg) => println("Err: ${msg}")
     }
 
+@test
+def lookup01(): Unit & Impure =
+    println("TestLocale.lookup01...");
+    let ls = Locale.japan() :: Locale.french() :: Locale.english() :: Nil;
+    match Locale/LanguageRange.newLanguageRange("en") {
+        case None      => println("Err: newLanguageRange")
+        case Some(p1) => println("lookup: ${Locale.lookup(p1 :: Nil, ls)}")
+    }
+
 }

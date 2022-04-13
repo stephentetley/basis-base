@@ -45,6 +45,9 @@ instance Hash[Locale] {
 
 namespace Locale {
 
+    use Locale.LanguageRange;
+    use Locale.LanguageRange.{LanguageRange};
+
     /// Design note
     /// `new` functions should not return Result as there isn't a tangible notion of failure.
     /// Unrecognized locales can be built - operations on them won't produce results.
@@ -399,5 +402,20 @@ namespace Locale {
         } catch {
             case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
         }
+
+    pub def lookup(priorityList: List[LanguageRange], locales: List[Locale]): Option[Locale] = 
+        import static java.util.Locale.lookup(##java.util.List, ##java.util.Collection): ##java.util.Locale & Pure;
+        try {
+            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+            let ans = lookup(ls, col);
+            if (Object.isNull(ans))
+                None
+            else 
+                Some(Locale(ans))
+        } catch {
+            case _: ##java.lang.Exception => None
+        }
+
 
 }

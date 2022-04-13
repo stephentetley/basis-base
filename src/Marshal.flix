@@ -148,5 +148,7 @@ namespace Marshal {
 
 
 
+    pub def marshalCollection(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.Collection & Impure =
+        marshalList(upcast, l) as ##java.util.Collection
 
 }

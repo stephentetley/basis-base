@@ -66,6 +66,14 @@ namespace Locale/LanguageRange {
         let LanguageRange(x1) = x;
         hashCode(x1)
 
+    pub def maxWeight(): Float64 =
+        import static get java.util.Locale$LanguageRange.MAX_WEIGHT: Float64 & Pure as get_MAX_WEIGHT;
+        get_MAX_WEIGHT()
+
+    pub def minWeight(): Float64 =
+        import static get java.util.Locale$LanguageRange.MIN_WEIGHT: Float64 & Pure as get_MIN_WEIGHT;
+        get_MIN_WEIGHT()
+
     pub def getRange(x: LanguageRange): String =
         import java.util.Locale$LanguageRange.getRange(): String & Pure;
         let LanguageRange(x1) = x;
@@ -86,5 +94,7 @@ namespace Locale/LanguageRange {
         } catch {
             case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
         }
+
+    /// mapEquivalents, parse(2)
 
 }   
