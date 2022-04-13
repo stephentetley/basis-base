@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+/// TODO (major) error handling!
 
 namespace Marshal {
 

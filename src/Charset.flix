@@ -16,8 +16,19 @@
 
 
 
+/// 
+/// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
 ///
-/// Represents a Charset.
+/// A Charset represents the assignment of numeric values to characters 
+/// (a coded character set) and a mapping of elements this coded character 
+/// set to octets.
+///
+/// A Charset is typically used in encode or decode String data when this 
+/// data interfaces with the world outside Flix - e.g. reading from and 
+/// and writing to text files, network sockets, operating system processs etc.
+///
+/// This module generally follows the class `java.nio.charset.Charset` 
+/// so the Javadoc documentation is relevant.
 ///
 pub opaque type Charset = ##java.nio.charset.Charset
 
@@ -57,6 +68,10 @@ namespace Charset {
             case _: ##java.lang.Exception => None
         }
 
+    pub def forNameWithDefault(d: Charset, name: String): Charset =
+        forName(name) |> Option.getWithDefault(d)
+
+
     pub def defaultCharset(): Charset & Impure =
         import static java.nio.charset.Charset.defaultCharset(): ##java.nio.charset.Charset & Impure;
         Charset(defaultCharset())
@@ -71,28 +86,28 @@ namespace Charset {
         }
 
     pub def iso_8859_1(): Charset =
-        import static get java.nio.charset.StandardCharsets.ISO_8859_1: ##java.nio.charset.Charset & Pure as get_iso_8859_1;
-        Charset(get_iso_8859_1())
+        import static get java.nio.charset.StandardCharsets.ISO_8859_1: ##java.nio.charset.Charset & Pure as get_ISO_8859_1;
+        Charset(get_ISO_8859_1())
 
     pub def us_ascii(): Charset =
-        import static get java.nio.charset.StandardCharsets.US_ASCII: ##java.nio.charset.Charset & Pure as get_us_ascii;
-        Charset(get_us_ascii())
+        import static get java.nio.charset.StandardCharsets.US_ASCII: ##java.nio.charset.Charset & Pure as get_US_ASCII;
+        Charset(get_US_ASCII())
 
     pub def utf_16(): Charset =
-        import static get java.nio.charset.StandardCharsets.UTF_16: ##java.nio.charset.Charset & Pure as get_utf_16;
-        Charset(get_utf_16())
+        import static get java.nio.charset.StandardCharsets.UTF_16: ##java.nio.charset.Charset & Pure as get_UTF_16;
+        Charset(get_UTF_16())
 
     pub def utf_16be(): Charset =
-        import static get java.nio.charset.StandardCharsets.UTF_16BE: ##java.nio.charset.Charset & Pure as get_utf_16be;
-        Charset(get_utf_16be())
+        import static get java.nio.charset.StandardCharsets.UTF_16BE: ##java.nio.charset.Charset & Pure as get_UTF_16BE;
+        Charset(get_UTF_16BE())
 
     pub def utf_16le(): Charset =
-        import static get java.nio.charset.StandardCharsets.UTF_16LE: ##java.nio.charset.Charset & Pure as get_utf_16le;
-        Charset(get_utf_16le())
+        import static get java.nio.charset.StandardCharsets.UTF_16LE: ##java.nio.charset.Charset & Pure as get_UTF_16LE;
+        Charset(get_UTF_16LE())
 
     pub def utf_8(): Charset =
-        import static get java.nio.charset.StandardCharsets.UTF_8: ##java.nio.charset.Charset & Pure as get_utf_8;
-        Charset(get_utf_8())
+        import static get java.nio.charset.StandardCharsets.UTF_8: ##java.nio.charset.Charset & Pure as get_UTF_8;
+        Charset(get_UTF_8())
 
     pub def equals(x: Charset, y: Charset): Bool =
         import java.nio.charset.Charset.equals(##java.lang.Object): Bool & Pure;
@@ -111,26 +126,46 @@ namespace Charset {
         let Charset(y1) = y;
         compareTo(x1, y1)
 
-    pub def name(cs: Charset): String =
+
+    /// 
+    /// Returns the canonical name of Charset `c`.
+    /// 
+    pub def name(c: Charset): String =
         import java.nio.charset.Charset.name(): String & Pure;
-        let Charset(cs1) = cs;
-        name(cs1)
+        let Charset(c1) = c;
+        name(c1)
 
-    pub def displayName(cs: Charset): String =
+    /// 
+    /// Returns the human readable name of the Charset `c`.
+    /// 
+    /// The name is interpreted using the system's default locale.
+    ///
+    pub def displayName(c: Charset): String =
         import java.nio.charset.Charset.displayName(): String & Pure;
-        let Charset(cs1) = cs;
-        displayName(cs1)
+        let Charset(c1) = c;
+        displayName(c1)
 
-    pub def displayNameWithLocale(cs: Charset, locale: Locale): String =
+    /// 
+    /// Returns the human readable name of the Charset `c`.
+    /// 
+    /// The name is interpreted using the supplied locale.
+    ///    
+    pub def displayNameWithLocale(c: Charset, locale: Locale): String =
         import java.nio.charset.Charset.displayName(##java.util.Locale): String & Pure;
-        let Charset(cs1) = cs;
+        let Charset(c1) = c;
         let Locale(locale1) = locale;
-        displayName(cs1, locale1)
+        displayName(c1, locale1)
 
     pub def isRegistered(cs: Charset): Bool =
         import java.nio.charset.Charset.isRegistered(): Bool & Pure;
         let Charset(cs1) = cs;
         isRegistered(cs1)
+
+    pub def canEncode(cs: Charset): Bool =
+        import java.nio.charset.Charset.canEncode(): Bool & Pure;
+        let Charset(cs1) = cs;
+        canEncode(cs1)
+
 
     pub def contains(x: Charset, y: Charset): Bool =
         import java.nio.charset.Charset.contains(##java.nio.charset.Charset): Bool & Pure;
@@ -141,7 +176,7 @@ namespace Charset {
     pub def aliases(x: Charset): Set[String] =
         import java.nio.charset.Charset.aliases(): ##java.util.Set & Pure;
         let Charset(x1) = x;
-        (aliases(x1) |> Marshal.unmarshalSet(k -> k as String)) as & Pure
+        (aliases(x1) |> Marshal.unmarshalSet(key -> key as String)) as & Pure
 
 
     pub def availableCharsets(): Map[String, Charset] =
@@ -149,5 +184,22 @@ namespace Charset {
         let downcastV = x1 -> Charset(x1 as ##java.nio.charset.Charset);
         (availableCharsets() |> Marshal.unmarshalSortedMap(k -> k as String, downcastV)) as & Pure
 
+
+
+    pub def encode(cs: Charset, s: String): ##java.nio.ByteBuffer = 
+        import java.nio.charset.Charset.encode(String): ##java.nio.ByteBuffer & Pure;
+        let Charset(cs1) = cs;
+        encode(cs1, s)
+
+    pub def encodeCharBuffer(cs: Charset, cb: ##java.nio.CharBuffer): ##java.nio.ByteBuffer = 
+        import java.nio.charset.Charset.encode(##java.nio.CharBuffer): ##java.nio.ByteBuffer & Pure;
+        let Charset(cs1) = cs;
+        encode(cs1, cb)
+    
+    pub def decode(cs: Charset, cb: ##java.nio.ByteBuffer): ##java.nio.CharBuffer = 
+        import java.nio.charset.Charset.decode(##java.nio.ByteBuffer): ##java.nio.CharBuffer & Pure;
+        let Charset(cs1) = cs;
+        decode(cs1, cb)
+    
 
 }

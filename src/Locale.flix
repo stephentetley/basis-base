@@ -45,9 +45,9 @@ instance Hash[Locale] {
 
 namespace Locale {
 
-
+    /// Design note
     /// `new` functions should not return Result as there isn't a tangible notion of failure.
-    /// Unrecognized locales can be built - operations on them just don't produce results.
+    /// Unrecognized locales can be built - operations on them won't produce results.
 
 
     ///
