@@ -18,7 +18,9 @@
 
 namespace Marshal {
 
-
+    pub def unmarshalException(ex: ##java.lang.Exception): String & Impure = 
+        import java.lang.Throwable.getMessage(): String & Impure;
+        getMessage(ex as ##java.lang.Throwable)
     
     pub def marshalSet(upcast: a -> ##java.lang.Object & ef, s: Set[a]): ##java.util.Set & Impure =
         import new java.util.HashSet(): ##java.util.HashSet & Impure as new1;

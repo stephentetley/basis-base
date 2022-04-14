@@ -199,99 +199,99 @@ namespace Locale {
     /// The root locale has empty string for country, language and variant.
     ///
     pub def root(): Locale =
-        import static get java.util.Locale.ROOT: ##java.util.Locale & Pure as getROOT;
-        Locale(getROOT())
+        import static get java.util.Locale.ROOT: ##java.util.Locale & Pure as get_ROOT;
+        Locale(get_ROOT())
 
     ///
     /// Returns the locale for country Canada with language English.
     /// 
     pub def canada(): Locale =
-        import static get java.util.Locale.CANADA: ##java.util.Locale & Pure as getCANADA;
-        Locale(getCANADA())
+        import static get java.util.Locale.CANADA: ##java.util.Locale & Pure as get_CANADA;
+        Locale(get_CANADA())
 
     ///
     /// Returns the locale for country Canada with language French.
     /// 
     pub def canada_french(): Locale =
-        import static get java.util.Locale.CANADA_FRENCH: ##java.util.Locale & Pure as getCANADA_FRENCH;
-        Locale(getCANADA_FRENCH())
+        import static get java.util.Locale.CANADA_FRENCH: ##java.util.Locale & Pure as get_CANADA_FRENCH;
+        Locale(get_CANADA_FRENCH())
 
     pub def china(): Locale =
-        import static get java.util.Locale.CHINA: ##java.util.Locale & Pure as getCHINA;
-        Locale(getCHINA())
+        import static get java.util.Locale.CHINA: ##java.util.Locale & Pure as get_CHINA;
+        Locale(get_CHINA())
 
     pub def chinese(): Locale =
-        import static get java.util.Locale.CHINESE: ##java.util.Locale & Pure as getCHINESE;
-        Locale(getCHINESE())
+        import static get java.util.Locale.CHINESE: ##java.util.Locale & Pure as get_CHINESE;
+        Locale(get_CHINESE())
 
     pub def english(): Locale =
-        import static get java.util.Locale.ENGLISH: ##java.util.Locale & Pure as getENGLISH;
-        Locale(getENGLISH())
+        import static get java.util.Locale.ENGLISH: ##java.util.Locale & Pure as get_ENGLISH;
+        Locale(get_ENGLISH())
 
     pub def france(): Locale =
-        import static get java.util.Locale.FRANCE: ##java.util.Locale & Pure as getFRANCE;
-        Locale(getFRANCE())
+        import static get java.util.Locale.FRANCE: ##java.util.Locale & Pure as get_FRANCE;
+        Locale(get_FRANCE())
 
     pub def french(): Locale =
-        import static get java.util.Locale.FRENCH: ##java.util.Locale & Pure as getFRENCH;
-        Locale(getFRENCH())
+        import static get java.util.Locale.FRENCH: ##java.util.Locale & Pure as get_FRENCH;
+        Locale(get_FRENCH())
 
     pub def german(): Locale =
-        import static get java.util.Locale.GERMAN: ##java.util.Locale & Pure as getGERMAN;
-        Locale(getGERMAN())
+        import static get java.util.Locale.GERMAN: ##java.util.Locale & Pure as get_GERMAN;
+        Locale(get_GERMAN())
 
     pub def germany(): Locale =
-        import static get java.util.Locale.GERMANY: ##java.util.Locale & Pure as getGERMANY;
-        Locale(getGERMANY())
+        import static get java.util.Locale.GERMANY: ##java.util.Locale & Pure as get_GERMANY;
+        Locale(get_GERMANY())
 
     pub def italian(): Locale =
-        import static get java.util.Locale.ITALIAN: ##java.util.Locale & Pure as getITALIAN;
-        Locale(getITALIAN())
+        import static get java.util.Locale.ITALIAN: ##java.util.Locale & Pure as get_ITALIAN;
+        Locale(get_ITALIAN())
 
     pub def italy(): Locale =
-        import static get java.util.Locale.ITALY: ##java.util.Locale & Pure as getITALY;
-        Locale(getITALY())
+        import static get java.util.Locale.ITALY: ##java.util.Locale & Pure as get_ITALY;
+        Locale(get_ITALY())
 
     pub def japan(): Locale =
-        import static get java.util.Locale.JAPAN: ##java.util.Locale & Pure as getJAPAN;
-        Locale(getJAPAN())
+        import static get java.util.Locale.JAPAN: ##java.util.Locale & Pure as get_JAPAN;
+        Locale(get_JAPAN())
 
     pub def japanese(): Locale =
-        import static get java.util.Locale.JAPANESE: ##java.util.Locale & Pure as getJAPANESE;
-        Locale(getJAPANESE())
+        import static get java.util.Locale.JAPANESE: ##java.util.Locale & Pure as get_JAPANESE;
+        Locale(get_JAPANESE())
 
     pub def korea(): Locale =
-        import static get java.util.Locale.KOREA: ##java.util.Locale & Pure as getKOREA;
-        Locale(getKOREA())
+        import static get java.util.Locale.KOREA: ##java.util.Locale & Pure as get_KOREA;
+        Locale(get_KOREA())
 
     pub def korean(): Locale =
-        import static get java.util.Locale.KOREAN: ##java.util.Locale & Pure as getKOREAN;
-        Locale(getKOREAN())
+        import static get java.util.Locale.KOREAN: ##java.util.Locale & Pure as get_KOREAN;
+        Locale(get_KOREAN())
 
     pub def prc(): Locale =
-        import static get java.util.Locale.PRC: ##java.util.Locale & Pure as getPRC;
-        Locale(getPRC())
+        import static get java.util.Locale.PRC: ##java.util.Locale & Pure as get_PRC;
+        Locale(get_PRC())
 
 
     pub def simplified_chinese(): Locale =
-        import static get java.util.Locale.SIMPLIFIED_CHINESE: ##java.util.Locale & Pure as getSIMPLIFIED_CHINESE;
-        Locale(getSIMPLIFIED_CHINESE())
+        import static get java.util.Locale.SIMPLIFIED_CHINESE: ##java.util.Locale & Pure as get_SIMPLIFIED_CHINESE;
+        Locale(get_SIMPLIFIED_CHINESE())
 
     pub def taiwan(): Locale =
-        import static get java.util.Locale.TAIWAN: ##java.util.Locale & Pure as getTAIWAN;
-        Locale(getTAIWAN())
+        import static get java.util.Locale.TAIWAN: ##java.util.Locale & Pure as get_TAIWAN;
+        Locale(get_TAIWAN())
 
     pub def traditional_chinese(): Locale =
-        import static get java.util.Locale.TRADITIONAL_CHINESE: ##java.util.Locale & Pure as getTRADITIONAL_CHINESE;
-        Locale(getTRADITIONAL_CHINESE())
+        import static get java.util.Locale.TRADITIONAL_CHINESE: ##java.util.Locale & Pure as get_TRADITIONAL_CHINESE;
+        Locale(get_TRADITIONAL_CHINESE())
 
     pub def uk(): Locale =
-        import static get java.util.Locale.UK: ##java.util.Locale & Pure as getUK;
-        Locale(getUK())
+        import static get java.util.Locale.UK: ##java.util.Locale & Pure as get_UK;
+        Locale(get_UK())
 
     pub def us(): Locale =
-        import static get java.util.Locale.US: ##java.util.Locale & Pure as getUS;
-        Locale(getUS())
+        import static get java.util.Locale.US: ##java.util.Locale & Pure as get_US;
+        Locale(get_US())
 
 
     pub def getCountry(x: Locale): String =

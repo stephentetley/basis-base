@@ -72,8 +72,16 @@ def lookup01(): Unit & Impure =
     println("TestLocale.lookup01...");
     let ls = Locale.japan() :: Locale.french() :: Locale.english() :: Nil;
     match Locale/LanguageRange.newLanguageRange("en") {
-        case None      => println("Err: newLanguageRange")
+        case None     => println("Err: newLanguageRange")
         case Some(p1) => println("lookup: ${Locale.lookup(p1 :: Nil, ls)}")
     }
 
+@test
+def builder01(): Unit & Impure =
+    use Locale/Builder.{build, setLanguage};
+    println("TestLocale.builder01...");
+    match build(setLanguage("da")) {
+        case Err(msg) => println("Err: ${msg}")
+        case Ok(loc)  => println("locale is: ${loc}")
+    }
 }
