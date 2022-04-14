@@ -135,9 +135,6 @@ namespace Locale {
         Locale(new1(r.language, r.country, r.variant))
 
 
-    pub def getDefault(): Locale & Impure =
-        import static java.util.Locale.getDefault(): ##java.util.Locale & Impure;
-        Locale(getDefault())
 
     pub def setJvmDefaultLocale!(x: Locale): Result[Unit, String] & Impure =
         import static java.util.Locale.setDefault(##java.util.Locale): Unit & Impure;
@@ -151,15 +148,6 @@ namespace Locale {
 
 
 
-
-    pub def getDefaultWithCategory(x: Category): Locale & Impure =
-        import static java.util.Locale.getDefault(##java.util.Locale$Category): ##java.util.Locale & Impure;
-        import static get java.util.Locale$Category.DISPLAY: ##java.util.Locale$Category & Pure as getDisplay;
-        import static get java.util.Locale$Category.FORMAT: ##java.util.Locale$Category & Pure as getFormat;
-        match x {
-            case Display => getDisplay() |> getDefault |> Locale
-            case Format  => getFormat() |> getDefault |> Locale
-        }
 
     pub def setJvmDefaultLocaleWithCategory!(category: Category, x: Locale): Result[Unit, String] & Impure =
         import static java.util.Locale.setDefault(##java.util.Locale$Category, ##java.util.Locale): Unit & Impure;
@@ -294,6 +282,19 @@ namespace Locale {
         Locale(get_US())
 
 
+    pub def getDefault(): Locale & Impure =
+        import static java.util.Locale.getDefault(): ##java.util.Locale & Impure;
+        Locale(getDefault())
+
+    pub def getDefaultWithCategory(x: Category): Locale & Impure =
+        import static java.util.Locale.getDefault(##java.util.Locale$Category): ##java.util.Locale & Impure;
+        import static get java.util.Locale$Category.DISPLAY: ##java.util.Locale$Category & Pure as getDisplay;
+        import static get java.util.Locale$Category.FORMAT: ##java.util.Locale$Category & Pure as getFormat;
+        match x {
+            case Display => getDisplay() |> getDefault |> Locale
+            case Format  => getFormat() |> getDefault |> Locale
+        }
+
     pub def getCountry(x: Locale): String =
         import java.util.Locale.getCountry(): String & Pure;
         let Locale(x1) = x;
@@ -327,17 +328,61 @@ namespace Locale {
             case _: ##java.util.MissingResourceException => None
         }
 
+    pub def getDisplayCountry(x: Locale): String =
+        import java.util.Locale.getDisplayCountry(): String & Pure;
+        let Locale(x1) = x;
+        getDisplayCountry(x1)
+
+    pub def getDisplayCountryWithLocale(inLocale: {inLocale :: Locale}, x: Locale): String =
+        import java.util.Locale.getDisplayCountry(##java.util.Locale): String & Pure;
+        let Locale(inLocale1) = inLocale.inLocale;
+        let Locale(x1) = x;
+        getDisplayCountry(x1, inLocale1)
+
     pub def getDisplayLanguage(x: Locale): String =
         import java.util.Locale.getDisplayLanguage(): String & Pure;
         let Locale(x1) = x;
         getDisplayLanguage(x1)
 
-    pub def getDisplayLanguageInLocale(x: Locale, inLocale: Locale): String =
+    pub def getDisplayLanguageWithLocale(inLocale: {inLocale :: Locale}, x: Locale): String =
         import java.util.Locale.getDisplayLanguage(##java.util.Locale): String & Pure;
+        let Locale(inLocale1) = inLocale.inLocale;
         let Locale(x1) = x;
-        let Locale(inLocale1) = inLocale;
         getDisplayLanguage(x1, inLocale1)
 
+    pub def getDisplayName(x: Locale): String =
+        import java.util.Locale.getDisplayName(): String & Pure;
+        let Locale(x1) = x;
+        getDisplayName(x1)
+
+    pub def getDisplayNameWithLocale(inLocale: {inLocale :: Locale}, x: Locale): String =
+        import java.util.Locale.getDisplayName(##java.util.Locale): String & Pure;
+        let Locale(inLocale1) = inLocale.inLocale;
+        let Locale(x1) = x;
+        getDisplayName(x1, inLocale1)
+
+    pub def getDisplayScript(x: Locale): String =
+        import java.util.Locale.getDisplayScript(): String & Pure;
+        let Locale(x1) = x;
+        getDisplayScript(x1)
+
+    pub def getDisplayScriptWithLocale(inLocale: {inLocale :: Locale}, x: Locale): String =
+        import java.util.Locale.getDisplayScript(##java.util.Locale): String & Pure;
+        let Locale(inLocale1) = inLocale.inLocale;
+        let Locale(x1) = x;
+        getDisplayScript(x1, inLocale1)
+
+
+    pub def getDisplayVariant(x: Locale): String =
+        import java.util.Locale.getDisplayVariant(): String & Pure;
+        let Locale(x1) = x;
+        getDisplayVariant(x1)
+
+    pub def getDisplayVariantWithLocale(inLocale: {inLocale :: Locale}, x: Locale): String =
+        import java.util.Locale.getDisplayVariant(##java.util.Locale): String & Pure;
+        let Locale(inLocale1) = inLocale.inLocale;
+        let Locale(x1) = x;
+        getDisplayVariant(x1, inLocale1)        
 
     pub def hasExtensions(x: Locale): Bool =
         import java.util.Locale.hasExtensions(): Bool & Pure;
@@ -395,6 +440,18 @@ namespace Locale {
             case _: ##java.lang.Exception => Err("getIsoLanguages")
         }
 
+    pub def getExtension(key: Char, x: Locale): Option[String] =
+        import java.util.Locale.getExtension(Char): String & Pure;
+        try {
+            let Locale(x1) = x;
+            let ext = getExtension(x1, key);
+            if (Object.isNull(ext))
+                None
+            else
+                Some(ext)
+        } catch {
+            case _: ##java.lang.Exception => None
+        }
 
     pub def getExtensionKeys(x: Locale): Set[Char] & Impure =
         import java.util.Locale.getExtensionKeys(): ##java.util.Set & Impure;
