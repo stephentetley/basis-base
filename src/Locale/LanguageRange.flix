@@ -95,6 +95,35 @@ namespace Locale/LanguageRange {
             case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
         }
 
+    pub def parseWithCustomizations(ranges: String, customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
+        import static java.util.Locale$LanguageRange.parse(String, ##java.util.Map): ##java.util.List & Pure;
+        try {
+            let cs1 = marshalMapStringStringList(customizations) as & Pure;
+            let jxs = parse(ranges, cs1);
+            let xs = Marshal.unmarshalList(obj -> LanguageRange(obj as ##java.util.Locale$LanguageRange), jxs) as & Pure;
+            Ok(xs)
+        } catch {
+            case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+        }
+
+
+    pub def mapEquivalents(priorityList: List[LanguageRange], customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
+        import static java.util.Locale$LanguageRange.mapEquivalents(##java.util.List, ##java.util.Map): ##java.util.List & Pure;
+        try {
+            let ps1 = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
+            let cs1 = marshalMapStringStringList(customizations) as & Pure;
+            let jxs = mapEquivalents(ps1, cs1);
+            let xs = Marshal.unmarshalList(obj -> LanguageRange(obj as ##java.util.Locale$LanguageRange), jxs) as & Pure;
+            Ok(xs)
+        } catch {
+            case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+        }
+
+    def marshalMapStringStringList(m: Map[String, List[String]]): ##java.util.Map & Impure = 
+        let marshalKey = k -> k as ##java.lang.Object;
+        let marshalValue = v -> Marshal.marshalList(s -> s as ##java.lang.Object, v) as ##java.lang.Object;
+        Marshal.marshalMap(marshalKey, marshalValue, m)
+
     /// mapEquivalents, parse(2)
 
 }   

@@ -76,7 +76,7 @@ namespace Marshal {
         };
         loop(ks -> ks)
 
-    pub def marshalMap(upcastKey: k -> ##java.lang.Object & ef, upcastValue: v -> ##java.lang.Object & ef,  m: Map[k, v]): ##java.util.Map & Impure =
+    pub def marshalMap(upcastKey: k -> ##java.lang.Object & ef1, upcastValue: v -> ##java.lang.Object & ef2,  m: Map[k, v]): ##java.util.Map & Impure =
         import new java.util.HashMap(): ##java.util.HashMap & Impure as new1;
         import java.util.HashMap.put(##java.lang.Object, ##java.lang.Object): ##java.lang.Object & Impure; 
         let javam = new1();
@@ -89,7 +89,7 @@ namespace Marshal {
         Map.foreach(addElem, m);
         javam as ##java.util.Map
 
-    pub def unmarshalMap(downcastKey: ##java.lang.Object -> k & ef, downcastValue: ##java.lang.Object -> v & ef, javam: ##java.util.Map): Map[k, v] & Impure with Order[k] =
+    pub def unmarshalMap(downcastKey: ##java.lang.Object -> k & ef1, downcastValue: ##java.lang.Object -> v & ef2, javam: ##java.util.Map): Map[k, v] & Impure with Order[k] =
         import java.util.Map.entrySet(): ##java.util.Set & Impure;
         import java.util.Set.iterator(): ##java.util.Iterator & Impure;
         import java.util.Iterator.hasNext(): Bool & Impure;
@@ -112,7 +112,7 @@ namespace Marshal {
         loop(Map.empty())
 
 
-    pub def marshalSortedMap(upcastKey: k -> ##java.lang.Object & ef, upcastValue: v -> ##java.lang.Object & ef,  m: Map[k, v]): ##java.util.SortedMap & Impure =
+    pub def marshalSortedMap(upcastKey: k -> ##java.lang.Object & ef1, upcastValue: v -> ##java.lang.Object & ef2,  m: Map[k, v]): ##java.util.SortedMap & Impure =
         import new java.util.TreeMap(): ##java.util.TreeMap & Impure as new1;
         import java.util.TreeMap.put(##java.lang.Object, ##java.lang.Object): ##java.lang.Object & Impure; 
         let javam = new1();
@@ -126,7 +126,7 @@ namespace Marshal {
         javam as ##java.util.SortedMap
 
 
-    pub def unmarshalSortedMap(downcastKey: ##java.lang.Object -> k & ef, downcastValue: ##java.lang.Object -> v & ef, javam: ##java.util.SortedMap): Map[k, v] & Impure with Order[k] =
+    pub def unmarshalSortedMap(downcastKey: ##java.lang.Object -> k & ef1, downcastValue: ##java.lang.Object -> v & ef2, javam: ##java.util.SortedMap): Map[k, v] & Impure with Order[k] =
         import java.util.SortedMap.entrySet(): ##java.util.Set & Impure;
         import java.util.Set.iterator(): ##java.util.Iterator & Impure;
         import java.util.Iterator.hasNext(): Bool & Impure;

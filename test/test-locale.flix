@@ -94,4 +94,15 @@ def builder02(): Unit & Impure =
         case Err(msg) => println("Err: ${msg}")
         case Ok(loc)  => println("locale is: ${loc}")
     }    
+
+@test
+def builder03(): Unit & Impure =
+    use Applicative.{*>};
+    use Locale/Builder.{build, setLanguage, setScript, setRegion};
+    println("TestLocale.builder03... expect exception");
+    match build(setLanguage("da") *> setScript("Latn") *> setRegion("BAD_REGION")) {
+        case Err(msg) => println("Err: ${msg}")
+        case Ok(loc)  => println("locale is: ${loc}")
+    } 
+
 }
