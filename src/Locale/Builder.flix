@@ -117,9 +117,50 @@ namespace Locale/Builder {
         import java.util.Locale$Builder.clear(): ##java.util.Locale$Builder & Impure;
         liftJvmBuilderPrim(clear)
 
+    pub def clearExtensions(): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.clearExtensions(): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(clearExtensions)
+
+    pub def setExtension(r: {key :: Char, value :: String}): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setExtension(Char, String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(bldr -> setExtension(bldr, r.key, r.value))
+
+    pub def setUnicodeLocaleKeyword(r: {key :: String, keywordType :: String}): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setUnicodeLocaleKeyword(String, String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(bldr -> setUnicodeLocaleKeyword(bldr, r.key, r.keywordType))
+
     pub def setLanguage(lang: String): Builder[ka, Unit] = 
         import java.util.Locale$Builder.setLanguage(String): ##java.util.Locale$Builder & Impure;
         liftJvmBuilderPrim(flip(setLanguage, lang))
 
+    pub def setLanguageTag(tag: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setLanguageTag(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(setLanguageTag, tag))
+
+    pub def setLocale(loc: Locale): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setLocale(##java.util.Locale): ##java.util.Locale$Builder & Impure;
+        let Locale(loc1) = loc;
+        liftJvmBuilderPrim(flip(setLocale, loc1))
+
+    pub def setRegion(rgn: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setRegion(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(setRegion, rgn))
+
+    pub def setScript(script: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setScript(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(setScript, script))
+
+    pub def setVariant(vrnt: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.setVariant(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(setVariant, vrnt))
+
+    
+    pub def addUnicodeLocaleAttribute(attr: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.addUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(addUnicodeLocaleAttribute, attr))
+    
+    pub def removeUnicodeLocaleAttribute(attr: String): Builder[ka, Unit] = 
+        import java.util.Locale$Builder.removeUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & Impure;
+        liftJvmBuilderPrim(flip(removeUnicodeLocaleAttribute, attr))
 
 }   
