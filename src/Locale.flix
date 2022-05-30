@@ -48,7 +48,6 @@ namespace Locale {
     use Locale.LanguageRange;
     use Locale.LanguageRange.{LanguageRange};
 
-
     /// 
     /// `Category` is an enum for Locale categories.
     /// 

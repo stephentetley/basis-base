@@ -19,9 +19,10 @@ namespace Locale {
 
 
     ///
-    /// State and Codensity(Error) monad
+    /// Reader (without local) and Error monad in codensity style to be stack safe.
     ///
-    pub opaque type Builder[ka, a] = ##java.util.Locale$Builder -> (a -> ##java.util.Locale$Builder -> Result[ka, String] & Impure) -> Result[ka, String] & Impure
+    pub opaque type Builder[ka, a] = 
+        ##java.util.Locale$Builder -> (a -> Result[ka, String] & Impure) -> Result[ka, String] & Impure
 
 
     instance Functor[Builder[ka]] {
@@ -51,19 +52,19 @@ namespace Locale/Builder {
     /// Helper function for the implementation of `map` and `ap` etc.
     ///
     def apply1(ma: Builder[ka, a], 
-                st: ##java.util.Locale$Builder, 
-                k: a -> ##java.util.Locale$Builder -> Result[ka, String] & Impure): Result[ka, String] & Impure =
+                r: ##java.util.Locale$Builder, 
+                k: a -> Result[ka, String] & Impure): Result[ka, String] & Impure =
         let Builder(ma1) = ma;
-        ma1(st, k)
+        ma1(r, k)
 
-    pub def build(ma: Builder[(##java.util.Locale$Builder, a), a]): Result[Locale, String] & Impure = 
+    pub def build(ma: Builder[a, a]): Result[Locale, String] & Impure = 
         import new java.util.Locale$Builder(): ##java.util.Locale$Builder & Impure as new1;
         import java.util.Locale$Builder.build(): ##java.util.Locale & Impure as toJavaLocale;
         try {
             let jbuilder = new1();
             match runBuilder(ma, jbuilder) {
-                case Err(msg)           => Err(msg)
-                case Ok((jbuilder1, _)) => Ok(Locale(toJavaLocale(jbuilder1)))
+                case Err(msg) => Err(msg)
+                case Ok(_)    => Ok(Locale(toJavaLocale(jbuilder)))
             }
         } catch {
             case ex: ##java.lang.Exception => Err(Marshal.unmarshalException(ex))
@@ -72,31 +73,31 @@ namespace Locale/Builder {
     ///
     /// Returns the result (new state and answer) of applying `ma` to the initial state `st`.
     ///
-    def runBuilder(ma: Builder[(##java.util.Locale$Builder, a), a], st: ##java.util.Locale$Builder): Result[(##java.util.Locale$Builder, a), String] & Impure =
+    def runBuilder(ma: Builder[a, a], r: ##java.util.Locale$Builder): Result[a, String] & Impure =
         let Builder(f) = ma;
-        let cont = (a, s) -> Ok(s, a) as & Impure;
-        f(st, cont)
+        let cont = a -> Ok(a) as & Impure;
+        f(r, cont)
 
     pub def point(x: a): Builder[ka, a] =
-        Builder((s, k) -> k(x, s))
+        Builder((_, k) -> k(x))
 
     pub def map(f: a -> b & ef, ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((s, k) ->
-            apply1(ma, s, (a, s1) -> k(f(a) as & Impure, s1))
+        Builder((r, k) ->
+            apply1(ma, r, a -> k(f(a) as & Impure))
         ) as & ef
         
     pub def ap(mf: Builder[ka, a -> b & ef], ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((s, k) ->
-            apply1(mf, s, (f, s1) ->
-                apply1(ma, s1, (a, s2) ->
-                    k(f(a) as & Impure, s2)))
+        Builder((r, k) ->
+            apply1(mf, r, f ->
+                apply1(ma, r, a ->
+                    k(f(a) as & Impure)))
         ) as & ef
 
     pub def flatMap(f: a -> Builder[ka, b] & ef, ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((s, k) ->
-            apply1(ma, s, (a, s1) ->
-                apply1(f(a) as & Impure, s1, (b, s2) ->
-                    k(b, s2)))
+        Builder((r, k) ->
+            apply1(ma, r, a ->
+                apply1(f(a) as & Impure, r, b ->
+                    k(b)))
         ) as & ef
 
     pub def throwError(msg: String): Builder[ka, a] = 
@@ -104,10 +105,10 @@ namespace Locale/Builder {
 
 
     def liftJvmBuilderPrim(f: ##java.util.Locale$Builder -> ##java.util.Locale$Builder & Impure): Builder[ka, Unit] = 
-        Builder((s, k) ->
+        Builder((r, k) ->
             try {
-                let s1 = f(s);
-                k((), s1)
+                f(r);
+                k()
             } catch {
                 case ex: ##java.lang.Exception => Err(Marshal.unmarshalException(ex))
             }            
