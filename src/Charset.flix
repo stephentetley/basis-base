@@ -30,7 +30,7 @@
 /// This module generally follows the class `java.nio.charset.Charset` 
 /// so the Javadoc documentation is relevant.
 ///
-pub opaque type Charset = ##java.nio.charset.Charset
+pub enum Charset(##java.nio.charset.Charset)
 
 instance ToString[Charset] {
     pub def toString(cs: Charset): String =

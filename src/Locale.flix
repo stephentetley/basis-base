@@ -26,7 +26,7 @@
 /// This module generally follows `java.util.Locale` so the Javadoc documentation 
 /// is relevant.
 ///
-pub opaque type Locale = ##java.util.Locale
+pub enum Locale(##java.util.Locale)
 
 instance ToString[Locale] {
     pub def toString(x: Locale): String = Locale.toString(x)

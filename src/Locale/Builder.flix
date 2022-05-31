@@ -21,8 +21,7 @@ namespace Locale {
     ///
     /// Reader (without local) and Error monad in codensity style to be stack safe.
     ///
-    pub opaque type Builder[ka, a] = 
-        ##java.util.Locale$Builder -> (a -> Result[ka, String] & Impure) -> Result[ka, String] & Impure
+    pub enum Builder[ka, a](##java.util.Locale$Builder -> (a -> Result[ka, String] & Impure) -> Result[ka, String] & Impure)
 
 
     instance Functor[Builder[ka]] {

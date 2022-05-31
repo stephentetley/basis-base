@@ -16,7 +16,7 @@
 
 namespace Locale {
 
-    pub opaque type LanguageRange = ##java.util.Locale$LanguageRange
+    pub enum LanguageRange(##java.util.Locale$LanguageRange)
 
     instance ToString[LanguageRange] {
         pub def toString(x: LanguageRange): String = Locale/LanguageRange.toString(x)
