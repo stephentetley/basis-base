@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/// TODO (major) error handling!
+/// Deprecated - use `collection-interop`
 
 namespace Marshal {
 
@@ -49,7 +49,7 @@ namespace Marshal {
     ///     };
     ///     loop(Set.empty())
 
-    pub def marshalList(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.List & Impure =
+    def marshalList(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.List & Impure =
         import new java.util.LinkedList(): ##java.util.LinkedList & Impure as new1;
         import java.util.LinkedList.add(##java.lang.Object): Bool & Impure; 
         let javal = new1();

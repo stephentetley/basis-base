@@ -30,6 +30,15 @@ namespace Locale {
         pub def hash(x: LanguageRange): Int32 = Locale/LanguageRange.hashCode(x)
     }
 
+    instance Interop.Marshal[LanguageRange] {
+        pub def toJavaObject(x: LanguageRange): ##java.lang.Object =
+            let LanguageRange(x1) = x;
+            x1 as ##java.lang.Object
+
+        pub def fromJavaObject(o: ##java.lang.Object): LanguageRange = 
+            LanguageRange(o as ##java.util.Locale$LanguageRange)
+    }
+
 }
 
 
@@ -86,44 +95,49 @@ namespace Locale/LanguageRange {
 
 
     pub def parse(ranges: String): Result[List[LanguageRange], String] =
-        import static java.util.Locale$LanguageRange.parse(String): ##java.util.List & Pure;
-        try {
-            let jxs = parse(ranges);
-            let xs = Marshal.unmarshalList(obj -> LanguageRange(obj as ##java.util.Locale$LanguageRange), jxs) as & Pure;
-            Ok(xs)
-        } catch {
-            case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+        region r1 {
+            try {
+                import static java.util.Locale$LanguageRange.parse(String): ##java.util.List & Pure;
+                let xs = parse(ranges);
+                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+            }
         }
 
     pub def parseWithCustomizations(ranges: String, customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
         import static java.util.Locale$LanguageRange.parse(String, ##java.util.Map): ##java.util.List & Pure;
-        try {
-            let cs1 = marshalMapStringStringList(customizations) as & Pure;
-            let jxs = parse(ranges, cs1);
-            let xs = Marshal.unmarshalList(obj -> LanguageRange(obj as ##java.util.Locale$LanguageRange), jxs) as & Pure;
-            Ok(xs)
-        } catch {
-            case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+        region r1 {
+            try {
+                let cs1 = marshalMapStringStringList(customizations) as & Pure;
+                let xs = parse(ranges, cs1);
+                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+            }
         }
-
 
     pub def mapEquivalents(priorityList: List[LanguageRange], customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
         import static java.util.Locale$LanguageRange.mapEquivalents(##java.util.List, ##java.util.Map): ##java.util.List & Pure;
-        try {
-            let ps1 = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let cs1 = marshalMapStringStringList(customizations) as & Pure;
-            let jxs = mapEquivalents(ps1, cs1);
-            let xs = Marshal.unmarshalList(obj -> LanguageRange(obj as ##java.util.Locale$LanguageRange), jxs) as & Pure;
-            Ok(xs)
-        } catch {
-            case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+        region r1 {
+            try {
+                let ps1 = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let cs1 = marshalMapStringStringList(customizations) as & Pure;
+                let xs = mapEquivalents(ps1, cs1);
+                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
+            }
         }
 
     def marshalMapStringStringList(m: Map[String, List[String]]): ##java.util.Map & Impure = 
-        let marshalKey = k -> k as ##java.lang.Object;
-        let marshalValue = v -> Marshal.marshalList(s -> s as ##java.lang.Object, v) as ##java.lang.Object;
-        Marshal.marshalMap(marshalKey, marshalValue, m)
-
-    /// mapEquivalents, parse(2)
+        region r1 {
+            let marshalKey = k -> k as ##java.lang.Object;
+            let marshalValue = v -> Interop/RawList.fromListViaArrayList(r1, v) as ##java.lang.Object;
+            Marshal.marshalMap(marshalKey, marshalValue, m)
+        }
 
 }   

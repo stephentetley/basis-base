@@ -496,90 +496,98 @@ namespace Locale {
 
     pub def lookup(priorityList: List[LanguageRange], locales: List[Locale]): Option[Locale] = 
         import static java.util.Locale.lookup(##java.util.List, ##java.util.Collection): ##java.util.Locale & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
-            let ans = lookup(ls, col);
-            if (Object.isNull(ans))
-                None
-            else 
-                Some(Locale(ans))
-        } catch {
-            case _: ##java.lang.Exception => None
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let ans = lookup(ls, col);
+                if (Object.isNull(ans))
+                    None
+                else 
+                    Some(Locale(ans))
+            } catch {
+                case _: ##java.lang.Exception => None
+            }
         }
-
     pub def lookupTag(priorityList: List[LanguageRange], tags: List[String]): Option[String] = 
         import static java.util.Locale.lookupTag(##java.util.List, ##java.util.Collection): String & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
-            let ans = lookupTag(ls, col);
-            if (Object.isNull(ans))
-                None
-            else 
-                Some(ans)
-        } catch {
-            case _: ##java.lang.Exception => None
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let ans = lookupTag(ls, col);
+                if (Object.isNull(ans))
+                    None
+                else 
+                    Some(ans)
+            } catch {
+                case _: ##java.lang.Exception => None
+            }
         }
-
 
     pub def filter(priorityList: List[LanguageRange], locales: List[Locale]): List[Locale] = 
         import static java.util.Locale.filter(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
-            let ans = filter(ls, col);
-            if (Object.isNull(ans))
-                Nil
-            else 
-                Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
-        } catch {
-            case _: ##java.lang.Exception => Nil
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let ans = filter(ls, col);
+                if (Object.isNull(ans))
+                    Nil
+                else 
+                    Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+            } catch {
+                case _: ##java.lang.Exception => Nil
+            }
         }
 
     pub def filterWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, locales: List[Locale]): List[Locale] = 
         import static java.util.Locale.filter(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
-            let mode1 = marshalFilteringMode(mode);
-            let ans = filter(ls, col, mode1);
-            if (Object.isNull(ans))
-                Nil
-            else 
-                Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
-        } catch {
-            case _: ##java.lang.Exception => Nil
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let mode1 = marshalFilteringMode(mode);
+                let ans = filter(ls, col, mode1);
+                if (Object.isNull(ans))
+                    Nil
+                else 
+                    Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+            } catch {
+                case _: ##java.lang.Exception => Nil
+            }
         }
-
 
     pub def filterTags(priorityList: List[LanguageRange], tags: List[String]): List[String] = 
         import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
-            let ans = filterTags(ls, col);
-            if (Object.isNull(ans))
-                Nil
-            else 
-                Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
-        } catch {
-            case _: ##java.lang.Exception => Nil
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let prim = filterTags(ls, col);
+                if (Object.isNull(prim))
+                    Nil
+                else 
+                    Interop/RawList.new(prim, r1) |> Interop/RawList.toList
+            } catch {
+                case _: ##java.lang.Exception => Nil
+            }
         }
 
     pub def filterTagsWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, tags: List[String]): List[String] = 
         import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
-        try {
-            let ls = Marshal.marshalList(x -> {let LanguageRange(x1) = x; x1 as ##java.lang.Object}, priorityList) as & Pure;
-            let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
-            let mode1 = marshalFilteringMode(mode);
-            let ans = filterTags(ls, col, mode1);
-            if (Object.isNull(ans))
-                Nil
-            else 
-                Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
-        } catch {
-            case _: ##java.lang.Exception => Nil
+        region r1 {
+            try {
+                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
+                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let mode1 = marshalFilteringMode(mode);
+                let ans = filterTags(ls, col, mode1);
+                if (Object.isNull(ans))
+                    Nil
+                else 
+                    Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
+            } catch {
+                case _: ##java.lang.Exception => Nil
+            }
         }
-
 }
