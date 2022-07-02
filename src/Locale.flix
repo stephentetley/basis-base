@@ -154,11 +154,11 @@ namespace Locale {
         import static get java.util.Locale$Category.FORMAT: ##java.util.Locale$Category & Pure as getFormat;
         try {
             let Locale(x1) = x;
-            let category = match category {
+            let cat1 = match category {
                 case Display => getDisplay()
-                case Format => getFormat()
+                case Format  => getFormat()
             };
-            setDefault(category, x1);
+            setDefault(cat1, x1);
             Ok()
         } catch {
             case _: ##java.lang.Exception => Err("setDefaultWithCategory! failed")
@@ -406,14 +406,14 @@ namespace Locale {
 
 
     /// This marshals okay...
-    pub def getAvailableLocales(): Array[Locale] & Impure =
-        import static java.util.Locale.getAvailableLocales(): Array[##java.util.Locale] & Impure;
+    pub def getAvailableLocales(): Array[Locale, Static] & Impure =
+        import static java.util.Locale.getAvailableLocales(): Array[##java.util.Locale, Static] & Impure;
         let arr = getAvailableLocales();
         Array.map(Locale, arr)
 
 
-    pub def getIsoCountries(): Array[String] & Impure =
-        import static java.util.Locale.getISOCountries(): Array[String] & Impure;
+    pub def getIsoCountries(): Array[String, Static] & Impure =
+        import static java.util.Locale.getISOCountries(): Array[String, Static] & Impure;
         try {
             getISOCountries()
         } catch {
@@ -431,7 +431,7 @@ namespace Locale {
         }
 
     pub def getIsoLanguages(): Result[List[String], String] & Impure =
-        import static java.util.Locale.getISOLanguages(): Array[String] & Impure;
+        import static java.util.Locale.getISOLanguages(): Array[String, Static] & Impure;
         try {
             let arr = getISOLanguages();
             Ok(Array.toList(arr))
@@ -457,7 +457,7 @@ namespace Locale {
         try {
             let Locale(x1) = x;
             let sjava = getExtensionKeys(x1);
-            let s1 = Marshal.unmarshalSet(x -> charValue(x as ##java.lang.Character), sjava);
+            let s1 = Marshal.unmarshalSet(o -> charValue(o as ##java.lang.Character), sjava);
             s1
         } catch {
             case _: ##java.lang.Exception => Set.empty()
@@ -472,7 +472,7 @@ namespace Locale {
         try {
             let Locale(x1) = x;
             let s1 = getUnicodeLocaleAttributes(x1);
-            Ok(Marshal.unmarshalSet(x -> x as String,s1))
+            Ok(Marshal.unmarshalSet(o -> o as String,s1))
         } catch {
             case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
         }
@@ -483,7 +483,7 @@ namespace Locale {
         try {
             let Locale(x1) = x;
             let s1 = getUnicodeLocaleKeys(x1);
-            Ok(Marshal.unmarshalSet(x -> x as String,s1))
+            Ok(Marshal.unmarshalSet(o -> o as String,s1))
         } catch {
             case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
         }
