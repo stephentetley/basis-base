@@ -55,7 +55,14 @@ instance Order[Charset] {
 
 instance Boxable[Charset]
 
+instance Interop.Marshal[Charset] {
+    pub def toJavaObject(x: Charset): ##java.lang.Object =
+        let Charset(x1) = x;
+        x1 as ##java.lang.Object
 
+    pub def fromJavaObject(o: ##java.lang.Object): Charset = 
+        Charset(o as ##java.nio.charset.Charset)
+}
 
 namespace Charset {
 
@@ -182,9 +189,11 @@ namespace Charset {
         }
 
     pub def availableCharsets(): Map[String, Charset] =
-        import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & Pure;
-        let downcastV = x1 -> Charset(x1 as ##java.nio.charset.Charset);
-        (availableCharsets() |> Marshal.unmarshalSortedMap(k -> k as String, downcastV)) as & Pure
+        region r1 {
+            import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & r1;
+            let sm = availableCharsets();
+            Interop/SortedMap.new(sm, r1) |> Interop/SortedMap.toMap
+        }
 
 
 

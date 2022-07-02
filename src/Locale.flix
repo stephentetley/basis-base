@@ -544,7 +544,7 @@ namespace Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -561,7 +561,7 @@ namespace Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Marshal.unmarshalList(o -> Locale(o as ##java.util.Locale), ans) as & Pure
+                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -594,7 +594,7 @@ namespace Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Marshal.unmarshalList(o -> o as ##java.lang.String, ans) as & Pure
+                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
