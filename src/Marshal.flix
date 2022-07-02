@@ -18,36 +18,36 @@
 
 namespace Marshal {
 
-    pub def unmarshalException(ex: ##java.lang.Exception): String & Impure = 
-        import java.lang.Throwable.getMessage(): String & Impure;
-        getMessage(ex as ##java.lang.Throwable)
+    /// pub def unmarshalException(ex: ##java.lang.Exception): String & Impure = 
+    ///     import java.lang.Throwable.getMessage(): String & Impure;
+    ///     getMessage(ex as ##java.lang.Throwable)
     
-    pub def marshalSet(upcast: a -> ##java.lang.Object & ef, s: Set[a]): ##java.util.Set & Impure =
-        import new java.util.HashSet(): ##java.util.HashSet & Impure as new1;
-        import java.util.HashSet.add(##java.lang.Object): Bool & Impure; 
-        let javas = new1();
-        let addElem = x -> {
-            let x1 = upcast(x) as & Impure;
-            let _ = add(javas, x1);
-            ()
-        };
-        Set.foreach(addElem, s);
-        javas as ##java.util.Set
+    /// pub def marshalSet(upcast: a -> ##java.lang.Object & ef, s: Set[a]): ##java.util.Set & Impure =
+    ///     import new java.util.HashSet(): ##java.util.HashSet & Impure as new1;
+    ///     import java.util.HashSet.add(##java.lang.Object): Bool & Impure; 
+    ///     let javas = new1();
+    ///     let addElem = x -> {
+    ///         let x1 = upcast(x) as & Impure;
+    ///         let _ = add(javas, x1);
+    ///         ()
+    ///     };
+    ///     Set.foreach(addElem, s);
+    ///     javas as ##java.util.Set
 
-    pub def unmarshalSet(downcast: ##java.lang.Object -> a & ef, javas: ##java.util.Set): Set[a] & Impure with Order[a] =
-        import java.util.Set.iterator(): ##java.util.Iterator & Impure;
-        import java.util.Iterator.hasNext(): Bool & Impure;
-        import java.util.Iterator.next(): ##java.lang.Object & Impure;
-        let iter = iterator(javas);                
-        def loop(acc: Set[a]) = {
-            if (hasNext(iter)) {
-                let jObj  = next(iter);
-                let x1 = downcast(jObj) as & Impure;
-                loop(Set.insert(x1, acc))
-            } else
-                acc
-        };
-        loop(Set.empty())
+    /// pub def unmarshalSet(downcast: ##java.lang.Object -> a & ef, javas: ##java.util.Set): Set[a] & Impure with Order[a] =
+    ///     import java.util.Set.iterator(): ##java.util.Iterator & Impure;
+    ///     import java.util.Iterator.hasNext(): Bool & Impure;
+    ///     import java.util.Iterator.next(): ##java.lang.Object & Impure;
+    ///     let iter = iterator(javas);                
+    ///     def loop(acc: Set[a]) = {
+    ///         if (hasNext(iter)) {
+    ///             let jObj  = next(iter);
+    ///             let x1 = downcast(jObj) as & Impure;
+    ///             loop(Set.insert(x1, acc))
+    ///         } else
+    ///             acc
+    ///     };
+    ///     loop(Set.empty())
 
     pub def marshalList(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.List & Impure =
         import new java.util.LinkedList(): ##java.util.LinkedList & Impure as new1;

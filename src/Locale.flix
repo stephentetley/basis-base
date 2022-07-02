@@ -422,12 +422,15 @@ namespace Locale {
 
     pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[Set[String], String] & Impure =
         import static java.util.Locale.getISOCountries(##java.util.Locale$IsoCountryCode): ##java.util.Set & Impure;
-        try {
-            let icc1 = marshalIsoCountryCode(icc);
-            let s1 = getISOCountries(icc1);
-            Ok(Marshal.unmarshalSet(x -> x as String,s1))
-        } catch {
-            case _: ##java.lang.Exception => Err("getIsoCountriesWithIsoCountryCode")
+        region r1 {
+            try {
+                let icc1 = marshalIsoCountryCode(icc);
+                let s1 = getISOCountries(icc1);
+                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.Exception => Err("getIsoCountriesWithIsoCountryCode")
+            }
         }
 
     pub def getIsoLanguages(): Result[List[String], String] & Impure =
@@ -454,38 +457,41 @@ namespace Locale {
 
     pub def getExtensionKeys(x: Locale): Set[Char] & Impure =
         import java.util.Locale.getExtensionKeys(): ##java.util.Set & Impure;
-        try {
-            let Locale(x1) = x;
-            let sjava = getExtensionKeys(x1);
-            let s1 = Marshal.unmarshalSet(o -> charValue(o as ##java.lang.Character), sjava);
-            s1
-        } catch {
-            case _: ##java.lang.Exception => Set.empty()
+        region r1 {
+            try {
+                let Locale(x1) = x;
+                let s1 = getExtensionKeys(x1);
+                Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet
+            } catch {
+                case _: ##java.lang.Exception => Set.empty()
+            }
         }
 
-    def charValue(c: ##java.lang.Character): Char = 
-        import java.lang.Character.charValue(): Char & Pure;
-        charValue(c)
 
     pub def getUnicodeLocaleAttributes(x: Locale): Result[Set[String], String] & Impure =
         import java.util.Locale.getUnicodeLocaleAttributes(): ##java.util.Set & Impure;
-        try {
-            let Locale(x1) = x;
-            let s1 = getUnicodeLocaleAttributes(x1);
-            Ok(Marshal.unmarshalSet(o -> o as String,s1))
-        } catch {
-            case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
+        region r1 {
+            try {
+                let Locale(x1) = x;
+                let s1 = getUnicodeLocaleAttributes(x1);
+                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
+            }
         }
-
 
     pub def getUnicodeLocaleKeys(x: Locale): Result[Set[String], String] & Impure =
         import java.util.Locale.getUnicodeLocaleKeys(): ##java.util.Set & Impure;
-        try {
-            let Locale(x1) = x;
-            let s1 = getUnicodeLocaleKeys(x1);
-            Ok(Marshal.unmarshalSet(o -> o as String,s1))
-        } catch {
-            case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
+        region r1 {
+            try {
+                let Locale(x1) = x;
+                let s1 = getUnicodeLocaleKeys(x1);
+                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                Ok(ans)
+            } catch {
+                case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
+            }
         }
 
     pub def lookup(priorityList: List[LanguageRange], locales: List[Locale]): Option[Locale] = 

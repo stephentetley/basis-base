@@ -16,7 +16,7 @@
 
 namespace Locale {
 
-
+    /// We need Errors!
 
     ///
     /// Reader (without local) and Error monad in codensity style to be stack safe.
@@ -66,7 +66,9 @@ namespace Locale/Builder {
                 case Ok(_)    => Ok(Locale(toJavaLocale(jbuilder)))
             }
         } catch {
-            case ex: ##java.lang.Exception => Err(Marshal.unmarshalException(ex))
+            case ex: ##java.lang.Exception => 
+                import java.lang.Throwable.getMessage(): String & Impure;
+                Err("build: " + getMessage(ex))
         }
 
     ///
@@ -109,7 +111,9 @@ namespace Locale/Builder {
                 f(r);
                 k()
             } catch {
-                case ex: ##java.lang.Exception => Err(Marshal.unmarshalException(ex))
+                case ex: ##java.lang.Exception => 
+                    import java.lang.Throwable.getMessage(): String & Impure;
+                    Err("liftJvmBuilderPrim: " + getMessage(ex))
             }            
         )
 

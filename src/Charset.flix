@@ -175,9 +175,11 @@ namespace Charset {
 
     pub def aliases(x: Charset): Set[String] =
         import java.nio.charset.Charset.aliases(): ##java.util.Set & Pure;
-        let Charset(x1) = x;
-        (aliases(x1) |> Marshal.unmarshalSet(key -> key as String)) as & Pure
-
+        region r1 {
+            let Charset(x1) = x;
+            let s1 = aliases(x1); 
+            Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet
+        }
 
     pub def availableCharsets(): Map[String, Charset] =
         import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & Pure;
