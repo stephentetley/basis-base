@@ -49,17 +49,17 @@ namespace Marshal {
     ///     };
     ///     loop(Set.empty())
 
-    def marshalList(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.List & Impure =
-        import new java.util.LinkedList(): ##java.util.LinkedList & Impure as new1;
-        import java.util.LinkedList.add(##java.lang.Object): Bool & Impure; 
-        let javal = new1();
-        let addElem = x -> {
-            let x1 = upcast(x) as & Impure;
-            let _ = add(javal, x1);
-            ()
-        };
-        List.foreach(addElem, l);
-        javal as ##java.util.List
+    /// def marshalList(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.List & Impure =
+    ///     import new java.util.LinkedList(): ##java.util.LinkedList & Impure as new1;
+    ///     import java.util.LinkedList.add(##java.lang.Object): Bool & Impure; 
+    ///     let javal = new1();
+    ///     let addElem = x -> {
+    ///         let x1 = upcast(x) as & Impure;
+    ///         let _ = add(javal, x1);
+    ///         ()
+    ///     };
+    ///     List.foreach(addElem, l);
+    ///     javal as ##java.util.List
 
     pub def unmarshalList(downcast: ##java.lang.Object -> a & ef, javal: ##java.util.List): List[a] & Impure =
         import java.util.List.iterator(): ##java.util.Iterator & Impure;
@@ -150,7 +150,7 @@ namespace Marshal {
 
 
 
-    pub def marshalCollection(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.Collection & Impure =
-        marshalList(upcast, l) as ##java.util.Collection
+    /// pub def marshalCollection(upcast: a -> ##java.lang.Object & ef, l: List[a]): ##java.util.Collection & Impure =
+    ///     marshalList(upcast, l) as ##java.util.Collection
 
 }

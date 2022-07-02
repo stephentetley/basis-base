@@ -47,6 +47,8 @@ namespace Locale/LanguageRange {
     use Locale.LanguageRange;
     use Locale.LanguageRange.{LanguageRange};
 
+    use Interop.RawMap;
+
 
     ///
     /// Returns a new LanguageRange for the supplied `range`.
@@ -110,7 +112,7 @@ namespace Locale/LanguageRange {
         import static java.util.Locale$LanguageRange.parse(String, ##java.util.Map): ##java.util.List & Pure;
         region r1 {
             try {
-                let cs1 = marshalMapStringStringList(customizations) as & Pure;
+                let cs1 = Interop/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/RawMap.getRawMap;
                 let xs = parse(ranges, cs1);
                 let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
                 Ok(ans)
@@ -124,7 +126,7 @@ namespace Locale/LanguageRange {
         region r1 {
             try {
                 let ps1 = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let cs1 = marshalMapStringStringList(customizations) as & Pure;
+                let cs1 = Interop/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/RawMap.getRawMap;
                 let xs = mapEquivalents(ps1, cs1);
                 let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
                 Ok(ans)
@@ -133,11 +135,8 @@ namespace Locale/LanguageRange {
             }
         }
 
-    def marshalMapStringStringList(m: Map[String, List[String]]): ##java.util.Map & Impure = 
-        region r1 {
-            let marshalKey = k -> k as ##java.lang.Object;
-            let marshalValue = v -> Interop/RawList.fromListViaArrayList(r1, v) as ##java.lang.Object;
-            Marshal.marshalMap(marshalKey, marshalValue, m)
-        }
+    /// def marshalMapStringStringList(r: Region[r], m: Map[String, List[String]]): RawMap[String, List[String], r] = 
+    ///     Interop/RawMap.fromMapViaHashMap(r, m) |> Interop/RawMap.toMap
+
 
 }   

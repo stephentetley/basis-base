@@ -40,8 +40,17 @@ instance Hash[Locale] {
     pub def hash(x: Locale): Int32 = Locale.hashCode(x)
 }
 
-/// No Order, so no Boxable
 
+instance Interop.Marshal[Locale] {
+    pub def toJavaObject(x: Locale): ##java.lang.Object =
+        let Locale(x1) = x;
+        x1 as ##java.lang.Object
+
+    pub def fromJavaObject(o: ##java.lang.Object): Locale = 
+        Locale(o as ##java.util.Locale)
+}
+
+/// No Order, so no Boxable
 
 namespace Locale {
 
@@ -499,7 +508,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
                 let ans = lookup(ls, col);
                 if (Object.isNull(ans))
                     None
@@ -514,7 +523,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
                 let ans = lookupTag(ls, col);
                 if (Object.isNull(ans))
                     None
@@ -530,7 +539,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
                 let ans = filter(ls, col);
                 if (Object.isNull(ans))
                     Nil
@@ -546,7 +555,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(x -> {let Locale(x1) = x; x1 as ##java.lang.Object}, locales) as & Pure;
+                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
                 let mode1 = marshalFilteringMode(mode);
                 let ans = filter(ls, col, mode1);
                 if (Object.isNull(ans))
@@ -563,7 +572,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
                 let prim = filterTags(ls, col);
                 if (Object.isNull(prim))
                     Nil
@@ -579,7 +588,7 @@ namespace Locale {
         region r1 {
             try {
                 let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Marshal.marshalCollection(s -> s as ##java.lang.Object, tags) as & Pure;
+                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
                 let mode1 = marshalFilteringMode(mode);
                 let ans = filterTags(ls, col, mode1);
                 if (Object.isNull(ans))
