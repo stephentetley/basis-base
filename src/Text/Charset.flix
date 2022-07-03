@@ -14,58 +14,65 @@
  * limitations under the License.
  */
 
+namespace Text {
+
+    /// 
+    /// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
+    ///
+    /// A Charset represents the assignment of numeric values to characters 
+    /// (a coded character set) and a mapping of elements this coded character 
+    /// set to octets.
+    ///
+    /// A Charset is typically used in encode or decode String data when this 
+    /// data interfaces with the world outside Flix - e.g. reading from and 
+    /// and writing to text files, network sockets, operating system processs etc.
+    ///
+    /// This module generally follows the class `java.nio.charset.Charset` 
+    /// so the Javadoc documentation is relevant.
+    ///
+    pub enum Charset(##java.nio.charset.Charset)
+
+    instance ToString[Charset] {
+        pub def toString(cs: Charset): String =
+            import java.nio.charset.Charset.toString(): String & Pure;
+            let Charset(cs1) = cs;
+            toString(cs1)
+    }
 
 
-/// 
-/// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
-///
-/// A Charset represents the assignment of numeric values to characters 
-/// (a coded character set) and a mapping of elements this coded character 
-/// set to octets.
-///
-/// A Charset is typically used in encode or decode String data when this 
-/// data interfaces with the world outside Flix - e.g. reading from and 
-/// and writing to text files, network sockets, operating system processs etc.
-///
-/// This module generally follows the class `java.nio.charset.Charset` 
-/// so the Javadoc documentation is relevant.
-///
-pub enum Charset(##java.nio.charset.Charset)
+    instance Eq[Charset] {
+        pub def eq(x: Charset, y: Charset): Bool = Text/Charset.equals(x, y)
+    }
 
-instance ToString[Charset] {
-    pub def toString(cs: Charset): String =
-        import java.nio.charset.Charset.toString(): String & Pure;
-        let Charset(cs1) = cs;
-        toString(cs1)
+    instance Hash[Charset] {
+        pub def hash(x: Charset): Int32 = Text/Charset.hashCode(x)
+    }
+
+    instance Order[Charset] {
+        pub def compare(x: Charset, y: Charset): Comparison =
+            Text/Charset.compareTo(x, y) |> Comparison.fromInt32
+    }
+
+    instance Boxable[Charset]
+
+    instance Interop.Marshal[Charset] {
+        pub def toJavaObject(x: Charset): ##java.lang.Object =
+            let Charset(x1) = x;
+            x1 as ##java.lang.Object
+
+        pub def fromJavaObject(o: ##java.lang.Object): Charset = 
+            Charset(o as ##java.nio.charset.Charset)
+    }
+
 }
 
+namespace Text/Charset {
 
-instance Eq[Charset] {
-    pub def eq(x: Charset, y: Charset): Bool = Charset.equals(x, y)
-}
+    use Text.Charset;
+    use Text.Charset.{Charset};
 
-instance Hash[Charset] {
-    pub def hash(x: Charset): Int32 = Charset.hashCode(x)
-}
-
-instance Order[Charset] {
-    pub def compare(x: Charset, y: Charset): Comparison =
-        Charset.compareTo(x, y) |> Comparison.fromInt32
-}
-
-instance Boxable[Charset]
-
-instance Interop.Marshal[Charset] {
-    pub def toJavaObject(x: Charset): ##java.lang.Object =
-        let Charset(x1) = x;
-        x1 as ##java.lang.Object
-
-    pub def fromJavaObject(o: ##java.lang.Object): Charset = 
-        Charset(o as ##java.nio.charset.Charset)
-}
-
-namespace Charset {
-
+    use I18n.Locale;
+    use I18n.Locale.{Locale};
 
     pub def forName(name: String): Option[Charset] =
         import static java.nio.charset.Charset.forName(String): ##java.nio.charset.Charset & Pure;

@@ -14,48 +14,54 @@
  * limitations under the License.
  */
 
+namespace I18n {
 
+    /// 
+    /// Locale is a wrapper over the Java class `java.util.Locale`.
+    ///
+    /// A Locale is typically used to supply regional / language information
+    /// to formatting functions that print dates, times, numbers, etc or to help
+    /// localize user interfaces.
+    ///
+    /// This module generally follows `java.util.Locale` so the Javadoc documentation 
+    /// is relevant.
+    ///
+    pub enum Locale(##java.util.Locale)
 
-/// 
-/// Locale is a wrapper over the Java class `java.util.Locale`.
-///
-/// A Locale is typically used to supply regional / language information
-/// to formatting functions that print dates, times, numbers, etc or to help
-/// localize user interfaces.
-///
-/// This module generally follows `java.util.Locale` so the Javadoc documentation 
-/// is relevant.
-///
-pub enum Locale(##java.util.Locale)
+    instance ToString[Locale] {
+        pub def toString(x: Locale): String = I18n/Locale.toString(x)
+    }
 
-instance ToString[Locale] {
-    pub def toString(x: Locale): String = Locale.toString(x)
+    instance Eq[Locale] {
+        pub def eq(x: Locale, y: Locale): Bool = I18n/Locale.equals(x, y)
+    }
+
+    instance Hash[Locale] {
+        pub def hash(x: Locale): Int32 = I18n/Locale.hashCode(x)
+    }
+
+    /// No Order, so no Boxable
+
+    instance Interop.Marshal[Locale] {
+        pub def toJavaObject(x: Locale): ##java.lang.Object =
+            let Locale(x1) = x;
+            x1 as ##java.lang.Object
+
+        pub def fromJavaObject(o: ##java.lang.Object): Locale = 
+            Locale(o as ##java.util.Locale)
+    }
+
 }
 
-instance Eq[Locale] {
-    pub def eq(x: Locale, y: Locale): Bool = Locale.equals(x, y)
-}
-
-instance Hash[Locale] {
-    pub def hash(x: Locale): Int32 = Locale.hashCode(x)
-}
 
 
-instance Interop.Marshal[Locale] {
-    pub def toJavaObject(x: Locale): ##java.lang.Object =
-        let Locale(x1) = x;
-        x1 as ##java.lang.Object
+namespace I18n/Locale {
 
-    pub def fromJavaObject(o: ##java.lang.Object): Locale = 
-        Locale(o as ##java.util.Locale)
-}
+    use I18n.Locale;
+    use I18n.Locale.{Locale};
 
-/// No Order, so no Boxable
-
-namespace Locale {
-
-    use Locale.LanguageRange;
-    use Locale.LanguageRange.{LanguageRange};
+    use I18n/Locale.LanguageRange;
+    use I18n/Locale.LanguageRange.{LanguageRange};
 
     /// 
     /// `Category` is an enum for Locale categories.

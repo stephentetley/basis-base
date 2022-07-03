@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-namespace Locale {
+namespace I18n/Locale {
 
     pub enum LanguageRange(##java.util.Locale$LanguageRange)
 
     instance ToString[LanguageRange] {
-        pub def toString(x: LanguageRange): String = Locale/LanguageRange.toString(x)
+        pub def toString(x: LanguageRange): String = I18n/Locale/LanguageRange.toString(x)
     }
 
     instance Eq[LanguageRange] {
-        pub def eq(x: LanguageRange, y: LanguageRange): Bool = Locale/LanguageRange.equals(x, y)
+        pub def eq(x: LanguageRange, y: LanguageRange): Bool = I18n/Locale/LanguageRange.equals(x, y)
     }
 
     instance Hash[LanguageRange] {
-        pub def hash(x: LanguageRange): Int32 = Locale/LanguageRange.hashCode(x)
+        pub def hash(x: LanguageRange): Int32 = I18n/Locale/LanguageRange.hashCode(x)
     }
 
     instance Interop.Marshal[LanguageRange] {
@@ -42,10 +42,10 @@ namespace Locale {
 }
 
 
-namespace Locale/LanguageRange {
+namespace I18n/Locale/LanguageRange {
 
-    use Locale.LanguageRange;
-    use Locale.LanguageRange.{LanguageRange};
+    use I18n/Locale.LanguageRange;
+    use I18n/Locale.LanguageRange.{LanguageRange};
 
     use Interop.RawMap;
 
