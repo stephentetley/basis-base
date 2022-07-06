@@ -21,20 +21,20 @@ namespace I18n/Locale {
     ///
     /// Reader (without local) and Error monad in codensity style to be stack safe.
     ///
-    pub enum Builder[ka, a](##java.util.Locale$Builder -> (a -> Result[ka, String] & Impure) -> Result[ka, String] & Impure)
+    pub enum Builder[_r: Region, ka: Type, a: Type](##java.util.Locale$Builder -> (a -> Result[ka, String]) -> Result[ka, String])
 
 
-    instance Functor[Builder[ka]] {
-        pub def map(f: a -> b & ef, ma: Builder[ka, a]): Builder[ka, b] & ef = I18n/Locale/Builder.map(f, ma)
+    instance Functor[Builder[r, ka]] {
+        pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = I18n/Locale/Builder.map(f, ma)
     }
 
-    instance Applicative[Builder[ka]] {
-        pub def point(x: a): Builder[ka, a] = I18n/Locale/Builder.point(x)
-        pub def ap(mf: Builder[ka, a -> b & ef], ma: Builder[ka, a]): Builder[ka, b] & ef = I18n/Locale/Builder.ap(mf, ma)
+    instance Applicative[Builder[r, ka]] {
+        pub def point(x: a): Builder[r, ka, a] = I18n/Locale/Builder.point(x)
+        pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = I18n/Locale/Builder.ap(mf, ma)
     }
 
-    instance Monad[Builder[ka]] {
-        pub def flatMap(f: a -> Builder[ka, b] & ef, ma: Builder[ka, a]): Builder[ka, b] & ef =
+    instance Monad[Builder[r, ka]] {
+        pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
             I18n/Locale/Builder.flatMap(f, ma)
     }
 
@@ -52,15 +52,15 @@ namespace I18n/Locale/Builder {
     ///
     /// Helper function for the implementation of `map` and `ap` etc.
     ///
-    def apply1(ma: Builder[ka, a], 
-                r: ##java.util.Locale$Builder, 
-                k: a -> Result[ka, String] & Impure): Result[ka, String] & Impure =
+    def apply1(ma: Builder[r, ka, a], 
+                s: ##java.util.Locale$Builder, 
+                k: a -> Result[ka, String]): Result[ka, String] =
         let Builder(ma1) = ma;
-        ma1(r, k)
+        ma1(s, k)
 
-    pub def build(ma: Builder[a, a]): Result[Locale, String] & Impure = 
-        import new java.util.Locale$Builder(): ##java.util.Locale$Builder & Impure as new1;
-        import java.util.Locale$Builder.build(): ##java.util.Locale & Impure as toJavaLocale;
+    pub def build(_: Region[r], ma: Builder[r, a, a]): Result[Locale, String] \{ Read(r), Write(r) } = 
+        import new java.util.Locale$Builder(): ##java.util.Locale$Builder & r as new1;
+        import java.util.Locale$Builder.build(): ##java.util.Locale & r as toJavaLocale;
         try {
             let jbuilder = new1();
             match runBuilder(ma, jbuilder) {
@@ -69,104 +69,102 @@ namespace I18n/Locale/Builder {
             }
         } catch {
             case ex: ##java.lang.Exception => 
-                import java.lang.Throwable.getMessage(): String & Impure;
+                import java.lang.Throwable.getMessage(): String & r;
                 Err("build: " + getMessage(ex))
         }
 
     ///
     /// Returns the result (new state and answer) of applying `ma` to the initial state `st`.
     ///
-    def runBuilder(ma: Builder[a, a], r: ##java.util.Locale$Builder): Result[a, String] & Impure =
+    def runBuilder(ma: Builder[r, a, a], s: ##java.util.Locale$Builder): Result[a, String] =
         let Builder(f) = ma;
-        let cont = a -> Ok(a) as & Impure;
-        f(r, cont)
+        let cont = a -> Ok(a);
+        f(s, cont)
 
-    pub def point(x: a): Builder[ka, a] =
-        Builder((_, k) -> k(x))
+    pub def point(x: a): Builder[r, ka, a] = Builder((_, k) -> k(x))
 
-    pub def map(f: a -> b & ef, ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((r, k) ->
-            apply1(ma, r, a -> k(f(a) as & Impure))
+    pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
+        Builder((s, k) ->
+            apply1(ma, s, a -> k(f(a) as & Pure))
         ) as & ef
         
-    pub def ap(mf: Builder[ka, a -> b & ef], ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((r, k) ->
-            apply1(mf, r, f ->
-                apply1(ma, r, a ->
-                    k(f(a) as & Impure)))
+    pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
+        Builder((s, k) ->
+            apply1(mf, s, f ->
+                apply1(ma, s, a ->
+                    k(f(a) as & Pure)))
         ) as & ef
 
-    pub def flatMap(f: a -> Builder[ka, b] & ef, ma: Builder[ka, a]): Builder[ka, b] & ef =
-        Builder((r, k) ->
-            apply1(ma, r, a ->
-                apply1(f(a) as & Impure, r, b ->
+    pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
+        Builder((s, k) ->
+            apply1(ma, s, a ->
+                apply1(f(a) as & Pure, s, b ->
                     k(b)))
         ) as & ef
 
-    pub def throwError(msg: String): Builder[ka, a] = 
-        Builder((_, _) -> Err(msg) as & Impure)
+    pub def throwError(msg: String): Builder[r, ka, a] = 
+        Builder((_, _) -> Err(msg) )
 
 
-    def liftJvmBuilderPrim(f: ##java.util.Locale$Builder -> ##java.util.Locale$Builder & Impure): Builder[ka, Unit] = 
-        Builder((r, k) ->
+    def liftJvmBuilderPrim(f: ##java.util.Locale$Builder -> ##java.util.Locale$Builder & ef): Builder[r, ka, Unit] & ef = 
+        Builder((s, k) ->
             try {
-                f(r);
-                k()
+                {discard f(s); k()} as & Pure
             } catch {
                 case ex: ##java.lang.Exception => 
-                    import java.lang.Throwable.getMessage(): String & Impure;
+                    import java.lang.Throwable.getMessage(): String & Pure;
                     Err("liftJvmBuilderPrim: " + getMessage(ex))
             }            
-        )
+        ) as & ef
 
-    pub def clear(): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.clear(): ##java.util.Locale$Builder & Impure;
+    pub def clear(): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.clear(): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(clear)
 
-    pub def clearExtensions(): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.clearExtensions(): ##java.util.Locale$Builder & Impure;
+    pub def clearExtensions(): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.clearExtensions(): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(clearExtensions)
 
-    pub def setExtension(r: {key :: Char, value :: String}): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setExtension(Char, String): ##java.util.Locale$Builder & Impure;
+    pub def setExtension(r: {key :: Char, value :: String}): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setExtension(Char, String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(bldr -> setExtension(bldr, r.key, r.value))
 
-    pub def setUnicodeLocaleKeyword(r: {key :: String, keywordType :: String}): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setUnicodeLocaleKeyword(String, String): ##java.util.Locale$Builder & Impure;
+    pub def setUnicodeLocaleKeyword(r: {key :: String, keywordType :: String}): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setUnicodeLocaleKeyword(String, String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(bldr -> setUnicodeLocaleKeyword(bldr, r.key, r.keywordType))
 
-    pub def setLanguage(lang: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setLanguage(String): ##java.util.Locale$Builder & Impure;
+    pub def setLanguage(lang: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setLanguage(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setLanguage, lang))
 
-    pub def setLanguageTag(tag: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setLanguageTag(String): ##java.util.Locale$Builder & Impure;
+    pub def setLanguageTag(tag: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setLanguageTag(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setLanguageTag, tag))
 
-    pub def setLocale(loc: Locale): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setLocale(##java.util.Locale): ##java.util.Locale$Builder & Impure;
+    pub def setLocale(loc: Locale): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setLocale(##java.util.Locale): ##java.util.Locale$Builder & r;
         let Locale(loc1) = loc;
         liftJvmBuilderPrim(flip(setLocale, loc1))
 
-    pub def setRegion(rgn: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setRegion(String): ##java.util.Locale$Builder & Impure;
+    pub def setRegion(rgn: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setRegion(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setRegion, rgn))
 
-    pub def setScript(script: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setScript(String): ##java.util.Locale$Builder & Impure;
+    pub def setScript(script: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setScript(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setScript, script))
 
-    pub def setVariant(vrnt: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.setVariant(String): ##java.util.Locale$Builder & Impure;
+    pub def setVariant(vrnt: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.setVariant(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setVariant, vrnt))
 
     
-    pub def addUnicodeLocaleAttribute(attr: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.addUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & Impure;
+    pub def addUnicodeLocaleAttribute(attr: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.addUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(addUnicodeLocaleAttribute, attr))
     
-    pub def removeUnicodeLocaleAttribute(attr: String): Builder[ka, Unit] = 
-        import java.util.Locale$Builder.removeUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & Impure;
+    pub def removeUnicodeLocaleAttribute(attr: String): Builder[r, ka, Unit] \ Write(r) = 
+        import java.util.Locale$Builder.removeUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(removeUnicodeLocaleAttribute, attr))
 
 }   

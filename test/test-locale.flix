@@ -79,30 +79,35 @@ def lookup01(): Unit & Impure =
 @test
 def builder01(): Unit & Impure =
     use I18n/Locale/Builder.{build, setLanguage};
-    println("TestLocale.builder01...");
-    match build(setLanguage("da")) {
-        case Err(msg) => println("Err: ${msg}")
-        case Ok(loc)  => println("locale is: ${loc}")
+    region r1 {
+        println("TestLocale.builder01...");
+        match build(r1, setLanguage("da")) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
+        }
     }
 
 @test
 def builder02(): Unit & Impure =
     use Applicative.{*>};
     use I18n/Locale/Builder.{build, setLanguage, setScript};
-    println("TestLocale.builder02...");
-    match build(setLanguage("da") *> setScript("Latn")) {
-        case Err(msg) => println("Err: ${msg}")
-        case Ok(loc)  => println("locale is: ${loc}")
+    region r1 {
+        println("TestLocale.builder02...");
+        match build(r1, setLanguage("da") *> setScript("Latn")) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
+        }
     }    
 
 @test
 def builder03(): Unit & Impure =
     use Applicative.{*>};
     use I18n/Locale/Builder.{build, setLanguage, setScript, setRegion};
-    println("TestLocale.builder03... expect Err");
-    match build(setLanguage("da") *> setScript("Latn") *> setRegion("BAD_REGION")) {
-        case Err(msg) => println("Err: ${msg}")
-        case Ok(loc)  => println("locale is: ${loc}")
-    } 
-
+    region r1 {
+        println("TestLocale.builder03... expect Err");
+        match build(r1, setLanguage("da") *> setScript("Latn") *> setRegion("BAD_REGION")) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
+        } 
+    }
 }
