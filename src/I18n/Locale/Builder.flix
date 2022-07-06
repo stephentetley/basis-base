@@ -21,7 +21,7 @@ namespace I18n/Locale {
     ///
     /// Reader (without local) and Error monad in codensity style to be stack safe.
     ///
-    pub enum Builder[_r: Region, ka: Type, a: Type](##java.util.Locale$Builder -> (a -> Result[ka, String]) -> Result[ka, String])
+    pub enum Builder[r: Region, ka: Type, a: Type](##java.util.Locale$Builder -> (a -> Result[ka, String] & r) -> Result[ka, String] & r)
 
 
     instance Functor[Builder[r, ka]] {
@@ -54,7 +54,7 @@ namespace I18n/Locale/Builder {
     ///
     def apply1(ma: Builder[r, ka, a], 
                 s: ##java.util.Locale$Builder, 
-                k: a -> Result[ka, String]): Result[ka, String] =
+                k: a -> Result[ka, String] & r): Result[ka, String] & r =
         let Builder(ma1) = ma;
         ma1(s, k)
 
@@ -76,43 +76,43 @@ namespace I18n/Locale/Builder {
     ///
     /// Returns the result (new state and answer) of applying `ma` to the initial state `st`.
     ///
-    def runBuilder(ma: Builder[r, a, a], s: ##java.util.Locale$Builder): Result[a, String] =
+    def runBuilder(ma: Builder[r, a, a], s: ##java.util.Locale$Builder): Result[a, String] & r =
         let Builder(f) = ma;
-        let cont = a -> Ok(a);
+        let cont = a -> Ok(a) as & r;
         f(s, cont)
 
     pub def point(x: a): Builder[r, ka, a] = Builder((_, k) -> k(x))
 
     pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
         Builder((s, k) ->
-            apply1(ma, s, a -> k(f(a) as & Pure))
+            apply1(ma, s, a -> k(f(a) as & r))
         ) as & ef
         
     pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
         Builder((s, k) ->
             apply1(mf, s, f ->
                 apply1(ma, s, a ->
-                    k(f(a) as & Pure)))
+                    k(f(a) as & r)))
         ) as & ef
 
     pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
         Builder((s, k) ->
             apply1(ma, s, a ->
-                apply1(f(a) as & Pure, s, b ->
+                apply1(f(a) as & r, s, b ->
                     k(b)))
         ) as & ef
 
     pub def throwError(msg: String): Builder[r, ka, a] = 
-        Builder((_, _) -> Err(msg) )
+        Builder((_, _) -> Err(msg) as & r)
 
 
     def liftJvmBuilderPrim(f: ##java.util.Locale$Builder -> ##java.util.Locale$Builder & ef): Builder[r, ka, Unit] & ef = 
         Builder((s, k) ->
             try {
-                {discard f(s); k()} as & Pure
+                {discard f(s); k()} as & r
             } catch {
                 case ex: ##java.lang.Exception => 
-                    import java.lang.Throwable.getMessage(): String & Pure;
+                    import java.lang.Throwable.getMessage(): String & r;
                     Err("liftJvmBuilderPrim: " + getMessage(ex))
             }            
         ) as & ef
