@@ -101,7 +101,7 @@ namespace I18n/Locale/LanguageRange {
             try {
                 import static java.util.Locale$LanguageRange.parse(String): ##java.util.List & Pure;
                 let xs = parse(ranges);
-                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                let ans = Interop/RawList.new(r1, xs) |> Interop/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
@@ -114,7 +114,7 @@ namespace I18n/Locale/LanguageRange {
             try {
                 let cs1 = Interop/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/RawMap.getRawMap;
                 let xs = parse(ranges, cs1);
-                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                let ans = Interop/RawList.new(r1, xs) |> Interop/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
@@ -128,7 +128,7 @@ namespace I18n/Locale/LanguageRange {
                 let ps1 = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
                 let cs1 = Interop/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/RawMap.getRawMap;
                 let xs = mapEquivalents(ps1, cs1);
-                let ans = Interop/RawList.new(xs, r1) |> Interop/RawList.toList;
+                let ans = Interop/RawList.new(r1, xs) |> Interop/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")

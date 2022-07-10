@@ -441,7 +441,7 @@ namespace I18n/Locale {
             try {
                 let icc1 = marshalIsoCountryCode(icc);
                 let s1 = getISOCountries(icc1);
-                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getIsoCountriesWithIsoCountryCode")
@@ -476,7 +476,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getExtensionKeys(x1);
-                Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet
+                Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet
             } catch {
                 case _: ##java.lang.Exception => Set.empty()
             }
@@ -489,7 +489,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getUnicodeLocaleAttributes(x1);
-                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
@@ -502,7 +502,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getUnicodeLocaleKeys(x1);
-                let ans = Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet;
+                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
@@ -550,7 +550,7 @@ namespace I18n/Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
+                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -567,7 +567,7 @@ namespace I18n/Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
+                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -583,7 +583,7 @@ namespace I18n/Locale {
                 if (Object.isNull(prim))
                     Nil
                 else 
-                    Interop/RawList.new(prim, r1) |> Interop/RawList.toList
+                    Interop/RawList.new(r1, prim) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -600,7 +600,7 @@ namespace I18n/Locale {
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(ans, r1) |> Interop/RawList.toList
+                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }

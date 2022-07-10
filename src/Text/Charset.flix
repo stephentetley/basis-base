@@ -192,14 +192,14 @@ namespace Text/Charset {
         region r1 {
             let Charset(x1) = x;
             let s1 = aliases(x1); 
-            Interop/RawSet.new(s1, r1) |> Interop/RawSet.toSet
+            Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet
         }
 
     pub def availableCharsets(): Map[String, Charset] =
         region r1 {
             import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & r1;
             let sm = availableCharsets();
-            Interop/SortedMap.new(sm, r1) |> Interop/SortedMap.toMap
+            Interop/SortedMap.new(r1, sm) |> Interop/SortedMap.toMap
         }
 
 
