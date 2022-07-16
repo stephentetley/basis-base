@@ -55,7 +55,7 @@ namespace Text {
 
     instance Boxable[Charset]
 
-    instance Interop.Marshal[Charset] {
+    instance CollectionInterop.Marshal[Charset] {
         pub def toJavaObject(x: Charset): ##java.lang.Object =
             let Charset(x1) = x;
             x1 as ##java.lang.Object
@@ -192,14 +192,14 @@ namespace Text/Charset {
         region r1 {
             let Charset(x1) = x;
             let s1 = aliases(x1); 
-            Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet
+            CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet
         }
 
     pub def availableCharsets(): Map[String, Charset] =
         region r1 {
             import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & r1;
             let sm = availableCharsets();
-            Interop/SortedMap.new(r1, sm) |> Interop/SortedMap.toMap
+            CollectionInterop/SortedMap.new(r1, sm) |> CollectionInterop/SortedMap.toMap
         }
 
 

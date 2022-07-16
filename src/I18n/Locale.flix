@@ -42,7 +42,7 @@ namespace I18n {
 
     /// No Order, so no Boxable
 
-    instance Interop.Marshal[Locale] {
+    instance CollectionInterop.Marshal[Locale] {
         pub def toJavaObject(x: Locale): ##java.lang.Object =
             let Locale(x1) = x;
             x1 as ##java.lang.Object
@@ -83,6 +83,7 @@ namespace I18n/Locale {
         case MapExtendedRanges
         case RejectExtendedRanges
     }
+
 
     pub def marshalFilteringMode(x: FilteringMode): ##java.util.Locale$FilteringMode =
         import static get java.util.Locale$FilteringMode.AUTOSELECT_FILTERING: ##java.util.Locale$FilteringMode & Pure as get_AUTOSELECT_FILTERING;
@@ -441,7 +442,7 @@ namespace I18n/Locale {
             try {
                 let icc1 = marshalIsoCountryCode(icc);
                 let s1 = getISOCountries(icc1);
-                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
+                let ans = CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getIsoCountriesWithIsoCountryCode")
@@ -476,7 +477,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getExtensionKeys(x1);
-                Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet
+                CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet
             } catch {
                 case _: ##java.lang.Exception => Set.empty()
             }
@@ -489,7 +490,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getUnicodeLocaleAttributes(x1);
-                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
+                let ans = CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getUnicodeLocaleAttributes")
@@ -502,7 +503,7 @@ namespace I18n/Locale {
             try {
                 let Locale(x1) = x;
                 let s1 = getUnicodeLocaleKeys(x1);
-                let ans = Interop/RawSet.new(r1, s1) |> Interop/RawSet.toSet;
+                let ans = CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.Exception => Err("getUnicodeLocaleKeys")
@@ -513,8 +514,8 @@ namespace I18n/Locale {
         import static java.util.Locale.lookup(##java.util.List, ##java.util.Collection): ##java.util.Locale & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, locales) |> CollectionInterop/Collection.getCollection;
                 let ans = lookup(ls, col);
                 if (Object.isNull(ans))
                     None
@@ -528,8 +529,8 @@ namespace I18n/Locale {
         import static java.util.Locale.lookupTag(##java.util.List, ##java.util.Collection): String & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, tags) |> CollectionInterop/Collection.getCollection;
                 let ans = lookupTag(ls, col);
                 if (Object.isNull(ans))
                     None
@@ -544,13 +545,13 @@ namespace I18n/Locale {
         import static java.util.Locale.filter(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, locales) |> CollectionInterop/Collection.getCollection;
                 let ans = filter(ls, col);
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
+                    CollectionInterop/RawList.new(r1, ans) |> CollectionInterop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -560,14 +561,14 @@ namespace I18n/Locale {
         import static java.util.Locale.filter(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, locales) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, locales) |> CollectionInterop/Collection.getCollection;
                 let mode1 = marshalFilteringMode(mode);
                 let ans = filter(ls, col, mode1);
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
+                    CollectionInterop/RawList.new(r1, ans) |> CollectionInterop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -577,13 +578,13 @@ namespace I18n/Locale {
         import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection): ##java.util.List & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, tags) |> CollectionInterop/Collection.getCollection;
                 let prim = filterTags(ls, col);
                 if (Object.isNull(prim))
                     Nil
                 else 
-                    Interop/RawList.new(r1, prim) |> Interop/RawList.toList
+                    CollectionInterop/RawList.new(r1, prim) |> CollectionInterop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
@@ -593,14 +594,14 @@ namespace I18n/Locale {
         import static java.util.Locale.filterTags(##java.util.List, ##java.util.Collection, ##java.util.Locale$FilteringMode): ##java.util.List & Pure;
         region r1 {
             try {
-                let ls = Interop/RawList.fromListViaArrayList(r1, priorityList) |> Interop/RawList.getRawList;
-                let col = Interop/Collection.fromList(r1, tags) |> Interop/Collection.getCollection;
+                let ls = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
+                let col = CollectionInterop/Collection.fromList(r1, tags) |> CollectionInterop/Collection.getCollection;
                 let mode1 = marshalFilteringMode(mode);
                 let ans = filterTags(ls, col, mode1);
                 if (Object.isNull(ans))
                     Nil
                 else 
-                    Interop/RawList.new(r1, ans) |> Interop/RawList.toList
+                    CollectionInterop/RawList.new(r1, ans) |> CollectionInterop/RawList.toList
             } catch {
                 case _: ##java.lang.Exception => Nil
             }
