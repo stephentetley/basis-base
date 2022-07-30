@@ -1,4 +1,4 @@
-# charset-locale
+# interop-charset-locale
 
 This is a fork from `flix-sandbox` to develop the `Locale` and `Charset` modules
 towards inclusion in Flix's stdlib.
@@ -6,3 +6,5 @@ towards inclusion in Flix's stdlib.
 Dependencies: 
 
 https://github.com/stephentetley/collection-interop
+
+Jul '22 renamed from `charset-locale` .
