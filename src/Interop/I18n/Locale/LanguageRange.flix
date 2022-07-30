@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-namespace I18n/Locale {
+namespace Interop/I18n/Locale {
 
     pub enum LanguageRange(##java.util.Locale$LanguageRange)
 
     instance ToString[LanguageRange] {
-        pub def toString(x: LanguageRange): String = I18n/Locale/LanguageRange.toString(x)
+        pub def toString(x: LanguageRange): String = Interop/I18n/Locale/LanguageRange.toString(x)
     }
 
     instance Eq[LanguageRange] {
-        pub def eq(x: LanguageRange, y: LanguageRange): Bool = I18n/Locale/LanguageRange.equals(x, y)
+        pub def eq(x: LanguageRange, y: LanguageRange): Bool = Interop/I18n/Locale/LanguageRange.equals(x, y)
     }
 
     instance Hash[LanguageRange] {
-        pub def hash(x: LanguageRange): Int32 = I18n/Locale/LanguageRange.hashCode(x)
+        pub def hash(x: LanguageRange): Int32 = Interop/I18n/Locale/LanguageRange.hashCode(x)
     }
 
-    instance CollectionInterop.Marshal[LanguageRange] {
+    instance Interop/Collections.Marshal[LanguageRange] {
         pub def toJavaObject(x: LanguageRange): ##java.lang.Object =
             let LanguageRange(x1) = x;
             x1 as ##java.lang.Object
@@ -42,12 +42,12 @@ namespace I18n/Locale {
 }
 
 
-namespace I18n/Locale/LanguageRange {
+namespace Interop/I18n/Locale/LanguageRange {
 
-    use I18n/Locale.LanguageRange;
-    use I18n/Locale.LanguageRange.{LanguageRange};
+    use Interop/I18n/Locale.LanguageRange;
+    use Interop/I18n/Locale.LanguageRange.{LanguageRange};
 
-    use CollectionInterop.RawMap;
+    use Interop/Collections.RawMap;
 
 
     ///
@@ -101,7 +101,7 @@ namespace I18n/Locale/LanguageRange {
             try {
                 import static java.util.Locale$LanguageRange.parse(String): ##java.util.List & Pure;
                 let xs = parse(ranges);
-                let ans = CollectionInterop/RawList.new(r1, xs) |> CollectionInterop/RawList.toList;
+                let ans = Interop/Collections/RawList.new(r1, xs) |> Interop/Collections/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
@@ -112,9 +112,9 @@ namespace I18n/Locale/LanguageRange {
         import static java.util.Locale$LanguageRange.parse(String, ##java.util.Map): ##java.util.List & Pure;
         region r1 {
             try {
-                let cs1 = CollectionInterop/RawMap.fromMapViaHashMap(r1, customizations) |> CollectionInterop/RawMap.getRawMap;
+                let cs1 = Interop/Collections/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/Collections/RawMap.getRawMap;
                 let xs = parse(ranges, cs1);
-                let ans = CollectionInterop/RawList.new(r1, xs) |> CollectionInterop/RawList.toList;
+                let ans = Interop/Collections/RawList.new(r1, xs) |> Interop/Collections/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
@@ -125,10 +125,10 @@ namespace I18n/Locale/LanguageRange {
         import static java.util.Locale$LanguageRange.mapEquivalents(##java.util.List, ##java.util.Map): ##java.util.List & Pure;
         region r1 {
             try {
-                let ps1 = CollectionInterop/RawList.fromListViaArrayList(r1, priorityList) |> CollectionInterop/RawList.getRawList;
-                let cs1 = CollectionInterop/RawMap.fromMapViaHashMap(r1, customizations) |> CollectionInterop/RawMap.getRawMap;
+                let ps1 = Interop/Collections/RawList.fromListViaArrayList(r1, priorityList) |> Interop/Collections/RawList.getRawList;
+                let cs1 = Interop/Collections/RawMap.fromMapViaHashMap(r1, customizations) |> Interop/Collections/RawMap.getRawMap;
                 let xs = mapEquivalents(ps1, cs1);
-                let ans = CollectionInterop/RawList.new(r1, xs) |> CollectionInterop/RawList.toList;
+                let ans = Interop/Collections/RawList.new(r1, xs) |> Interop/Collections/RawList.toList;
                 Ok(ans)
             } catch {
                 case _: ##java.lang.IllegalArgumentException => Err("Ill-formed range/weight list")
@@ -136,7 +136,7 @@ namespace I18n/Locale/LanguageRange {
         }
 
     /// def marshalMapStringStringList(r: Region[r], m: Map[String, List[String]]): RawMap[String, List[String], r] = 
-    ///     CollectionInterop/RawMap.fromMapViaHashMap(r, m) |> CollectionInterop/RawMap.toMap
+    ///     Interop/Collections/RawMap.fromMapViaHashMap(r, m) |> Interop/Collections/RawMap.toMap
 
 
 }   

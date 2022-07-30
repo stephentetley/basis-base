@@ -5,6 +5,6 @@ towards inclusion in Flix's stdlib.
 
 Dependencies: 
 
-https://github.com/stephentetley/collection-interop
+https://github.com/stephentetley/interop-collections
 
 Jul '22 renamed from `charset-locale` .

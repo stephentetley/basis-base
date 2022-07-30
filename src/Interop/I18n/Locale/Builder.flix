@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace I18n/Locale {
+namespace Interop/I18n/Locale {
 
     /// We need Errors!
 
@@ -25,29 +25,33 @@ namespace I18n/Locale {
 
 
     instance Functor[Builder[r, ka]] {
-        pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = I18n/Locale/Builder.map(f, ma)
+        pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
+            Interop/I18n/Locale/Builder.map(f, ma)
     }
 
     instance Applicative[Builder[r, ka]] {
-        pub def point(x: a): Builder[r, ka, a] = I18n/Locale/Builder.point(x)
-        pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = I18n/Locale/Builder.ap(mf, ma)
+        pub def point(x: a): Builder[r, ka, a] = 
+            Interop/I18n/Locale/Builder.point(x)
+            
+        pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
+            Interop/I18n/Locale/Builder.ap(mf, ma)
     }
 
     instance Monad[Builder[r, ka]] {
         pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
-            I18n/Locale/Builder.flatMap(f, ma)
+            Interop/I18n/Locale/Builder.flatMap(f, ma)
     }
 
 }
 
 
-namespace I18n/Locale/Builder {
+namespace Interop/I18n/Locale/Builder {
 
-    use I18n/Locale.Builder;
-    use I18n/Locale.Builder.{Builder};
+    use Interop/I18n/Locale.Builder;
+    use Interop/I18n/Locale.Builder.{Builder};
 
-    use I18n.Locale;
-    use I18n.Locale.{Locale};
+    use Interop/I18n.Locale;
+    use Interop/I18n.Locale.{Locale};
 
     ///
     /// Helper function for the implementation of `map` and `ap` etc.

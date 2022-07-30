@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Text {
+namespace Interop/Text {
 
     /// 
     /// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
@@ -39,23 +39,22 @@ namespace Text {
             toString(cs1)
     }
 
-
     instance Eq[Charset] {
-        pub def eq(x: Charset, y: Charset): Bool = Text/Charset.equals(x, y)
+        pub def eq(x: Charset, y: Charset): Bool = Interop/Text/Charset.equals(x, y)
     }
 
     instance Hash[Charset] {
-        pub def hash(x: Charset): Int32 = Text/Charset.hashCode(x)
+        pub def hash(x: Charset): Int32 = Interop/Text/Charset.hashCode(x)
     }
 
     instance Order[Charset] {
         pub def compare(x: Charset, y: Charset): Comparison =
-            Text/Charset.compareTo(x, y) |> Comparison.fromInt32
+            Interop/Text/Charset.compareTo(x, y) |> Comparison.fromInt32
     }
 
     instance Boxable[Charset]
 
-    instance CollectionInterop.Marshal[Charset] {
+    instance Interop/Collections.Marshal[Charset] {
         pub def toJavaObject(x: Charset): ##java.lang.Object =
             let Charset(x1) = x;
             x1 as ##java.lang.Object
@@ -66,13 +65,13 @@ namespace Text {
 
 }
 
-namespace Text/Charset {
+namespace Interop/Text/Charset {
 
-    use Text.Charset;
-    use Text.Charset.{Charset};
+    use Interop/Text.Charset;
+    use Interop/Text.Charset.{Charset};
 
-    use I18n.Locale;
-    use I18n.Locale.{Locale};
+    use Interop/I18n.Locale;
+    use Interop/I18n.Locale.{Locale};
 
     pub def forName(name: String): Option[Charset] =
         import static java.nio.charset.Charset.forName(String): ##java.nio.charset.Charset & Pure;
@@ -192,14 +191,14 @@ namespace Text/Charset {
         region r1 {
             let Charset(x1) = x;
             let s1 = aliases(x1); 
-            CollectionInterop/RawSet.new(r1, s1) |> CollectionInterop/RawSet.toSet
+            Interop/Collections/RawSet.new(r1, s1) |> Interop/Collections/RawSet.toSet
         }
 
     pub def availableCharsets(): Map[String, Charset] =
         region r1 {
             import static java.nio.charset.Charset.availableCharsets(): ##java.util.SortedMap & r1;
             let sm = availableCharsets();
-            CollectionInterop/SortedMap.new(r1, sm) |> CollectionInterop/SortedMap.toMap
+            Interop/Collections/SortedMap.new(r1, sm) |> Interop/Collections/SortedMap.toMap
         }
 
 
