@@ -14,75 +14,70 @@
  * limitations under the License.
  */
 
-namespace Interop/I18n/Locale {
+namespace Basis/I18n/Locale {
 
     /// We need Errors!
 
     ///
     /// Reader (without local) and Error monad in codensity style to be stack safe.
     ///
-    pub enum Builder[r: Region, ka: Type, a: Type](##java.util.Locale$Builder -> (a -> Result[ka, String] & r) -> Result[ka, String] & r)
+    pub enum Builder[r: Region, ka: Type, a: Type](Interop/Util/Locale.Builder[r] -> (a -> Result[ka, String] & r) -> Result[ka, String] & r)
 
 
     instance Functor[Builder[r, ka]] {
         pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
-            Interop/I18n/Locale/Builder.map(f, ma)
+            Basis/I18n/Locale/Builder.map(f, ma)
     }
 
     instance Applicative[Builder[r, ka]] {
         pub def point(x: a): Builder[r, ka, a] = 
-            Interop/I18n/Locale/Builder.point(x)
+            Basis/I18n/Locale/Builder.point(x)
             
         pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
-            Interop/I18n/Locale/Builder.ap(mf, ma)
+            Basis/I18n/Locale/Builder.ap(mf, ma)
     }
 
     instance Monad[Builder[r, ka]] {
         pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
-            Interop/I18n/Locale/Builder.flatMap(f, ma)
+            Basis/I18n/Locale/Builder.flatMap(f, ma)
     }
 
 }
 
 
-namespace Interop/I18n/Locale/Builder {
+namespace Basis/I18n/Locale/Builder {
 
-    use Interop/I18n/Locale.Builder;
-    use Interop/I18n/Locale.Builder.{Builder};
+    use Basis/I18n/Locale.Builder;
+    use Basis/I18n/Locale.Builder.{Builder};
 
-    use Interop/I18n.Locale;
-    use Interop/I18n.Locale.{Locale};
+    use Basis/I18n.Locale;
+    use Basis/I18n.Locale.{Locale};
 
     ///
     /// Helper function for the implementation of `map` and `ap` etc.
     ///
     def apply1(ma: Builder[r, ka, a], 
-                s: ##java.util.Locale$Builder, 
+                s: Interop/Util/Locale.Builder[r], 
                 k: a -> Result[ka, String] & r): Result[ka, String] & r =
         let Builder(ma1) = ma;
         ma1(s, k)
 
-    pub def build(_: Region[r], ma: Builder[r, a, a]): Result[Locale, String] \{ Read(r), Write(r) } = 
-        import new java.util.Locale$Builder(): ##java.util.Locale$Builder & r as new1;
-        import java.util.Locale$Builder.build(): ##java.util.Locale & r as toJavaLocale;
-        try {
-            let jbuilder = new1();
-            match runBuilder(ma, jbuilder) {
-                case Err(msg) => Err(msg)
-                case Ok(_)    => Ok(Locale(toJavaLocale(jbuilder)))
-            }
-        } catch {
-            case ex: ##java.lang.Exception => 
-                import java.lang.Throwable.getMessage(): String & r;
-                Err("build: " + getMessage(ex))
+    pub def build(r: Region[r], ma: Builder[r, a, a]): Result[Locale, String] \{ Read(r), Write(r) } = 
+        // import new java.util.Locale$Builder(): ##java.util.Locale$Builder & r as new1;
+        // import java.util.Locale$Builder.build(): ##java.util.Locale & r as toJavaLocale;
+        let jbuilder = Interop/Util/Locale/Builder.new(r);
+        match runBuilder(ma, jbuilder) {
+            case Err(msg) => Err(msg)
+            case Ok(_)    => Ok(Locale(Interop/Util/Locale/Builder.build(jbuilder)))
         }
+
 
     ///
     /// Returns the result (new state and answer) of applying `ma` to the initial state `st`.
     ///
-    def runBuilder(ma: Builder[r, a, a], s: ##java.util.Locale$Builder): Result[a, String] & r =
+    def runBuilder(ma: Builder[r, a, a], s: Interop/Util/Locale.Builder[r]): Result[a, String] \ Write(r) =
         let Builder(f) = ma;
-        let cont = a -> Ok(a) as & r;
+        let cont = a -> Ok(a) as \ Write(r);
         f(s, cont)
 
     pub def point(x: a): Builder[r, ka, a] = Builder((_, k) -> k(x))
@@ -110,17 +105,14 @@ namespace Interop/I18n/Locale/Builder {
         Builder((_, _) -> Err(msg) as & r)
 
 
-    def liftJvmBuilderPrim(f: ##java.util.Locale$Builder -> ##java.util.Locale$Builder & ef): Builder[r, ka, Unit] & ef = 
+    def liftBuilderPrim(f: Interop/Util/Locale.Builder[r] -> Result[Interop/Util/Locale.Builder[r], String] \ ef): Builder[r, ka, Unit] \ ef = 
         Builder((s, k) ->
-            try {
-                {discard f(s); k()} as & r
-            } catch {
-                case ex: ##java.lang.Exception => 
-                    import java.lang.Throwable.getMessage(): String & r;
-                    Err("liftJvmBuilderPrim: " + getMessage(ex))
-            }            
-        ) as & ef
-
+            match f(s) {
+                case Ok(_this) => k() 
+                case Err(msg) => Err(msg)
+            } as \ r
+        ) as \ ef
+/*
     pub def clear(): Builder[r, ka, Unit] \ Write(r) = 
         import java.util.Locale$Builder.clear(): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(clear)
@@ -136,11 +128,11 @@ namespace Interop/I18n/Locale/Builder {
     pub def setUnicodeLocaleKeyword(r: {key :: String, keywordType :: String}): Builder[r, ka, Unit] \ Write(r) = 
         import java.util.Locale$Builder.setUnicodeLocaleKeyword(String, String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(bldr -> setUnicodeLocaleKeyword(bldr, r.key, r.keywordType))
+*/
+    pub def setLanguage!(lang: String): Builder[r, ka, Unit] \ Write(r) = 
+        liftBuilderPrim(Interop/Util/Locale/Builder.setLanguage!(lang))
 
-    pub def setLanguage(lang: String): Builder[r, ka, Unit] \ Write(r) = 
-        import java.util.Locale$Builder.setLanguage(String): ##java.util.Locale$Builder & r;
-        liftJvmBuilderPrim(flip(setLanguage, lang))
-
+/*
     pub def setLanguageTag(tag: String): Builder[r, ka, Unit] \ Write(r) = 
         import java.util.Locale$Builder.setLanguageTag(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setLanguageTag, tag))
@@ -149,15 +141,15 @@ namespace Interop/I18n/Locale/Builder {
         import java.util.Locale$Builder.setLocale(##java.util.Locale): ##java.util.Locale$Builder & r;
         let Locale(loc1) = loc;
         liftJvmBuilderPrim(flip(setLocale, loc1))
+*/
+    pub def setRegion!(rgn: String): Builder[r, ka, Unit] \ Write(r) = 
+        liftBuilderPrim(Interop/Util/Locale/Builder.setRegion!(rgn))
 
-    pub def setRegion(rgn: String): Builder[r, ka, Unit] \ Write(r) = 
-        import java.util.Locale$Builder.setRegion(String): ##java.util.Locale$Builder & r;
-        liftJvmBuilderPrim(flip(setRegion, rgn))
 
-    pub def setScript(script: String): Builder[r, ka, Unit] \ Write(r) = 
-        import java.util.Locale$Builder.setScript(String): ##java.util.Locale$Builder & r;
-        liftJvmBuilderPrim(flip(setScript, script))
+    pub def setScript!(script: String): Builder[r, ka, Unit] \ Write(r) = 
+        liftBuilderPrim(Interop/Util/Locale/Builder.setScript!(script))
 
+/*
     pub def setVariant(vrnt: String): Builder[r, ka, Unit] \ Write(r) = 
         import java.util.Locale$Builder.setVariant(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(setVariant, vrnt))
@@ -170,5 +162,5 @@ namespace Interop/I18n/Locale/Builder {
     pub def removeUnicodeLocaleAttribute(attr: String): Builder[r, ka, Unit] \ Write(r) = 
         import java.util.Locale$Builder.removeUnicodeLocaleAttribute(String): ##java.util.Locale$Builder & r;
         liftJvmBuilderPrim(flip(removeUnicodeLocaleAttribute, attr))
-
+*/
 }   

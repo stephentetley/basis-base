@@ -1,10 +1,9 @@
-# interop-charset-locale
+# basis-charset-locale
 
-This is a fork from `flix-sandbox` to develop the `Locale` and `Charset` modules
-towards inclusion in Flix's stdlib.
+User level `Locale` and `Charset` modules built on `interop-base`.
 
 Dependencies: 
 
-https://github.com/stephentetley/interop-collections
+https://github.com/stephentetley/interop-base
 
 Jul '22 renamed from `charset-locale` .

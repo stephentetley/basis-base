@@ -19,11 +19,11 @@ namespace TestCharset {
 
     @test
     def aliases01(): Unit & Impure = 
-        Interop/Text/Charset.utf_8() |> Interop/Text/Charset.aliases |> Set.foreach(println)
+        Basis/Text/Charset.utf_8() |> Basis/Text/Charset.aliases |> Set.foreach(println)
 
     @test
     def availableCharsets01(): Unit & Impure = 
-        Interop/Text/Charset.availableCharsets() |> Map.toList |> List.foreach(println)
+        Basis/Text/Charset.availableCharsets() |> Map.toList |> List.foreach(println)
 
 
 }
