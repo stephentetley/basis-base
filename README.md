@@ -1,6 +1,8 @@
-# basis-charset-locale
+# basis-base
 
-User level `Locale` and `Charset` modules built on `interop-base`.
+Flix wrappers over the JDK.
+
+Core user level modules built on `interop-base`.
 
 Dependencies: 
 
