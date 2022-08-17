@@ -117,7 +117,34 @@ namespace Basis/System/ProcessBuilder {
         liftSetterResult(step)
         
 
-    pub def getDirectory(): ProcessBuilder[r, ka, FilePath] \ Write(r) = 
+    pub def getDirectory(): ProcessBuilder[r, ka, FilePath] \ Read(r) = 
         liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/System/FilePath.fromFile)
 
+    pub def getEnvironment(): ProcessBuilder[r, ka, Map[String, String]] \ Read(r) = 
+        liftGetterResult(Interop/Lang/ProcessBuilder.environment)
+
+    pub def redirectErrorTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+        use Result.flatMap;
+        let step = pb -> region r1 {
+            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            Interop/Lang/ProcessBuilder.redirectErrorTo!(file1, pb) |> Ok
+        };
+        liftSetterResult(step)
+
+    pub def redirectInputTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+        use Result.flatMap;
+        let step = pb -> region r1 {
+            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            Interop/Lang/ProcessBuilder.redirectInputTo!(file1, pb) |> Ok
+        };
+        liftSetterResult(step)
+
+
+    pub def redirectOutputTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+        use Result.flatMap;
+        let step = pb -> region r1 {
+            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            Interop/Lang/ProcessBuilder.redirectOutputTo!(file1, pb) |> Ok
+        };
+        liftSetterResult(step)
 }
