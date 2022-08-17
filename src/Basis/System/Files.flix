@@ -19,9 +19,16 @@ namespace Basis/System/Files {
 
     use Basis/System.FilePath;
     use Basis/System.FilePath.{FilePath};
+    use Basis/System/LinkOption.LinkOption;
     use Basis/System/StandardOpenOption.StandardOpenOption;
     use Basis/Text.Charset;
     use Basis/Text.Charset.{Charset};
+
+    // UTF_8
+    pub def exists(path: FilePath, opts: List[LinkOption]): Result[Bool, String] \ IO = 
+        let FilePath(path1) = path;
+        let opts1 = List.map(Basis/System/LinkOption.marshallLinkOption, opts);
+        Interop/NIO/File/Files.exists(path1, opts1)
 
     /// UTF_8
     pub def readString(path: FilePath): Result[String, String] \ IO = 
