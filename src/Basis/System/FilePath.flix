@@ -103,9 +103,8 @@ namespace Basis/System/FilePath {
     /// Returns a new FilePath.
     ///
     pub def filePath(s: String): Result[FilePath, String] =
-        region r {
-            Interop/NIO/File/Path.of(s, [] @ r) |> Result.map(FilePath)
-        }
+        Interop/NIO/File/Path.of(s, Nil) |> Result.map(FilePath)
+        
 
     def filePath1(s: String): FilePath = match filePath(s) {
         case Ok(p1)  => p1
