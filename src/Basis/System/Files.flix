@@ -43,7 +43,7 @@ namespace Basis/System/Files {
     // UTF_8
     pub def writeString(path: FilePath, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let FilePath(path1) = path;
-        let ws = Interop/Flix/WrappedRegion.mkStringWithRegion(r, s);
+        let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
         let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
         Interop/NIO/File/Files.writeString(path1, ws, opts1) |> Result.map(_ -> ())
     }
@@ -51,7 +51,7 @@ namespace Basis/System/Files {
     // UTF_8
     pub def writeStringWithCharset(path: FilePath, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let FilePath(path1) = path;
-        let ws = Interop/Flix/WrappedRegion.mkStringWithRegion(r, s);
+        let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
         let Charset(cs1) = cs;
         let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
         Interop/NIO/File/Files.writeStringWithCharset(path1, ws, cs1, opts1) |> Result.map(_ -> ())

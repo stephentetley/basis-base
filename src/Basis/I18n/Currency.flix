@@ -25,6 +25,9 @@ namespace Basis/I18n {
             Interop/Util/Currency.toString(x1)
     }
 
+    /// Note - Currency is an oddity because a currency is immutable, but there are no Currency 
+    /// constructors (in Java), only `getInstance` static methods.
+    /// 
 
     /// No Order, so no Boxable
 
