@@ -36,7 +36,7 @@ namespace Basis/System {
     instance FromString[FilePath] {
         pub def fromString(s: String): Option[FilePath] =
             region r {
-                try { 
+                try {
                     import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
                     Some(FilePath(of1(s, [] @ r)))
                 } catch {
@@ -75,11 +75,11 @@ namespace Basis/System {
     instance Boxable[FilePath]
 
     instance Interop/Flix.Marshal[FilePath] {
-        pub def toJavaObject(path: FilePath): ##java.lang.Object = 
+        pub def toJavaObject(path: FilePath): ##java.lang.Object =
             let FilePath(path1) = path;
             Interop/Flix/Marshal.toJavaObject(path1)
-        
-        pub def fromJavaObject(o: ##java.lang.Object): FilePath = 
+
+        pub def fromJavaObject(o: ##java.lang.Object): FilePath =
             FilePath(Interop/Flix/Marshal.fromJavaObject(o))
     }
 
@@ -93,7 +93,7 @@ namespace Basis/System/FilePath {
     use Basis/System.FilePath.{FilePath};
 
 
-    def getPath(p: FilePath): Interop/NIO/File.Path = 
+    def getPath(p: FilePath): Interop/NIO/File.Path =
         let FilePath(p1) = p;
         p1
 
@@ -104,7 +104,7 @@ namespace Basis/System/FilePath {
     ///
     pub def filePath(s: String): Result[FilePath, String] =
         Interop/NIO/File/Path.of(s, Nil) |> Result.map(FilePath)
-        
+
 
     def filePath1(s: String): FilePath = match filePath(s) {
         case Ok(p1)  => p1
@@ -116,7 +116,7 @@ namespace Basis/System/FilePath {
     ///     region r {
     ///         import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
     ///         try {
-    ///             match l { 
+    ///             match l {
     ///                 case x :: rs => FilePath(FlixSandbox/Deprecated/Marshal.runVaragsOfString(rs, of1(x), r)) as & Pure
     ///                 case Nil     => empty()
     ///             }
@@ -130,7 +130,7 @@ namespace Basis/System/FilePath {
         region r {
             import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
             try {
-                
+
                 Ok(FilePath(of1(s, [] @ r)))
             } catch {
                 case _: ##java.lang.Exception => Err("Invalid FilePath")
@@ -138,7 +138,7 @@ namespace Basis/System/FilePath {
         }
 */
 
-    pub def empty(): FilePath =        
+    pub def empty(): FilePath =
         match filePath("") {
             case Ok(p1) => p1
             case Err(msg) => bug!(msg)
@@ -354,7 +354,7 @@ namespace Basis/System/FilePath {
         }
 
     ///
-    /// Retuen all extensions if the filepath has multiple extensions,
+    /// Return all extensions if the filepath has multiple extensions,
     /// i.e. "archive.tar.gz" becomes "tar.gz".
     ///
     pub def getExtensions(path: FilePath): Option[String] =
