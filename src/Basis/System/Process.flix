@@ -26,7 +26,6 @@ namespace Basis/System {
 namespace Basis/System/Process {
 
     use Basis/Text.Charset;
-    use Basis/Text.Charset.{Charset};
 
     use Basis/System.Process;
     use Basis/System.ProcessBuilder;
@@ -43,18 +42,16 @@ namespace Basis/System/Process {
 
     pub def getInput(cs: Charset, p: Process[r]): Result[String, String] \ IO =
         use Result.flatMap;
-        let Charset(cs1) = cs;
         let strm    = Interop/Lang/Process.getInputStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
-        Ok(Interop/Lang/String.fromArrayWithCharset(cs1, bytes))
+        Ok(Interop/Lang/String.fromArrayWithCharset(cs, bytes))
 
 
     pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO =
         use Result.flatMap;
-        let Charset(cs1) = cs;
         let strm    = Interop/Lang/Process.getErrorStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
-        Ok(Interop/Lang/String.fromArrayWithCharset(cs1, bytes))
+        Ok(Interop/Lang/String.fromArrayWithCharset(cs, bytes))
 
 
 

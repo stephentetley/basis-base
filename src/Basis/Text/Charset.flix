@@ -30,98 +30,56 @@ namespace Basis/Text {
     /// This module generally follows the class `java.nio.charset.Charset` 
     /// so the Javadoc documentation is relevant.
     ///
-    pub enum Charset(Interop/NIO/Charset.Charset)
-
-    instance ToString[Charset] {
-        pub def toString(cs: Charset): String =
-            let Charset(cs1) = cs;
-            Interop/NIO/Charset/Charset.toString(cs1)
-    }
-
-    instance Eq[Charset] {
-        pub def eq(x: Charset, y: Charset): Bool = 
-            let Charset(x1) = x;
-            let Charset(y1) = y;
-            Interop/NIO/Charset/Charset.equals(x1, y1)
-    }
-
-    instance Hash[Charset] {
-        pub def hash(cs: Charset): Int32 =
-            let Charset(cs1) = cs;
-            Interop/NIO/Charset/Charset.hashCode(cs1)
-    }
-
-    instance Order[Charset] {
-        pub def compare(x: Charset, y: Charset): Comparison =
-            let Charset(x1) = x;
-            let Charset(y1) = y;
-            Interop/NIO/Charset/Charset.compareTo(x1, y1) |> Comparison.fromInt32
-    }
-
-    instance Boxable[Charset]
-
-    instance Interop/Flix.Marshal[Charset] {
-        pub def toJavaObject(cs: Charset): ##java.lang.Object = 
-            let Charset(cs1) = cs;
-            Interop/Flix/Marshal.toJavaObject(cs1)
-        
-        pub def fromJavaObject(o: ##java.lang.Object): Charset = 
-            Charset(Interop/Flix/Marshal.fromJavaObject(o))
-    }
+    pub type alias Charset = Interop/NIO/Charset.Charset
 
 }
 
 namespace Basis/Text/Charset {
 
     use Basis/Text.Charset;
-    use Basis/Text.Charset.{Charset};
 
     use Basis/I18n.Locale;
     use Basis/I18n.Locale.{Locale};
 
-    
-    pub def getCharset(cs: Charset): Interop/NIO/Charset.Charset = 
-        let Charset(cs1) = cs;
-        cs1
 
     pub def forName(name: String): Option[Charset] =
-        Interop/NIO/Charset/Charset.forName(name) |> Result.map(Charset) |> Result.toOption
+        Interop/NIO/Charset/Charset.forName(name) |> Result.toOption
 
     pub def forNameWithDefault(d: Charset, name: String): Charset =
         forName(name) |> Option.getWithDefault(d)
 
 
     pub def defaultCharset(): Charset \ IO =
-        Interop/NIO/Charset/Charset.defaultCharset() |> Charset
+        Interop/NIO/Charset/Charset.defaultCharset()
 
 
     pub def isSupported(name: String): Bool \ IO =
         Interop/NIO/Charset/Charset.isSupported(name) |> Result.getWithDefault(false)
 
     pub def iso_8859_1(): Charset =
-        Interop/NIO/Charset/StandardCharsets.iso_8859_1() |> Charset
+        Interop/NIO/Charset/StandardCharsets.iso_8859_1()
 
     pub def us_ascii(): Charset =
-        Interop/NIO/Charset/StandardCharsets.us_ascii() |> Charset
+        Interop/NIO/Charset/StandardCharsets.us_ascii()
 
     pub def utf_16(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16() |> Charset
+        Interop/NIO/Charset/StandardCharsets.utf_16()
 
     pub def utf_16be(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16be() |> Charset
+        Interop/NIO/Charset/StandardCharsets.utf_16be()
 
     pub def utf_16le(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16le() |> Charset
+        Interop/NIO/Charset/StandardCharsets.utf_16le()
 
     pub def utf_8(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_8() |> Charset
+        Interop/NIO/Charset/StandardCharsets.utf_8()
 
 
     /// 
     /// Returns the canonical name of Charset `c`.
     /// 
     pub def name(cs: Charset): String =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.name
+        Interop/NIO/Charset/Charset.name(cs)
 
     /// 
     /// Returns the human readable name of the Charset `c`.
@@ -129,7 +87,7 @@ namespace Basis/Text/Charset {
     /// The name is interpreted using the system's default locale.
     ///
     pub def displayName(cs: Charset): String \ IO =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.displayName
+        Interop/NIO/Charset/Charset.displayName(cs)
 
     /// 
     /// Returns the human readable name of the Charset `c`.
@@ -137,13 +95,13 @@ namespace Basis/Text/Charset {
     /// The name is interpreted using the supplied locale.
     ///    
     pub def displayNameWithLocale(loc: Locale, cs: Charset): String =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.displayNameWithLocale(loc)
+        Interop/NIO/Charset/Charset.displayNameWithLocale(loc, cs)
 
     pub def isRegistered(cs: Charset): Bool =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.isRegistered
+        Interop/NIO/Charset/Charset.isRegistered(cs)
 
     pub def canEncode(cs: Charset): Bool =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.canEncode
+        Interop/NIO/Charset/Charset.canEncode(cs)
 
 
     // pub def contains(x: Charset, y: Charset): Bool =
@@ -153,10 +111,10 @@ namespace Basis/Text/Charset {
     //     contains(x1, y1)
 
     pub def aliases(cs: Charset): Set[String] =
-        getCharset(cs) |> Interop/NIO/Charset/Charset.aliases
+        Interop/NIO/Charset/Charset.aliases(cs)
 
     pub def availableCharsets(): Map[String, Charset] \ IO =
-        Interop/NIO/Charset/Charset.availableCharsets() |> Map.map(Charset)
+        Interop/NIO/Charset/Charset.availableCharsets()
 
 
 

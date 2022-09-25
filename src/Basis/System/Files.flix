@@ -22,7 +22,6 @@ namespace Basis/System/Files {
     use Basis/System/LinkOption.LinkOption;
     use Basis/System/StandardOpenOption.StandardOpenOption;
     use Basis/Text.Charset;
-    use Basis/Text.Charset.{Charset};
 
     // UTF_8
     pub def exists(path: FilePath, opts: List[LinkOption]): Result[Bool, String] \ IO = 
@@ -37,8 +36,7 @@ namespace Basis/System/Files {
 
     pub def readStringWithCharset(path: FilePath, cs: Charset): Result[String, String] \ IO = 
         let FilePath(path1) = path;
-        let Charset(cs1) = cs;
-        Interop/NIO/File/Files.readStringWithCharset(path1, cs1)
+        Interop/NIO/File/Files.readStringWithCharset(path1, cs)
 
     // UTF_8
     pub def writeString(path: FilePath, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
@@ -52,9 +50,8 @@ namespace Basis/System/Files {
     pub def writeStringWithCharset(path: FilePath, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let FilePath(path1) = path;
         let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
-        let Charset(cs1) = cs;
         let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
-        Interop/NIO/File/Files.writeStringWithCharset(path1, ws, cs1, opts1) |> Result.map(_ -> ())
+        Interop/NIO/File/Files.writeStringWithCharset(path1, ws, cs, opts1) |> Result.map(_ -> ())
     }
 
 }
