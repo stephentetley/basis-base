@@ -49,7 +49,6 @@ namespace Basis/I18n/Locale/Builder {
     use Basis/I18n/Locale.Builder.{Builder};
 
     use Basis/I18n.Locale;
-    use Basis/I18n.Locale.{Locale};
 
 
     pub def getBuilder(x: Builder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Util/Locale.Builder[r], a] = 
@@ -98,7 +97,7 @@ namespace Basis/I18n/Locale/Builder {
         let state1 = Interop/Util/Locale/Builder.new(r);
         match runBuilder(r, ma, state1) {
             case Err(msg) => Err(msg)
-            case Ok(_)    => Ok(Locale(Interop/Util/Locale/Builder.build(state1)))
+            case Ok(_)    => Ok(Interop/Util/Locale/Builder.build(state1))
         }
 
 
@@ -121,8 +120,7 @@ namespace Basis/I18n/Locale/Builder {
         liftSetterResult!(Interop/Util/Locale/Builder.setLanguageTag!(tag))
 
     pub def setLocale!(loc: Locale): Builder[r, ka, Unit] \ Write(r) = 
-        let Locale(loc1) = loc;
-        liftSetterResult!(Interop/Util/Locale/Builder.setLocale!(loc1))
+        liftSetterResult!(Interop/Util/Locale/Builder.setLocale!(loc))
 
     pub def setRegion!(rgn: String): Builder[r, ka, Unit] \ Write(r) = 
         liftSetterResult!(Interop/Util/Locale/Builder.setRegion!(rgn))

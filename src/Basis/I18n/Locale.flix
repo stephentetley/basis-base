@@ -26,37 +26,11 @@ namespace Basis/I18n {
     /// This module generally follows `java.util.Locale` so the Javadoc documentation 
     /// is relevant.
     ///
-    pub enum Locale(Interop/Util.Locale)
+    pub type alias Locale = Interop/Util.Locale
 
-    instance ToString[Locale] {
-        pub def toString(x: Locale): String = 
-            let Locale(x1) = x;
-            Interop/Util/Locale.toString(x1)
-    }
-
-    instance Eq[Locale] {
-        pub def eq(x: Locale, y: Locale): Bool =
-            let Locale(x1) = x;
-            let Locale(y1) = y;
-            Interop/Util/Locale.equals(x1, y1)
-    }
-
-    instance Hash[Locale] {
-        pub def hash(x: Locale): Int32 = 
-            let Locale(x1) = x;
-            Interop/Util/Locale.hashCode(x1)
-    }
 
     /// No Order, so no Boxable
 
-    instance Interop/Flix.Marshal[Locale] {
-        pub def toJavaObject(loc: Locale): ##java.lang.Object = 
-            let Locale(loc1) = loc;
-            Interop/Flix/Marshal.toJavaObject(loc1)
-        
-        pub def fromJavaObject(o: ##java.lang.Object): Locale = 
-            Locale(Interop/Flix/Marshal.fromJavaObject(o))
-    }
 
 }
 
@@ -65,15 +39,10 @@ namespace Basis/I18n {
 namespace Basis/I18n/Locale {
 
     use Basis/I18n.Locale;
-    use Basis/I18n.Locale.{Locale};
 
     use Basis/I18n/Locale.LanguageRange;
     use Basis/I18n/Locale.LanguageRange.{LanguageRange};
-
-    
-    pub def getLocale(loc: Locale): Interop/Util.Locale = 
-        let Locale(loc1) = loc;
-        loc1
+   
 
 
     /// 
@@ -100,13 +69,13 @@ namespace Basis/I18n/Locale {
     /// Returns a new Locale for the supplied language.
     ///
     pub def newLocale(lang: String): Locale =
-        Interop/Util/Locale.newLocale(lang) |> Locale
+        Interop/Util/Locale.newLocale(lang)
 
     ///
     /// Returns a new Locale for the supplied language and country.
     ///
     pub def newLocaleWithCountry(lang: {lang :: String}, country: {country :: String}): Locale =
-        Interop/Util/Locale.newLocaleWithCountry(lang = lang.lang, country = country.country) |> Locale
+        Interop/Util/Locale.newLocaleWithCountry(lang = lang.lang, country = country.country)
 
     ///
     /// Returns a new Locale for the supplied language, country and variant.
@@ -117,18 +86,15 @@ namespace Basis/I18n/Locale {
     /// For guidelines to the formatting of a valid tag see the Javadoc for `java.util.Locale`.
     /// 
     pub def newLocaleWithVariant(lang: {lang :: String}, country: {country :: String}, variant: {variant :: String}): Locale =
-        Interop/Util/Locale.newLocaleWithVariant(lang = lang.lang, country = country.country, variant = variant.variant) |> Locale
+        Interop/Util/Locale.newLocaleWithVariant(lang = lang.lang, country = country.country, variant = variant.variant)
 
 
 
     pub def setJvmDefaultLocale!(loc: Locale): Result[Unit, String] \ IO =
-        getLocale(loc) |> Interop/Util/Locale.setJvmDefaultLocale!
-
-
-
+        Interop/Util/Locale.setJvmDefaultLocale!(loc)
 
     pub def setJvmDefaultLocaleWithCategory!(category: Category, loc: Locale): Result[Unit, String] \ IO =
-        getLocale(loc) |> Interop/Util/Locale.setJvmDefaultLocaleWithCategory!(category)
+        Interop/Util/Locale.setJvmDefaultLocaleWithCategory!(category, loc)
 
     ///
     /// Returns the "root" locale.
@@ -136,158 +102,148 @@ namespace Basis/I18n/Locale {
     /// The root locale has empty string for country, language and variant.
     ///
     pub def root(): Locale =
-        Interop/Util/Locale.root() |> Locale
+        Interop/Util/Locale.root()
 
     ///
     /// Returns the locale for country Canada with language English.
     /// 
     pub def canada(): Locale =
-        Interop/Util/Locale.canada() |> Locale
+        Interop/Util/Locale.canada()
 
     ///
     /// Returns the locale for country Canada with language French.
     /// 
     pub def canada_french(): Locale =
-        Interop/Util/Locale.canada_french() |> Locale
+        Interop/Util/Locale.canada_french()
 
     pub def china(): Locale =
-        Interop/Util/Locale.china() |> Locale
+        Interop/Util/Locale.china()
 
     pub def chinese(): Locale =
-        Interop/Util/Locale.chinese() |> Locale
+        Interop/Util/Locale.chinese()
 
     pub def english(): Locale =
-        Interop/Util/Locale.english() |> Locale
+        Interop/Util/Locale.english()
 
     pub def france(): Locale =
-        Interop/Util/Locale.france() |> Locale
+        Interop/Util/Locale.france()
 
     pub def french(): Locale =
-        Interop/Util/Locale.french() |> Locale
+        Interop/Util/Locale.french()
 
     pub def german(): Locale =
-        Interop/Util/Locale.german() |> Locale
+        Interop/Util/Locale.german()
 
     pub def germany(): Locale =
-        Interop/Util/Locale.germany() |> Locale
+        Interop/Util/Locale.germany()
 
     pub def italian(): Locale =
-        Interop/Util/Locale.italian() |> Locale
+        Interop/Util/Locale.italian()
 
     pub def italy(): Locale =
-        Interop/Util/Locale.italy() |> Locale
+        Interop/Util/Locale.italy()
 
     pub def japan(): Locale =
-        Interop/Util/Locale.japan() |> Locale
+        Interop/Util/Locale.japan()
 
     pub def japanese(): Locale =
-        Interop/Util/Locale.japanese() |> Locale
+        Interop/Util/Locale.japanese()
 
     pub def korea(): Locale =
-        Interop/Util/Locale.korea() |> Locale
+        Interop/Util/Locale.korea()
 
     pub def korean(): Locale =
-        Interop/Util/Locale.korean() |> Locale
+        Interop/Util/Locale.korean()
 
     pub def prc(): Locale =
-        Interop/Util/Locale.prc() |> Locale
+        Interop/Util/Locale.prc()
 
     pub def simplified_chinese(): Locale =
-        Interop/Util/Locale.simplified_chinese() |> Locale
+        Interop/Util/Locale.simplified_chinese()
 
     pub def taiwan(): Locale =
-        Interop/Util/Locale.taiwan() |> Locale
+        Interop/Util/Locale.taiwan()
 
     pub def traditional_chinese(): Locale =
-        Interop/Util/Locale.traditional_chinese() |> Locale
+        Interop/Util/Locale.traditional_chinese()
 
     pub def uk(): Locale =
-        Interop/Util/Locale.uk() |> Locale
+        Interop/Util/Locale.uk()
 
     pub def us(): Locale =
-        Interop/Util/Locale.us() |> Locale
+        Interop/Util/Locale.us()
 
 
     pub def getDefault(): Locale \ IO =
-        Interop/Util/Locale.getDefault() |> Locale
+        Interop/Util/Locale.getDefault()
 
     pub def getDefaultWithCategory(cat: Category): Locale \ IO =
-        Interop/Util/Locale.getDefaultWithCategory(cat) |> Locale
+        Interop/Util/Locale.getDefaultWithCategory(cat)
 
     pub def getCountry(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getCountry
+        Interop/Util/Locale.getCountry(loc)
 
     pub def getLanguage(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getLanguage
+        Interop/Util/Locale.getLanguage(loc)
 
     pub def getScript(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getScript
+        Interop/Util/Locale.getScript(loc)
 
     pub def getISO3Country(loc: Locale): Option[String] =
-        getLocale(loc) |> Interop/Util/Locale.getISO3Country |> Result.toOption
+        Interop/Util/Locale.getISO3Country(loc) |> Result.toOption
 
     pub def getISO3Language(loc: Locale): Option[String] =
-        getLocale(loc) |> Interop/Util/Locale.getISO3Language |> Result.toOption
+        Interop/Util/Locale.getISO3Language(loc) |> Result.toOption
 
     pub def getDisplayCountry(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getDisplayCountry
+        Interop/Util/Locale.getDisplayCountry(loc)
 
     pub def getDisplayCountryWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
-        let Locale(inLocale1) = inLocale.inLocale;
-        let Locale(loc1) = loc;
-        Interop/Util/Locale.getDisplayCountryWithLocale(inLocale = inLocale1, loc1)
+        Interop/Util/Locale.getDisplayCountryWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayLanguage(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getDisplayLanguage
+        Interop/Util/Locale.getDisplayLanguage(loc)
 
 
     pub def getDisplayLanguageWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
-        let Locale(inLocale1) = inLocale.inLocale;
-        let Locale(loc1) = loc;
-        Interop/Util/Locale.getDisplayLanguageWithLocale(inLocale = inLocale1, loc1)
+        Interop/Util/Locale.getDisplayLanguageWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayName(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getDisplayName
+        Interop/Util/Locale.getDisplayName(loc)
 
     pub def getDisplayNameWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
-        let Locale(inLocale1) = inLocale.inLocale;
-        let Locale(loc1) = loc;
-        Interop/Util/Locale.getDisplayNameWithLocale(inLocale = inLocale1, loc1)
+        Interop/Util/Locale.getDisplayNameWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayScript(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getDisplayScript
+        Interop/Util/Locale.getDisplayScript(loc)
 
     pub def getDisplayScriptWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
-        let Locale(inLocale1) = inLocale.inLocale;
-        let Locale(loc1) = loc;
-        Interop/Util/Locale.getDisplayScriptWithLocale(inLocale = inLocale1, loc1)
+        Interop/Util/Locale.getDisplayScriptWithLocale(inLocale = inLocale.inLocale, loc)
 
 
     pub def getDisplayVariant(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.getDisplayVariant
+        Interop/Util/Locale.getDisplayVariant(loc)
 
     pub def getDisplayVariantWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
-        let Locale(inLocale1) = inLocale.inLocale;
-        let Locale(loc1) = loc;
-        Interop/Util/Locale.getDisplayVariantWithLocale(inLocale = inLocale1, loc1)
+        Interop/Util/Locale.getDisplayVariantWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def hasExtensions(loc: Locale): Bool =
-        getLocale(loc) |> Interop/Util/Locale.hasExtensions
+        Interop/Util/Locale.hasExtensions(loc)
 
     pub def stripExtensions(loc: Locale): Locale =
-        getLocale(loc) |> Interop/Util/Locale.stripExtensions |> Locale
+        Interop/Util/Locale.stripExtensions(loc)
 
 
     pub def toLanguageTag(loc: Locale): String =
-        getLocale(loc) |> Interop/Util/Locale.toLanguageTag
+        Interop/Util/Locale.toLanguageTag(loc)
 
     pub def forLanguageTag(tag: String): Locale =
-        Interop/Util/Locale.forLanguageTag(tag) |> Locale
+        Interop/Util/Locale.forLanguageTag(tag)
 
 
 
     pub def getAvailableLocales(): List[Locale] \ IO =
-        Interop/Util/Locale.getAvailableLocales() |> List.map(Locale)
+        Interop/Util/Locale.getAvailableLocales()
 
     pub def getIsoCountries(): List[String] =
         Interop/Util/Locale.getIsoCountries()
@@ -299,23 +255,21 @@ namespace Basis/I18n/Locale {
         Interop/Util/Locale.getIsoLanguages()
 
     pub def getExtension(key: Char, loc: Locale): Option[String] =
-        getLocale(loc) |> Interop/Util/Locale.getExtension(key) |> Result.toOption
+        Interop/Util/Locale.getExtension(key, loc) |> Result.toOption
 
     pub def getExtensionKeys(loc: Locale): Set[Char] =
-        getLocale(loc) |> Interop/Util/Locale.getExtensionKeys
+        Interop/Util/Locale.getExtensionKeys(loc)
 
 
     pub def getUnicodeLocaleAttributes(loc: Locale): Set[String] =
-        getLocale(loc) |> Interop/Util/Locale.getUnicodeLocaleAttributes
+        Interop/Util/Locale.getUnicodeLocaleAttributes(loc)
 
     pub def getUnicodeLocaleKeys(loc: Locale): Set[String] =
-        getLocale(loc) |> Interop/Util/Locale.getUnicodeLocaleKeys
+        Interop/Util/Locale.getUnicodeLocaleKeys(loc)
 
     pub def lookup(priorityList: List[LanguageRange], locales: List[Locale]): Option[Locale] = 
         let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
-        let ls = List.map(getLocale, locales);
-        Interop/Util/Locale.lookup(ps, ls) 
-            |> Result.map(Option.map(Locale))
+        Interop/Util/Locale.lookup(ps, locales) 
             |> Result.getWithDefault(None) 
 
 
@@ -326,16 +280,12 @@ namespace Basis/I18n/Locale {
 
     pub def filter(priorityList: List[LanguageRange], locales: List[Locale]): List[Locale] = 
         let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
-        let ls = List.map(getLocale, locales);
-        Interop/Util/Locale.filter(ps, ls) 
-            |> Result.map(List.map(Locale))
+        Interop/Util/Locale.filter(ps, locales) 
             |> Result.getWithDefault(Nil)
 
     pub def filterWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, locales: List[Locale]): List[Locale] = 
         let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
-        let ls = List.map(getLocale, locales);
-        Interop/Util/Locale.filterWithFilteringMode(ps, mode, ls) 
-            |> Result.map(List.map(Locale))
+        Interop/Util/Locale.filterWithFilteringMode(ps, mode, locales) 
             |> Result.getWithDefault(Nil)
 
     pub def filterTags(priorityList: List[LanguageRange], tags: List[String]): List[String] = 

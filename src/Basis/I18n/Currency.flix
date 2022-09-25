@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Stephen Tetley
+ * Copyright 2022 Stephen Tetley
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,8 +50,6 @@ namespace Basis/I18n/Currency {
     use Basis/I18n.Currency.{Currency};
 
     use Basis/I18n.Locale;
-    use Basis/I18n.Locale.{Locale};
-
     
     pub def getCurrency(loc: Currency): Interop/Util.Currency = 
         let Currency(loc1) = loc;
@@ -64,8 +62,7 @@ namespace Basis/I18n/Currency {
         Interop/Util/Currency.getInstance(code) |> Result.map(Currency)
 
     pub def getInstanceWithLocale(loc: Locale): Result[Currency, String] \ IO = 
-        let Locale(loc1) = loc;
-        Interop/Util/Currency.getInstanceWithLocale(loc1) |> Result.map(Currency)
+        Interop/Util/Currency.getInstanceWithLocale(loc) |> Result.map(Currency)
 
     pub def getCurrencyCode(cur: Currency): String = 
         getCurrency(cur) |> Interop/Util/Currency.getCurrencyCode

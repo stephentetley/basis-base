@@ -137,8 +137,7 @@ namespace Basis/Text/Charset {
     /// The name is interpreted using the supplied locale.
     ///    
     pub def displayNameWithLocale(loc: Locale, cs: Charset): String =
-        let loc1 = Basis/I18n/Locale.getLocale(loc);
-        getCharset(cs) |> Interop/NIO/Charset/Charset.displayNameWithLocale(loc1)
+        getCharset(cs) |> Interop/NIO/Charset/Charset.displayNameWithLocale(loc)
 
     pub def isRegistered(cs: Charset): Bool =
         getCharset(cs) |> Interop/NIO/Charset/Charset.isRegistered
