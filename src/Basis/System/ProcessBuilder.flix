@@ -47,8 +47,7 @@ namespace Basis/System/ProcessBuilder {
     use Basis/System.ProcessBuilder;
     use Basis/System.ProcessBuilder.{ProcessBuilder};
 
-    use Basis/System.FilePath;
-    use Basis/System.FilePath.{FilePath};
+    use Basis/System.Path;
     use Basis/System.Process;
 
 
@@ -107,42 +106,42 @@ namespace Basis/System/ProcessBuilder {
         liftSetter!(Interop/Lang/ProcessBuilder.command!(cmd :: args))
 
 
-    pub def setDirectory!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def setDirectory!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            let* file1 = Basis/System/Path.toFile(r1, path);
             Ok(Interop/Lang/ProcessBuilder.directory!(file1, pb))
         };
         liftSetterResult!(step)
         
 
-    pub def getDirectory(): ProcessBuilder[r, ka, FilePath] \ Read(r) = 
-        liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/System/FilePath.fromFile)
+    pub def getDirectory(): ProcessBuilder[r, ka, Path] \ Read(r) = 
+        liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/System/Path.fromFile)
 
     pub def getEnvironment(): ProcessBuilder[r, ka, Map[String, String]] \ Read(r) = 
         liftGetterResult(Interop/Lang/ProcessBuilder.environment)
 
-    pub def redirectErrorTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            let* file1 = Basis/System/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectErrorTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
 
-    pub def redirectInputTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            let* file1 = Basis/System/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectInputTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
 
 
-    pub def redirectOutputTo!(path: FilePath): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/FilePath.toFile(r1, path);
+            let* file1 = Basis/System/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectOutputTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
