@@ -17,17 +17,18 @@
 
 namespace Basis/System {
 
-    pub enum Process[r: Region](Interop/Lang.Process[r])
+
+    /// Make an alias so clients reference only the Basis namespace
+    pub type alias Process[r: Region] = Interop/Lang.Process[r]
 }
 
 
 namespace Basis/System/Process {
-    
+
     use Basis/Text.Charset;
     use Basis/Text.Charset.{Charset};
 
     use Basis/System.Process;
-    use Basis/System.Process.{Process};
     use Basis/System.ProcessBuilder;
     use Basis/System.ProcessBuilder.{ProcessBuilder};
 
@@ -37,28 +38,24 @@ namespace Basis/System/Process {
 
 
     pub def waitFor(p: Process[r]): Result[Int32, String] \ IO =
-        use Result.flatMap;
-        let Process(p1) = p;
-        Interop/Lang/Process.waitFor!(p1)
+        Interop/Lang/Process.waitFor!(p)
 
 
     pub def getInput(cs: Charset, p: Process[r]): Result[String, String] \ IO =
         use Result.flatMap;
-        let Process(p1) = p;
         let Charset(cs1) = cs;
-        let strm    = Interop/Lang/Process.getInputStream(p1);
+        let strm    = Interop/Lang/Process.getInputStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
         Ok(Interop/Lang/String.fromArrayWithCharset(cs1, bytes))
 
 
     pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO =
         use Result.flatMap;
-        let Process(p1) = p;
         let Charset(cs1) = cs;
-        let strm    = Interop/Lang/Process.getErrorStream(p1);
+        let strm    = Interop/Lang/Process.getErrorStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
         Ok(Interop/Lang/String.fromArrayWithCharset(cs1, bytes))
-        
+
 
 
     pub type alias ProcessArgs =
@@ -88,9 +85,9 @@ namespace Basis/System/Process {
             let* respGood   = getInput(args.charset, proc);
             let* respBad    = getError(args.charset, proc);
             let* code       = waitFor(proc);
-            if (code == 0) 
+            if (code == 0)
                 Ok({processResponse = respGood})
-            else 
+            else
                 Err(respBad)
         }
 

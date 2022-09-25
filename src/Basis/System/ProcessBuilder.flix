@@ -50,7 +50,6 @@ namespace Basis/System/ProcessBuilder {
     use Basis/System.FilePath;
     use Basis/System.FilePath.{FilePath};
     use Basis/System.Process;
-    use Basis/System.Process.{Process};
 
 
     pub def getProcessBuilder(x: ProcessBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Lang.ProcessBuilder[r], a] = 
@@ -97,7 +96,7 @@ namespace Basis/System/ProcessBuilder {
         let state1 = Interop/Lang/ProcessBuilder.new(r, Nil) as \ { Write(r), IO };
         match runBuilder(r, ma, state1) {
             case Err(msg) => Err(msg)
-            case Ok(_)    => Interop/Lang/ProcessBuilder.start(state1) |> Result.map(Process)
+            case Ok(_)    => Interop/Lang/ProcessBuilder.start(state1)
         }
 
 
