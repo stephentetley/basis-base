@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace TestFilePath {
+namespace TestPath {
 
 
     /////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ namespace TestFilePath {
     def toString01(): Bool =
         use Result.flatMap;
         let step = () -> { 
-            let* p1 = Basis/System/FilePath.filePath("src.flix");
+            let* p1 = Basis/System/Path.newPath("src.flix");
             Ok(ToString.toString(p1) == "src.flix")
         };
         step() |> Result.getWithDefault(false)
