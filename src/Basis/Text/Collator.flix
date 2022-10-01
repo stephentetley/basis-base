@@ -21,6 +21,9 @@ namespace Basis/Text {
     ///
     pub type alias Collator[r: Region] = Interop/Text.Collator[r]
     
+    /// Design Note - ideally Collator would be immutable (possibly with a 
+    /// builder to initially configure it)
+
 }
 
 namespace Basis/Text/Collator {
@@ -110,13 +113,13 @@ namespace Basis/Text/Collator {
     pub def getDecomposition(col: Collator[r]): DecompositionMode \ Read(r) =
         Interop/Text/Collator.getDecomposition(col) |> unmarshallDecompositionMode
 
-    pub def getStrength(col: Collator[r]): CollatorStrength \ Read(r) =
-        Interop/Text/Collator.getStrength(col) |> unmarshallCollatorStrength
-
 
     pub def setDecomposition!(mode: DecompositionMode, col: Collator[r]): Unit \ Write(r) =
         let mode1 = marshallDecompositionMode(mode);
         Interop/Text/Collator.setDecomposition!(mode1, col)
+
+    pub def getStrength(col: Collator[r]): CollatorStrength \ Read(r) =
+        Interop/Text/Collator.getStrength(col) |> unmarshallCollatorStrength
 
 
     pub def setStrength!(strength: CollatorStrength, col: Collator[r]): Unit \ Write(r) =
