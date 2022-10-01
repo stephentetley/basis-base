@@ -48,7 +48,7 @@ namespace Basis/Text/DecimalFormatBuilder {
     use Basis/Text.DecimalFormat;
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/Math/RoundingMode.RoundingMode;
-    
+    use Basis/I18n.Locale;
 
     pub def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
         let DecimalFormatBuilder(x1) = x;
@@ -95,12 +95,21 @@ namespace Basis/Text/DecimalFormatBuilder {
         MonadLib/MutStateError.runMutStateError(r, getDecimalFormatBuilder(ma), s)
 
     /// Returns an immutable DecimalFormat
-    pub def build(r: Region[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
+    pub def build(r: Region[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ {IO, Write(r)} =
         let state1 = Interop/Text/DecimalFormat.new(r);
         match runBuilder(r, ma, state1) {
             case Err(msg) => Err(msg)
             case Ok(_)    => Interop/Text/DecimalFormat.getHH(state1) |> DecimalFormat |> Ok
         }
+
+    pub def buildWithLocale(r: Region[r], patt: String, loc: Locale, ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
+        let dfs1 = Interop/Text/DecimalFormatSymbols.newWithLocale(r, loc);
+        let state1 = Interop/Text/DecimalFormat.newWithDecimalFormatSymbols(r, patt, dfs1);
+        match runBuilder(r, ma, state1) {
+            case Err(msg) => Err(msg)
+            case Ok(_)    => Interop/Text/DecimalFormat.getHH(state1) |> DecimalFormat |> Ok
+        }
+
 
     pub def setGroupingSize!(sz: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
         liftSetterUnit(Interop/Text/DecimalFormat.setGroupingSize!(sz))
