@@ -21,8 +21,9 @@ namespace Basis/Text {
     ///
     pub enum Collator(##java.text.Collator)
     
-    /// Design Note - ideally Collator would be immutable (possibly with a 
-    /// builder to initially configure it)
+    /// Design Note - we want to use Collator in pure settings (e.g. Datalog)
+    /// hence the Java class functions are split between MutCollator (for creation)
+    /// and Collator for the services (comparing Strings).
 
 }
 

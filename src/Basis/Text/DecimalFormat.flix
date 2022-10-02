@@ -30,35 +30,22 @@ namespace Basis/Text/DecimalFormat {
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/I18n.Locale;
 
-    def toMutDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
+    def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
         let DecimalFormat(df1) = df;
         Interop/Text/DecimalFormat.wrapHH(r, df1)
 
-    def freezeMutDecimalFormat(df: Interop/Text.DecimalFormat[r]): DecimalFormat = 
-        Interop/Text/DecimalFormat.getHH(df) |> DecimalFormat
-
-
-
-    pub def decimalFormat(): DecimalFormat \ IO = region r {
-        Interop/Text/DecimalFormat.new(r) |> freezeMutDecimalFormat
-    }
-
-    pub def decimalFormatWithPattern(patt: String): DecimalFormat \ IO = region r {
-        Interop/Text/DecimalFormat.newWithPattern(r, patt) |> freezeMutDecimalFormat
-    }
-
-    pub def decimalFormatWithLocale(patt: String, loc: Locale): DecimalFormat = region r {
-        let dfs = Interop/Text/DecimalFormatSymbols.newWithLocale(r, loc);
-        Interop/Text/DecimalFormat.newWithDecimalFormatSymbols(r, patt, dfs) |> freezeMutDecimalFormat
-    }
 
 
     pub def hashCode(df: DecimalFormat): Int32 = region r {
-        toMutDecimalFormat(r, df) |> Interop/Text/DecimalFormat.hashCode
+        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.hashCode
     }
 
     pub def formatFloat64(d: Float64, df: DecimalFormat): Result[String, String] = region r {
-        toMutDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatFloat64(d)
+        toInteropDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatFloat64(d)
+    }
+
+    pub def formatInt64(i: Int64, df: DecimalFormat): Result[String, String] = region r {
+        toInteropDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatInt64(i)
     }
 
 }

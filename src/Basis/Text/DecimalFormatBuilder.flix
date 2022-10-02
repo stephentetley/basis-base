@@ -16,6 +16,8 @@
 
 namespace Basis/Text {
     
+    pub type alias MutDecimalFormat[r: Region] = Interop/Text.DecimalFormat[r]
+
     pub enum DecimalFormatBuilder[r: Region, ka: Type, a: Type](MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a])
 
     instance Functor[DecimalFormatBuilder[r, ka]] {
@@ -42,7 +44,7 @@ namespace Basis/Text {
 
 namespace Basis/Text/DecimalFormatBuilder {
 
-
+    use Basis/Text.MutDecimalFormat;
     use Basis/Text.DecimalFormatBuilder;
     use Basis/Text.DecimalFormatBuilder.{DecimalFormatBuilder};
     use Basis/Text.DecimalFormat;
@@ -50,7 +52,7 @@ namespace Basis/Text/DecimalFormatBuilder {
     use Basis/Math/RoundingMode.RoundingMode;
     use Basis/I18n.Locale;
 
-    pub def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
+    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
         let DecimalFormatBuilder(x1) = x;
         x1
 
@@ -73,11 +75,11 @@ namespace Basis/Text/DecimalFormatBuilder {
     // def liftSetter(f: Interop/Text.DecimalFormat[r] -> Interop/Text.DecimalFormat[r] \ ef): DecimalFormatBuilder[r, ka, Unit] \ ef =
     //     DecimalFormatBuilder(MonadLib/Builder.liftSetter(f))
 
-    def liftSetterUnit(f: Interop/Text.DecimalFormat[r] -> a \ ef): DecimalFormatBuilder[r, ka, a] \ ef =
+    def liftSetter!(f: Interop/Text.DecimalFormat[r] -> a \ ef): DecimalFormatBuilder[r, ka, a] \ ef =
         DecimalFormatBuilder(MonadLib/MutStateError.liftSetter!(f))
 
 
-    def liftSetterResultUnit(f: Interop/Text.DecimalFormat[r] -> Result[a, err] \ ef): DecimalFormatBuilder[r, ka, a] \ ef with ToString[err] =
+    def liftSetterResult!(f: Interop/Text.DecimalFormat[r] -> Result[a, err] \ ef): DecimalFormatBuilder[r, ka, a] \ ef with ToString[err] =
         DecimalFormatBuilder(MonadLib/MutStateError.liftSetterResult!(f))
 
     // def liftGetter(f: Interop/Text.DecimalFormat[r] -> a \ ef): DecimalFormatBuilder[r, ka, a] \ ef =
@@ -85,6 +87,24 @@ namespace Basis/Text/DecimalFormatBuilder {
 
     // def liftGetterResult(f: Interop/Text.DecimalFormat[r] -> Result[a, err] \ ef): DecimalFormatBuilder[r, ka, a] \ ef with ToString[err] =
     //     DecimalFormatBuilder(MonadLib/Builder.liftGetterResult(f))
+
+
+
+    pub def new(r: Region[r]): MutDecimalFormat[r] \ {IO, Write(r)} =
+        Interop/Text/DecimalFormat.new(r)
+
+
+    pub def newWithPattern(r: Region[r], patt: String): MutDecimalFormat[r] \ {IO, Write(r)} =
+        Interop/Text/DecimalFormat.newWithPattern(r, patt)
+
+    pub def newWithLocale(r: Region[r], patt: String, loc: Locale): MutDecimalFormat[r] \ Write(r) =
+        let dfs = Interop/Text/DecimalFormatSymbols.newWithLocale(r, loc);
+        Interop/Text/DecimalFormat.newWithDecimalFormatSymbols(r, patt, dfs)
+
+    ///
+    pub def freeze(df: MutDecimalFormat[r]): DecimalFormat =
+        Interop/Text/DecimalFormat.getHH(df) |> DecimalFormat
+
 
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
@@ -96,56 +116,48 @@ namespace Basis/Text/DecimalFormatBuilder {
 
     /// Returns an immutable DecimalFormat
     /// TODO - should build on an initial `DecimalFormat` to avoid proliferating `build...` functions
-    pub def build(r: Region[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ {IO, Write(r)} =
-        let state1 = Interop/Text/DecimalFormat.new(r);
-        match runBuilder(r, ma, state1) {
+    pub def build(df: MutDecimalFormat[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
+        let r = Scoped.regionOf(df);
+        match runBuilder(r, ma, df) {
             case Err(msg) => Err(msg)
-            case Ok(_)    => Interop/Text/DecimalFormat.getHH(state1) |> DecimalFormat |> Ok
-        }
-
-    pub def buildWithLocale(r: Region[r], patt: String, loc: Locale, ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
-        let dfs1 = Interop/Text/DecimalFormatSymbols.newWithLocale(r, loc);
-        let state1 = Interop/Text/DecimalFormat.newWithDecimalFormatSymbols(r, patt, dfs1);
-        match runBuilder(r, ma, state1) {
-            case Err(msg) => Err(msg)
-            case Ok(_)    => Interop/Text/DecimalFormat.getHH(state1) |> DecimalFormat |> Ok
+            case Ok(_)    => freeze(df) |> Ok
         }
 
 
     pub def setGroupingSize!(sz: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setGroupingSize!(sz))
+        liftSetter!(Interop/Text/DecimalFormat.setGroupingSize!(sz))
 
     pub def setGroupingUsed!(b: Bool): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/SubNumberFormat.toNumberFormat >> Interop/Text/NumberFormat.setGroupingUsed!(b))
+        liftSetter!(Interop/Text/SubNumberFormat.toNumberFormat >> Interop/Text/NumberFormat.setGroupingUsed!(b))
 
 
     pub def setMaximumIntegerDigits!(n: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setMaximumIntegerDigits!(n))
+        liftSetter!(Interop/Text/DecimalFormat.setMaximumIntegerDigits!(n))
 
     pub def setMinimumIntegerDigits!(n: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setMinimumIntegerDigits!(n))
+        liftSetter!(Interop/Text/DecimalFormat.setMinimumIntegerDigits!(n))
 
     pub def setMaximumFractionDigits!(n: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setMaximumFractionDigits!(n))
+        liftSetter!(Interop/Text/DecimalFormat.setMaximumFractionDigits!(n))
 
     pub def setMinimumFractionDigits!(n: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setMinimumFractionDigits!(n))
+        liftSetter!(Interop/Text/DecimalFormat.setMinimumFractionDigits!(n))
 
     pub def setNegativePrefix!(s: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setNegativePrefix!(s))
+        liftSetter!(Interop/Text/DecimalFormat.setNegativePrefix!(s))
 
     pub def setNegativeSuffix!(s: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setNegativeSuffix!(s))
+        liftSetter!(Interop/Text/DecimalFormat.setNegativeSuffix!(s))
 
     pub def setPositivePrefix!(s: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setPositivePrefix!(s))
+        liftSetter!(Interop/Text/DecimalFormat.setPositivePrefix!(s))
 
     pub def setPositiveSuffix!(s: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterUnit(Interop/Text/DecimalFormat.setPositiveSuffix!(s))
+        liftSetter!(Interop/Text/DecimalFormat.setPositiveSuffix!(s))
 
 
     pub def setRoundingMode!(mode: RoundingMode): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
         let mode1 = Basis/Math/RoundingMode.marshallRoundingMode(mode);
-        liftSetterResultUnit(Interop/Text/SubNumberFormat.toNumberFormat >> Interop/Text/NumberFormat.setRoundingMode!(mode1))        
+        liftSetterResult!(Interop/Text/SubNumberFormat.toNumberFormat >> Interop/Text/NumberFormat.setRoundingMode!(mode1))        
 
 }
