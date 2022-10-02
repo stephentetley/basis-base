@@ -95,6 +95,7 @@ namespace Basis/Text/DecimalFormatBuilder {
         MonadLib/MutStateError.runMutStateError(r, getDecimalFormatBuilder(ma), s)
 
     /// Returns an immutable DecimalFormat
+    /// TODO - should build on an initial `DecimalFormat` to avoid proliferating `build...` functions
     pub def build(r: Region[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ {IO, Write(r)} =
         let state1 = Interop/Text/DecimalFormat.new(r);
         match runBuilder(r, ma, state1) {

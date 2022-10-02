@@ -19,7 +19,7 @@ namespace Basis/Text {
     ///
     /// Represents a Collator.
     ///
-    pub type alias Collator[r: Region] = Interop/Text.Collator[r]
+    pub enum Collator(##java.text.Collator)
     
     /// Design Note - ideally Collator would be immutable (possibly with a 
     /// builder to initially configure it)
@@ -29,6 +29,7 @@ namespace Basis/Text {
 namespace Basis/Text/Collator {
 
     use Basis/Text.Collator;
+    use Basis/Text.Collator.{Collator};
 
     use Basis/I18n.Locale;
 
@@ -51,7 +52,7 @@ namespace Basis/Text/Collator {
     }
 
 
-    def marshallDecompositionMode(x: DecompositionMode): Int32 =
+    pub def marshallDecompositionMode(x: DecompositionMode): Int32 =
         match x {
             case NoDecomposition        => Interop/Text/Collator.no_decomposition()
             case CanonicalDecomposition => Interop/Text/Collator.canonical_decomposition()
@@ -67,7 +68,7 @@ namespace Basis/Text/Collator {
             case n                                                          => bug!("unmarshallDecompositionMode: ${n}")
         }
 
-    def marshallCollatorStrength(x: CollatorStrength): Int32 =
+    pub def marshallCollatorStrength(x: CollatorStrength): Int32 =
         match x {
             case Identical => Interop/Text/Collator.identical()
             case Primary   => Interop/Text/Collator.primary()
@@ -85,45 +86,32 @@ namespace Basis/Text/Collator {
             case n                                              => bug!("unmarshallCollatorStrength: ${n}")
         }
 
-
-    ///
-    /// Uses a Collator to be accurate with the locale of the JVM.
-    ///
-    pub def getInstance(r: Region[r]): Collator[r] \ {Write(r), IO} =
-        Interop/Text/Collator.getInstance(r)
-
-
-    pub def getInstanceWithLocale(r: Region[r], loc: Locale): Collator[r] \ Write(r) =
-        Interop/Text/Collator.getInstanceWithLocale(r, loc)
-
-
+    def toInteropCollator(r: Region[r], df: Collator): Interop/Text.Collator[r] = 
+        let Collator(df1) = df;
+        Interop/Text/Collator.wrapHH(r, df1)
 
     ///
     /// Test equality of strings `s1` and `s2` with the collator `x``.
     ///
-    pub def equals(s1: String, s2: String, col: Collator[r]): Bool \ Read(r) =
-        Interop/Text/Collator.equals(s1, s2, col)
+    pub def equals(s1: String, s2: String, col: Collator): Bool = region r {
+        toInteropCollator(r, col) |> Interop/Text/Collator.equals(s1, s2)
+    }
 
     ///
     /// Compare strings `s1` and `s2` with the collator `x``.
     ///
-    pub def compare(s1: String, s2: String, col: Collator[r]): Comparison \ Read(r) =
-        Interop/Text/Collator.compare(s1, s2, col)
+    pub def compare(s1: String, s2: String, col: Collator): Comparison = region r {
+        toInteropCollator(r, col) |> Interop/Text/Collator.compare(s1, s2)
+    }
 
-    pub def getDecomposition(col: Collator[r]): DecompositionMode \ Read(r) =
-        Interop/Text/Collator.getDecomposition(col) |> unmarshallDecompositionMode
-
-
-    pub def setDecomposition!(mode: DecompositionMode, col: Collator[r]): Unit \ Write(r) =
-        let mode1 = marshallDecompositionMode(mode);
-        Interop/Text/Collator.setDecomposition!(mode1, col)
-
-    pub def getStrength(col: Collator[r]): CollatorStrength \ Read(r) =
-        Interop/Text/Collator.getStrength(col) |> unmarshallCollatorStrength
+    pub def getDecomposition(col: Collator): DecompositionMode = region r {
+        toInteropCollator(r, col) |> Interop/Text/Collator.getDecomposition |> unmarshallDecompositionMode
+    }
 
 
-    pub def setStrength!(strength: CollatorStrength, col: Collator[r]): Unit \ Write(r) =
-        let strength1 = marshallCollatorStrength(strength);
-        Interop/Text/Collator.setStrength!(strength1, col)
+    pub def getStrength(col: Collator): CollatorStrength = region r {
+        toInteropCollator(r, col) |> Interop/Text/Collator.getStrength |> unmarshallCollatorStrength
+    }
+
         
 }
