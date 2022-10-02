@@ -29,6 +29,8 @@ namespace Basis/Text/DecimalFormat {
     use Basis/Text.DecimalFormat;
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/I18n.Locale;
+    use Basis/I18n.Currency;
+    use Interop/Util.Currency.{Currency};
 
     def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
         let DecimalFormat(df1) = df;
@@ -47,5 +49,57 @@ namespace Basis/Text/DecimalFormat {
     pub def formatInt64(i: Int64, df: DecimalFormat): Result[String, String] = region r {
         toInteropDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatInt64(i)
     }
+
+    pub def parseInt8(s: String, df: DecimalFormat): Result[Int8, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.byteValue)
+    }
+
+    pub def parseInt16(s: String, df: DecimalFormat): Result[Int16, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.shortValue)
+    }
+
+    pub def parseInt32(s: String, df: DecimalFormat): Result[Int32, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.intValue)
+    }
+
+    pub def parseInt64(s: String, df: DecimalFormat): Result[Int64, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.longValue)
+    }
+
+    pub def parseFloat32(s: String, df: DecimalFormat): Result[Float32, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.floatValue)
+    }
+
+    pub def parseFloat64(s: String, df: DecimalFormat): Result[Float64, String] = region r {
+        toInteropDecimalFormat(r, df) 
+            |> Interop/Text/NumberFormat.parse(s)
+            |> Result.map(Interop/Lang/Number.doubleValue)
+    }
+
+    ///
+    pub def toPattern(df: DecimalFormat): String = region r {
+        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.toPattern
+    }
+
+
+    ///
+    pub def toLocalizedPattern(df: DecimalFormat): String = region r {
+        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.toLocalizedPattern
+    }
+
+    pub def getCurrency(df: DecimalFormat): Result[Currency, String] = region r {
+        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.getCurrency
+    }
+
 
 }

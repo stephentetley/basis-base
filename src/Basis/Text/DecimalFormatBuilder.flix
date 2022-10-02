@@ -51,6 +51,7 @@ namespace Basis/Text/DecimalFormatBuilder {
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/Math/RoundingMode.RoundingMode;
     use Basis/I18n.Locale;
+    use Basis/I18n.Currency;
 
     def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
         let DecimalFormatBuilder(x1) = x;
@@ -123,6 +124,8 @@ namespace Basis/Text/DecimalFormatBuilder {
             case Ok(_)    => freeze(df) |> Ok
         }
 
+    pub def setCurrency!(cur: Currency): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
+        liftSetterResult!(Interop/Text/DecimalFormat.setCurrency!(cur))
 
     pub def setGroupingSize!(sz: Int32): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
         liftSetter!(Interop/Text/DecimalFormat.setGroupingSize!(sz))
@@ -158,6 +161,8 @@ namespace Basis/Text/DecimalFormatBuilder {
 
     pub def setRoundingMode!(mode: RoundingMode): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
         let mode1 = Basis/Math/RoundingMode.marshallRoundingMode(mode);
-        liftSetterResult!(Interop/Text/SubNumberFormat.toNumberFormat >> Interop/Text/NumberFormat.setRoundingMode!(mode1))        
+        liftSetterResult!(Interop/Text/DecimalFormat.setRoundingMode!(mode1))        
 
+    pub def applyPattern!(patt: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
+        liftSetterResult!(Interop/Text/DecimalFormat.applyPattern!(patt))  
 }
