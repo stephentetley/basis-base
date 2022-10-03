@@ -15,40 +15,40 @@
  */
 
 
-namespace Basis/System {
+namespace Basis/Lang {
 
     pub enum ProcessBuilder[r: Region, ka: Type, a: Type](MonadLib.MutStateError[r, ka, Interop/Lang.ProcessBuilder[r], a])
 
     instance Functor[ProcessBuilder[r, ka]] {
         pub def map(f: a -> b \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef = 
-            Basis/System/ProcessBuilder.map(f, ma)
+            Basis/Lang/ProcessBuilder.map(f, ma)
     }
 
     instance Applicative[ProcessBuilder[r, ka]] {
         pub def point(x: a): ProcessBuilder[r, ka, a] =  
-            Basis/System/ProcessBuilder.point(x)
+            Basis/Lang/ProcessBuilder.point(x)
 
         pub def ap(mf: ProcessBuilder[r, ka, a -> b \ ef], ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
-            Basis/System/ProcessBuilder.ap(mf, ma)
+            Basis/Lang/ProcessBuilder.ap(mf, ma)
     }
 
     instance Monad[ProcessBuilder[r, ka]] {
         pub def flatMap(f: a -> ProcessBuilder[r, ka, b] \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
-            Basis/System/ProcessBuilder.flatMap(f, ma)
+            Basis/Lang/ProcessBuilder.flatMap(f, ma)
     }
 
 }
 
 
-namespace Basis/System/ProcessBuilder {
+namespace Basis/Lang/ProcessBuilder {
 
     use Monad.{>>=};
 
-    use Basis/System.ProcessBuilder;
-    use Basis/System.ProcessBuilder.{ProcessBuilder};
+    use Basis/Lang.ProcessBuilder;
+    use Basis/Lang.ProcessBuilder.{ProcessBuilder};
 
+    use Basis/Lang.Process;
     use Basis/NIO/File.Path;
-    use Basis/System.Process;
 
 
     pub def getProcessBuilder(x: ProcessBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Lang.ProcessBuilder[r], a] = 

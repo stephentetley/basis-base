@@ -15,7 +15,7 @@
  */
 
 
-namespace Basis/System {
+namespace Basis/Lang {
 
 
     /// Make an alias so clients reference only the Basis namespace
@@ -23,17 +23,17 @@ namespace Basis/System {
 }
 
 
-namespace Basis/System/Process {
+namespace Basis/Lang/Process {
 
     use Basis/NIO/Charset.Charset;
 
-    use Basis/System.Process;
-    use Basis/System.ProcessBuilder;
-    use Basis/System.ProcessBuilder.{ProcessBuilder};
+    use Basis/Lang.Process;
+    use Basis/Lang.ProcessBuilder;
+    use Basis/Lang.ProcessBuilder.{ProcessBuilder};
 
 
     pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, Unit] \ Write(r) =
-        Basis/System/ProcessBuilder.command!(cmd, args)
+        Basis/Lang/ProcessBuilder.command!(cmd, args)
 
 
     pub def waitFor(p: Process[r]): Result[Int32, String] \ IO =
@@ -66,7 +66,7 @@ namespace Basis/System/Process {
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);
-            let* proc       = Basis/System/ProcessBuilder.start(r1, pb);
+            let* proc       = Basis/Lang/ProcessBuilder.start(r1, pb);
             let* respGood   = getInput(args.charset, proc);
             let* respBad    = getError(args.charset, proc);
             let* code       = waitFor(proc);
@@ -78,7 +78,7 @@ namespace Basis/System/Process {
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);
-            let* proc       = Basis/System/ProcessBuilder.start(r1, pb);
+            let* proc       = Basis/Lang/ProcessBuilder.start(r1, pb);
             let* respGood   = getInput(args.charset, proc);
             let* respBad    = getError(args.charset, proc);
             let* code       = waitFor(proc);
