@@ -28,8 +28,8 @@ namespace Basis/Text/DecimalFormat {
 
     use Basis/Text.DecimalFormat;
     use Basis/Text.DecimalFormat.{DecimalFormat};
-    use Basis/I18n.Locale;
-    use Basis/I18n.Currency;
+    use Basis/Util.Locale;
+    use Basis/Util.Currency;
 
     def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
         let DecimalFormat(df1) = df;

@@ -34,7 +34,7 @@ namespace Basis/Text/MutCollator {
     use Basis/Text/Collator.DecompositionMode;
     use Basis/Text/Collator.CollatorStrength;
 
-    use Basis/I18n.Locale;
+    use Basis/Util.Locale;
 
     ///
     /// Uses a Collator to be accurate with the locale of the JVM.

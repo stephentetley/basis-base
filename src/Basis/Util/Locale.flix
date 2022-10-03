@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Basis/I18n {
+namespace Basis/Util {
 
     /// 
     /// Locale is a wrapper over the Java class `java.util.Locale`.
@@ -36,12 +36,12 @@ namespace Basis/I18n {
 
 
 
-namespace Basis/I18n/Locale {
+namespace Basis/Util/Locale {
 
-    use Basis/I18n.Locale;
+    use Basis/Util.Locale;
 
-    use Basis/I18n/Locale.LanguageRange;
-    use Basis/I18n/Locale.LanguageRange.{LanguageRange};
+    use Basis/Util/Locale.LanguageRange;
+    use Basis/Util/Locale.LanguageRange.{LanguageRange};
    
 
 
@@ -268,32 +268,32 @@ namespace Basis/I18n/Locale {
         Interop/Util/Locale.getUnicodeLocaleKeys(loc)
 
     pub def lookup(priorityList: List[LanguageRange], locales: List[Locale]): Option[Locale] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.lookup(ps, locales) 
             |> Result.getWithDefault(None) 
 
 
     pub def lookupTag(priorityList: List[LanguageRange], tags: List[String]): Option[String] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.lookupTag(ps, tags)
             |> Result.getWithDefault(None)
 
     pub def filter(priorityList: List[LanguageRange], locales: List[Locale]): List[Locale] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.filter(ps, locales) 
             |> Result.getWithDefault(Nil)
 
     pub def filterWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, locales: List[Locale]): List[Locale] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.filterWithFilteringMode(ps, mode, locales) 
             |> Result.getWithDefault(Nil)
 
     pub def filterTags(priorityList: List[LanguageRange], tags: List[String]): List[String] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.filterTags(ps, tags) |> Result.getWithDefault(Nil)
 
     pub def filterTagsWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, tags: List[String]): List[String] = 
-        let ps = List.map(Basis/I18n/Locale/LanguageRange.getLanguageRange, priorityList);
+        let ps = List.map(Basis/Util/Locale/LanguageRange.getLanguageRange, priorityList);
         Interop/Util/Locale.filterTagsWithFilteringMode(ps, mode, tags) |> Result.getWithDefault(Nil)
 
 

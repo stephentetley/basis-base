@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Basis/I18n/Locale {
+namespace Basis/Util/Locale {
 
 
     ///
@@ -24,31 +24,31 @@ namespace Basis/I18n/Locale {
 
     instance Functor[Builder[r, ka]] {
         pub def map(f: a -> b & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
-            Basis/I18n/Locale/Builder.map(f, ma)
+            Basis/Util/Locale/Builder.map(f, ma)
     }
 
     instance Applicative[Builder[r, ka]] {
         pub def point(x: a): Builder[r, ka, a] = 
-            Basis/I18n/Locale/Builder.point(x)
+            Basis/Util/Locale/Builder.point(x)
             
         pub def ap(mf: Builder[r, ka, a -> b & ef], ma: Builder[r, ka, a]): Builder[r, ka, b] & ef = 
-            Basis/I18n/Locale/Builder.ap(mf, ma)
+            Basis/Util/Locale/Builder.ap(mf, ma)
     }
 
     instance Monad[Builder[r, ka]] {
         pub def flatMap(f: a -> Builder[r, ka, b] & ef, ma: Builder[r, ka, a]): Builder[r, ka, b] & ef =
-            Basis/I18n/Locale/Builder.flatMap(f, ma)
+            Basis/Util/Locale/Builder.flatMap(f, ma)
     }
 
 }
 
 
-namespace Basis/I18n/Locale/Builder {
+namespace Basis/Util/Locale/Builder {
 
-    use Basis/I18n/Locale.Builder;
-    use Basis/I18n/Locale.Builder.{Builder};
+    use Basis/Util/Locale.Builder;
+    use Basis/Util/Locale.Builder.{Builder};
 
-    use Basis/I18n.Locale;
+    use Basis/Util.Locale;
 
 
     pub def getBuilder(x: Builder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Util/Locale.Builder[r], a] = 

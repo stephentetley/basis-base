@@ -50,8 +50,8 @@ namespace Basis/Text/DecimalFormatBuilder {
     use Basis/Text.DecimalFormat;
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/Math/RoundingMode.RoundingMode;
-    use Basis/I18n.Locale;
-    use Basis/I18n.Currency;
+    use Basis/Util.Locale;
+    use Basis/Util.Currency;
 
     def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
         let DecimalFormatBuilder(x1) = x;

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-namespace Basis/I18n/Locale {
+namespace Basis/Util/Locale {
 
+    /// TODO change to alias
     pub enum LanguageRange(Interop/Util/Locale.LanguageRange)
 
     instance ToString[LanguageRange] {
@@ -49,10 +50,10 @@ namespace Basis/I18n/Locale {
 }
 
 
-namespace Basis/I18n/Locale/LanguageRange {
+namespace Basis/Util/Locale/LanguageRange {
 
-    use Basis/I18n/Locale.LanguageRange;
-    use Basis/I18n/Locale.LanguageRange.{LanguageRange};
+    use Basis/Util/Locale.LanguageRange;
+    use Basis/Util/Locale.LanguageRange.{LanguageRange};
 
     pub def getLanguageRange(rng: LanguageRange): Interop/Util/Locale.LanguageRange = 
         let LanguageRange(rng1) = rng;

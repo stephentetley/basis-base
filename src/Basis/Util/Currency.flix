@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Basis/I18n {
+namespace Basis/Util {
 
 
     pub type alias Currency = Interop/Util.Currency
@@ -28,11 +28,11 @@ namespace Basis/I18n {
 
 
 
-namespace Basis/I18n/Currency {
+namespace Basis/Util/Currency {
 
-    use Basis/I18n.Currency;
+    use Basis/Util.Currency;
 
-    use Basis/I18n.Locale;
+    use Basis/Util.Locale;
     
 
     pub def getAvailableCurrencies(): Result[List[Currency], String] \ IO = 

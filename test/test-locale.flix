@@ -19,12 +19,12 @@ namespace TestLocale {
 
     @test
     def getIsoCountries01(): Unit & Impure = 
-        Basis/I18n/Locale.getIsoCountries() |> List.foreach(println)
+        Basis/Util/Locale.getIsoCountries() |> List.foreach(println)
 
 
     @test
     def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
-        match Basis/I18n/Locale.getIsoCountriesWithIsoCountryCode(Interop/Util/Locale/IsoCountryCode.Part1Alpha2) {
+        match Basis/Util/Locale.getIsoCountriesWithIsoCountryCode(Interop/Util/Locale/IsoCountryCode.Part1Alpha2) {
             case Ok(s) => Set.foreach(println, s) 
             case Err(msg) => println("Err: ${msg}")
         }
@@ -32,7 +32,7 @@ namespace TestLocale {
 
     @test
     def test03(): Unit & Impure = 
-        match Basis/I18n/Locale.getIsoLanguages() {
+        match Basis/Util/Locale.getIsoLanguages() {
             case Ok(l) => List.foreach(println, l) 
             case Err(msg) => println("Err: ${msg}")
         }
@@ -40,41 +40,41 @@ namespace TestLocale {
 
     @test
     def test04(): Unit & Impure = 
-        Basis/I18n/Locale.getAvailableLocales()
+        Basis/Util/Locale.getAvailableLocales()
             |> List.foreach(println) 
 
 
     @test
     def testCanada(): Unit & Impure = 
-        let l1 = Basis/I18n/Locale.canada();
+        let l1 = Basis/Util/Locale.canada();
         println("Canada: ${l1}");
         ()
 
 
     @test
     def getUnicodeLocaleAttributes01(): Unit & Impure =
-        let l1 = Basis/I18n/Locale.japan();
-        Basis/I18n/Locale.getUnicodeLocaleAttributes(l1) 
+        let l1 = Basis/Util/Locale.japan();
+        Basis/Util/Locale.getUnicodeLocaleAttributes(l1) 
             |> Set.foreach(x1 -> println("Attr: ${x1}"))
 
     @test
     def getUnicodeLocaleKeys01(): Unit & Impure =
-        let l1 = Basis/I18n/Locale.japan();
-        Basis/I18n/Locale.getUnicodeLocaleKeys(l1) 
+        let l1 = Basis/Util/Locale.japan();
+        Basis/Util/Locale.getUnicodeLocaleKeys(l1) 
             |> Set.foreach(x1 -> println("Key: ${x1}"))
 
     @test
     def lookup01(): Unit & Impure =
         println("TestLocale.lookup01...");
-        let ls = Basis/I18n/Locale.japan() :: Basis/I18n/Locale.french() :: Basis/I18n/Locale.english() :: Nil;
-        match Basis/I18n/Locale/LanguageRange.newLanguageRange("en") {
+        let ls = Basis/Util/Locale.japan() :: Basis/Util/Locale.french() :: Basis/Util/Locale.english() :: Nil;
+        match Basis/Util/Locale/LanguageRange.newLanguageRange("en") {
             case None     => println("Err: newLanguageRange")
-            case Some(p1) => println("lookup: ${Basis/I18n/Locale.lookup(p1 :: Nil, ls)}")
+            case Some(p1) => println("lookup: ${Basis/Util/Locale.lookup(p1 :: Nil, ls)}")
         }
 
     @test
     def builder01(): Unit & Impure =
-        use Basis/I18n/Locale/Builder.{build, setLanguage!};
+        use Basis/Util/Locale/Builder.{build, setLanguage!};
         region r1 {
             println("TestLocale.builder01...");
             match build(r1, setLanguage!("da")) {
@@ -86,7 +86,7 @@ namespace TestLocale {
     @test
     def builder02(): Unit & Impure =
         use Applicative.{*>};
-        use Basis/I18n/Locale/Builder.{build, setLanguage!, setScript!};
+        use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!};
         region r1 {
             println("TestLocale.builder02...");
             match build(r1, setLanguage!("da") *> setScript!("Latn")) {
@@ -98,7 +98,7 @@ namespace TestLocale {
     @test
     def builder03(): Unit & Impure =
         use Applicative.{*>};
-        use Basis/I18n/Locale/Builder.{build, setLanguage!, setScript!, setRegion!};
+        use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!, setRegion!};
         region r1 {
             println("TestLocale.builder03... expect Err");
             match build(r1, setLanguage!("da") *> setScript!("Latn") *> setRegion!("BAD_REGION")) {
