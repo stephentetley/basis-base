@@ -19,12 +19,12 @@ namespace Basis/NIO/File/Files {
 
     use Basis/NIO/Charset.Charset;
     use Basis/NIO/File.Path;
-    use Basis/System/LinkOption.LinkOption;
-    use Basis/System/StandardOpenOption.StandardOpenOption;
+    use Basis/NIO/File/LinkOption.LinkOption;
+    use Basis/NIO/File/StandardOpenOption.StandardOpenOption;
 
 
     pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 
-        let opts1 = List.map(Basis/System/LinkOption.marshallLinkOption, opts);
+        let opts1 = List.map(Basis/NIO/File/LinkOption.marshallLinkOption, opts);
         Interop/NIO/File/Files.exists(path, opts1)
 
     /// UTF_8
@@ -37,14 +37,14 @@ namespace Basis/NIO/File/Files {
     // UTF_8
     pub def writeStringUtf8!(path: Path, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
-        let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
+        let opts1 = List.map(Basis/NIO/File/StandardOpenOption.marshallStandardOpenOption, opts);
         Interop/NIO/File/Files.writeStringUtf8!(path, ws, opts1) |> Result.map(_ -> ())
     }
 
     // 
     pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
-        let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
+        let opts1 = List.map(Basis/NIO/File/StandardOpenOption.marshallStandardOpenOption, opts);
         Interop/NIO/File/Files.writeString!(path, ws, cs, opts1) |> Result.map(_ -> ())
     }
 

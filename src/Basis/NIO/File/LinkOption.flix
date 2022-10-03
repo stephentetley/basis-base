@@ -15,7 +15,7 @@
  */
 
 
-namespace Basis/System/LinkOption {
+namespace Basis/NIO/File/LinkOption {
 
 
     pub enum LinkOption with Eq, Order, ToString, Hash, Boxable {

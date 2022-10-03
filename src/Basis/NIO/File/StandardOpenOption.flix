@@ -15,7 +15,7 @@
  */
 
 
-namespace Basis/System/StandardOpenOption {
+namespace Basis/NIO/File/StandardOpenOption {
 
 
     pub enum StandardOpenOption with Eq, Order, ToString, Hash, Boxable {
