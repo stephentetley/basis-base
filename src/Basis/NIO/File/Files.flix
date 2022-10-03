@@ -15,12 +15,12 @@
  */
 
 
-namespace Basis/System/Files {
+namespace Basis/NIO/File/Files {
 
-    use Basis/System.Path;
+    use Basis/NIO/Charset.Charset;
+    use Basis/NIO/File.Path;
     use Basis/System/LinkOption.LinkOption;
     use Basis/System/StandardOpenOption.StandardOpenOption;
-    use Basis/NIO/Charset.Charset;
 
 
     pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 

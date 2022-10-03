@@ -15,7 +15,7 @@
  */
 
 
-namespace Basis/System {
+namespace Basis/NIO/File {
 
     ///
     /// Represents a Path.
@@ -25,11 +25,11 @@ namespace Basis/System {
 
 }
 
-namespace Basis/System/Path {
+namespace Basis/NIO/File/Path {
 
     use ToString.toString;
 
-    use Basis/System.Path;
+    use Basis/NIO/File.Path;
 
 
 

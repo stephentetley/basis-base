@@ -47,7 +47,7 @@ namespace Basis/System/ProcessBuilder {
     use Basis/System.ProcessBuilder;
     use Basis/System.ProcessBuilder.{ProcessBuilder};
 
-    use Basis/System.Path;
+    use Basis/NIO/File.Path;
     use Basis/System.Process;
 
 
@@ -109,14 +109,14 @@ namespace Basis/System/ProcessBuilder {
     pub def setDirectory!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/Path.toFile(r1, path);
+            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
             Ok(Interop/Lang/ProcessBuilder.directory!(file1, pb))
         };
         liftSetterResult!(step)
         
 
     pub def getDirectory(): ProcessBuilder[r, ka, Path] \ Read(r) = 
-        liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/System/Path.fromFile)
+        liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/NIO/File/Path.fromFile)
 
     pub def getEnvironment(): ProcessBuilder[r, ka, Map[String, String]] \ Read(r) = 
         liftGetterResult(Interop/Lang/ProcessBuilder.environment)
@@ -124,7 +124,7 @@ namespace Basis/System/ProcessBuilder {
     pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/Path.toFile(r1, path);
+            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectErrorTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
@@ -132,7 +132,7 @@ namespace Basis/System/ProcessBuilder {
     pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/Path.toFile(r1, path);
+            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectInputTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
@@ -141,7 +141,7 @@ namespace Basis/System/ProcessBuilder {
     pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
-            let* file1 = Basis/System/Path.toFile(r1, path);
+            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
             Interop/Lang/ProcessBuilder.redirectOutputTo!(file1, pb) |> Ok
         };
         liftSetterResult!(step)
