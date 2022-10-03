@@ -25,7 +25,7 @@ namespace Basis/System {
 
 namespace Basis/System/Process {
 
-    use Basis/Text.Charset;
+    use Basis/NIO/Charset.Charset;
 
     use Basis/System.Process;
     use Basis/System.ProcessBuilder;

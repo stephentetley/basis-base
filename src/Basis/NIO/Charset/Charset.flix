@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Basis/Text {
+namespace Basis/NIO/Charset {
 
     /// 
     /// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
@@ -34,9 +34,9 @@ namespace Basis/Text {
 
 }
 
-namespace Basis/Text/Charset {
+namespace Basis/NIO/Charset/Charset {
 
-    use Basis/Text.Charset;
+    use Basis/NIO/Charset.Charset;
 
     use Basis/Util.Locale;
     use Basis/Util.Locale.{Locale};

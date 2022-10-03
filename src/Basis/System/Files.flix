@@ -20,7 +20,7 @@ namespace Basis/System/Files {
     use Basis/System.Path;
     use Basis/System/LinkOption.LinkOption;
     use Basis/System/StandardOpenOption.StandardOpenOption;
-    use Basis/Text.Charset;
+    use Basis/NIO/Charset.Charset;
 
 
     pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 
