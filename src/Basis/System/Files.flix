@@ -22,30 +22,30 @@ namespace Basis/System/Files {
     use Basis/System/StandardOpenOption.StandardOpenOption;
     use Basis/Text.Charset;
 
-    // UTF_8
+
     pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 
         let opts1 = List.map(Basis/System/LinkOption.marshallLinkOption, opts);
         Interop/NIO/File/Files.exists(path, opts1)
 
     /// UTF_8
-    pub def readString(path: Path): Result[String, String] \ IO = 
-        Interop/NIO/File/Files.readString(path)
+    pub def readStringUtf8(path: Path): Result[String, String] \ IO = 
+        Interop/NIO/File/Files.readStringUtf8(path)
 
     pub def readStringWithCharset(path: Path, cs: Charset): Result[String, String] \ IO = 
-        Interop/NIO/File/Files.readStringWithCharset(path, cs)
+        Interop/NIO/File/Files.readString(path, cs)
 
     // UTF_8
-    pub def writeString(path: Path, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
+    pub def writeStringUtf8!(path: Path, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
         let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
-        Interop/NIO/File/Files.writeString(path, ws, opts1) |> Result.map(_ -> ())
+        Interop/NIO/File/Files.writeStringUtf8!(path, ws, opts1) |> Result.map(_ -> ())
     }
 
-    // UTF_8
-    pub def writeStringWithCharset(path: Path, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
+    // 
+    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
         let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
         let opts1 = List.map(Basis/System/StandardOpenOption.marshallStandardOpenOption, opts);
-        Interop/NIO/File/Files.writeStringWithCharset(path, ws, cs, opts1) |> Result.map(_ -> ())
+        Interop/NIO/File/Files.writeString!(path, ws, cs, opts1) |> Result.map(_ -> ())
     }
 
 }

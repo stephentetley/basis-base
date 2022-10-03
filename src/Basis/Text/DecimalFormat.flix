@@ -30,7 +30,6 @@ namespace Basis/Text/DecimalFormat {
     use Basis/Text.DecimalFormat.{DecimalFormat};
     use Basis/I18n.Locale;
     use Basis/I18n.Currency;
-    use Interop/Util.Currency.{Currency};
 
     def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
         let DecimalFormat(df1) = df;
