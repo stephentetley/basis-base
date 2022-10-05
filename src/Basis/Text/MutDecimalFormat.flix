@@ -15,34 +15,34 @@
  */
 
 namespace Basis/Text {
-    
+
     pub type alias MutDecimalFormat[r: Region] = Interop/Text.DecimalFormat[r]
 
     pub enum DecimalFormatBuilder[r: Region, ka: Type, a: Type](MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a])
 
     instance Functor[DecimalFormatBuilder[r, ka]] {
-        pub def map(f: a -> b \ ef, ma: DecimalFormatBuilder[r, ka, a]): DecimalFormatBuilder[r, ka, b] \ ef = 
-            Basis/Text/DecimalFormatBuilder.map(f, ma)
+        pub def map(f: a -> b \ ef, ma: DecimalFormatBuilder[r, ka, a]): DecimalFormatBuilder[r, ka, b] \ ef =
+            Basis/Text/MutDecimalFormat.map(f, ma)
     }
 
     instance Applicative[DecimalFormatBuilder[r, ka]] {
-        pub def point(x: a): DecimalFormatBuilder[r, ka, a] =  
-            Basis/Text/DecimalFormatBuilder.point(x)
+        pub def point(x: a): DecimalFormatBuilder[r, ka, a] =
+            Basis/Text/MutDecimalFormat.point(x)
 
         pub def ap(mf: DecimalFormatBuilder[r, ka, a -> b \ ef], ma: DecimalFormatBuilder[r, ka, a]): DecimalFormatBuilder[r, ka, b] \ ef =
-            Basis/Text/DecimalFormatBuilder.ap(mf, ma)
+            Basis/Text/MutDecimalFormat.ap(mf, ma)
     }
 
     instance Monad[DecimalFormatBuilder[r, ka]] {
         pub def flatMap(f: a -> DecimalFormatBuilder[r, ka, b] \ ef, ma: DecimalFormatBuilder[r, ka, a]): DecimalFormatBuilder[r, ka, b] \ ef =
-            Basis/Text/DecimalFormatBuilder.flatMap(f, ma)
+            Basis/Text/MutDecimalFormat.flatMap(f, ma)
     }
 
 
 }
 
 
-namespace Basis/Text/DecimalFormatBuilder {
+namespace Basis/Text/MutDecimalFormat {
 
     use Basis/Text.MutDecimalFormat;
     use Basis/Text.DecimalFormatBuilder;
@@ -53,11 +53,11 @@ namespace Basis/Text/DecimalFormatBuilder {
     use Basis/Util.Locale;
     use Basis/Util.Currency;
 
-    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] = 
+    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Text.DecimalFormat[r], a] =
         let DecimalFormatBuilder(x1) = x;
         x1
 
-    pub def point(x: a): DecimalFormatBuilder[r, ka, a] = 
+    pub def point(x: a): DecimalFormatBuilder[r, ka, a] =
         DecimalFormatBuilder(MonadLib/MutStateError.point(x))
 
     pub def map(f: a -> b \ ef, ma: DecimalFormatBuilder[r, ka, a]): DecimalFormatBuilder[r, ka, b] \ ef =
@@ -110,9 +110,9 @@ namespace Basis/Text/DecimalFormatBuilder {
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(r: Region[r], 
-                        ma: DecimalFormatBuilder[r, a, a], 
-                        s: Interop/Text.DecimalFormat[r]): Result[a, String] \ r = 
+    def runBuilder(r: Region[r],
+                        ma: DecimalFormatBuilder[r, a, a],
+                        s: Interop/Text.DecimalFormat[r]): Result[a, String] \ r =
         MonadLib/MutStateError.runMutStateError(r, getDecimalFormatBuilder(ma), s)
 
     /// Returns an immutable DecimalFormat
@@ -161,8 +161,8 @@ namespace Basis/Text/DecimalFormatBuilder {
 
     pub def setRoundingMode!(mode: RoundingMode): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
         let mode1 = Basis/Math/RoundingMode.marshallRoundingMode(mode);
-        liftSetterResult!(Interop/Text/DecimalFormat.setRoundingMode!(mode1))        
+        liftSetterResult!(Interop/Text/DecimalFormat.setRoundingMode!(mode1))
 
     pub def applyPattern!(patt: String): DecimalFormatBuilder[r, ka, Unit] \ Write(r) =
-        liftSetterResult!(Interop/Text/DecimalFormat.applyPattern!(patt))  
+        liftSetterResult!(Interop/Text/DecimalFormat.applyPattern!(patt))
 }
