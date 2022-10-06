@@ -26,13 +26,31 @@ namespace Basis/IO {
 namespace Basis/IO/BufferedReader {
 
     use Basis/IO.BufferedReader;
+    use Basis/IO.InputStreamReader;
+    use Basis/IO.Reader;
 
-    // pub def newWithReader[r: Region, reader: Region -> Type](rd: reader[r]): 
 
-    pub def close!(br: BufferedReader[r]): Result[Unit, String] \ {IO, Write(r)} =
+
+    pub def toReader(rd: BufferedReader[r]): Reader[r] = 
+        Interop/IO/SubReader.toReader(rd)
+
+
+    pub def newWithReader(rd: Reader[r]): BufferedReader[r] \ Write(r) = 
+        Interop/IO/BufferedReader.newWithReader(rd)
+
+
+
+    pub def close!(br: BufferedReader[r]): Result[Unit, String] \ Write(r) =
         Interop/IO/BufferedReader.close!(br)
 
-    pub def linesIterator(br: BufferedReader[r]): Result[Iterator[String, r], String] \ {IO, Write(r)} =
+    pub def linesIterator!(br: BufferedReader[r]): Result[Iterator[String, r], String] \ Read(r) =
         Interop/IO/BufferedReader.lines!(br) |> Result.map(Interop/Util/Stream/Stream.iterator)
+
+    pub def read!(br: BufferedReader[r]): Result[Option[Int32], String] \ Read(r) = 
+        Interop/IO/BufferedReader.read!(br)
+
+    pub def skip!(n: Int64, br: BufferedReader[r]): Result[Int64, String] \ Read(r) = 
+        Interop/IO/Reader.skip!(n, br)
+
 
 }
