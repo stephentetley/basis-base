@@ -31,4 +31,6 @@ namespace Basis/IO/FilterInputStream {
     pub def toInputStream(s: FilterInputStream[r]): InputStream[r] =
         Interop/IO/SubInputStream.toInputStream(s)
 
+    pub def fromInputStream(s: InputStream[r]): FilterInputStream[r] =
+        Interop/IO/SubInputStream.fromInputStream(s)
 }        
