@@ -17,6 +17,7 @@
 
 namespace Basis/NIO/File/StandardOpenOption {
 
+    use Basis/NIO/File.OpenOption;
 
     pub enum StandardOpenOption with Eq, Order, ToString, Hash, Boxable {
         case Append
@@ -64,5 +65,9 @@ namespace Basis/NIO/File/StandardOpenOption {
 
     def primEquals(x: Interop/NIO/File.StandardOpenOption, y: Interop/NIO/File.StandardOpenOption): Bool = 
         Interop/Lang/Enum.equals(Interop/Lang/SubEnum.toEnum(x), Interop/Lang/SubEnum.toEnum(y))
+
+
+    pub def toOpenOption(x: StandardOpenOption): OpenOption = 
+        marshallStandardOpenOption(x) |> Interop/NIO/File/ImpOpenOption.toOpenOption
 
 }

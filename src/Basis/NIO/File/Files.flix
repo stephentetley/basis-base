@@ -20,12 +20,20 @@ namespace Basis/NIO/File/Files {
     use Basis/NIO/Charset.Charset;
     use Basis/NIO/File.Path;
     use Basis/NIO/File/LinkOption.LinkOption;
-    use Basis/NIO/File/StandardOpenOption.StandardOpenOption;
+    use Basis/NIO/File.OpenOption;
+    use Basis/IO.InputStream;
+    use Basis/Lang.CharSequence;
 
 
     pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 
         let opts1 = List.map(Basis/NIO/File/LinkOption.marshallLinkOption, opts);
         Interop/NIO/File/Files.exists(path, opts1)
+
+
+    /// TODO - should be able to take LinkOption.NofollowLinks
+    pub def newInputStream(r: Region[r], path: Path, opts: List[OpenOption]): Result[InputStream[r], String] \ IO = 
+        Interop/NIO/File/Files.newInputStream(r, path, opts)
+
 
     /// UTF_8
     pub def readStringUtf8(path: Path): Result[String, String] \ IO = 
@@ -35,17 +43,16 @@ namespace Basis/NIO/File/Files {
         Interop/NIO/File/Files.readString(path, cs)
 
     // UTF_8
-    pub def writeStringUtf8!(path: Path, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
-        let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
-        let opts1 = List.map(Basis/NIO/File/StandardOpenOption.marshallStandardOpenOption, opts);
-        Interop/NIO/File/Files.writeStringUtf8!(path, ws, opts1) |> Result.map(_ -> ())
+    pub def writeStringUtf8!(path: Path, opts: List[OpenOption], s: String): Result[Unit, String] \ IO = region r {
+        let s1 = Basis/Lang/CharSequence.fromString(r, s);
+        Interop/NIO/File/Files.writeStringUtf8!(path, s1, opts) |> Result.map(_ -> ())
     }
 
     // 
-    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[StandardOpenOption], s: String): Result[Unit, String] \ IO = region r {
-        let ws = Interop/Flix/WrappedRegion.wrapStringWithRegion(r, s);
-        let opts1 = List.map(Basis/NIO/File/StandardOpenOption.marshallStandardOpenOption, opts);
-        Interop/NIO/File/Files.writeString!(path, ws, cs, opts1) |> Result.map(_ -> ())
+    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], s: String): Result[Unit, String] \ IO = region r {
+        let s1 = Basis/Lang/CharSequence.fromString(r, s);
+        Interop/NIO/File/Files.writeString!(path, s1, cs, opts) |> Result.map(_ -> ())
     }
+
 
 }

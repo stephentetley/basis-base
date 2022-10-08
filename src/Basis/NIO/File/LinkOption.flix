@@ -17,6 +17,7 @@
 
 namespace Basis/NIO/File/LinkOption {
 
+    use Basis/NIO/File.OpenOption;
 
     pub enum LinkOption with Eq, Order, ToString, Hash, Boxable {
         case NofollowLinks
@@ -37,5 +38,9 @@ namespace Basis/NIO/File/LinkOption {
 
     def primEquals(x: Interop/NIO/File.LinkOption, y: Interop/NIO/File.LinkOption): Bool = 
         Interop/Lang/Enum.equals(Interop/Lang/SubEnum.toEnum(x), Interop/Lang/SubEnum.toEnum(y))
+
+
+    pub def toOpenOption(x: LinkOption): OpenOption = 
+        marshallLinkOption(x) |> Interop/NIO/File/ImpOpenOption.toOpenOption
 
 }
