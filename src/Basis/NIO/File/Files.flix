@@ -53,6 +53,16 @@ namespace Basis/NIO/File/Files {
         let s1 = Basis/Lang/CharSequence.fromString(r, s);
         Interop/NIO/File/Files.writeString!(path, s1, cs, opts) |> Result.map(_ -> ())
     }
+    
+    // UTF_8
+    pub def writeStringBuilderUtf8!(path: Path, opts: List[OpenOption], sb: StringBuilder[r]): Result[Unit, String] \ {IO, Read(r)} =
+        let sb1 = Basis/Lang/CharSequence.fromStringBuilder(sb);
+        Interop/NIO/File/Files.writeStringUtf8!(path, sb1, opts) |> Result.map(_ -> ())
+    
 
+    // 
+    pub def writeStringBuilderWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], sb: StringBuilder[r]): Result[Unit, String] \ {IO, Read(r)} = 
+        let sb1 = Basis/Lang/CharSequence.fromStringBuilder(sb);
+        Interop/NIO/File/Files.writeString!(path, sb1, cs, opts) |> Result.map(_ -> ())
 
 }

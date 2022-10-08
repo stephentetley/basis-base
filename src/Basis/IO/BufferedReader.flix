@@ -50,7 +50,7 @@ namespace Basis/IO/BufferedReader {
         Interop/IO/BufferedReader.read!(br)
 
     pub def skip!(n: Int64, br: BufferedReader[r]): Result[Int64, String] \ Read(r) = 
-        Interop/IO/Reader.skip!(n, br)
+        toReader(br) |> Interop/IO/Reader.skip!(n)
 
 
 }

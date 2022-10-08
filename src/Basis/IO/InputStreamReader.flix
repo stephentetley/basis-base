@@ -26,13 +26,24 @@ namespace Basis/IO {
 namespace Basis/IO/InputStreamReader {
 
     use Basis/IO.InputStreamReader;
+    use Basis/IO.InputStream;
     use Basis/IO.Reader;
+    use Basis/NIO/Charset.Charset;
 
     /// Provide a `to` function to upcast.
 
     pub def toReader(rd: InputStreamReader[r]): Reader[r] = 
         Interop/IO/SubReader.toReader(rd)
 
+    pub def newInputStreamReader(ins: InputStream[r], cs: Charset): InputStreamReader[r] \ Write(r) = 
+        Interop/IO/InputStreamReader.newInputStreamReader(ins, cs)
+
+
+    pub def getEncoding(rd: InputStreamReader[r]): String \ Read(r) = 
+        Interop/IO/InputStreamReader.getEncoding(rd)
+
+    pub def close!(rd: InputStreamReader[r]): Result[Unit, String] \ Write(r) = 
+        Interop/IO/InputStreamReader.close!(rd)
 
 }
 
