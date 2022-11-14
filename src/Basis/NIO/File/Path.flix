@@ -176,7 +176,7 @@ namespace Basis/NIO/File/Path {
     ///
     /// Returns `true` if the Path `path1` starts with the string `path2`.
     ///
-    pub def startsWith(prefix: {prefix :: Path}, path2: Path): Bool =
+    pub def startsWith(prefix: {prefix = Path}, path2: Path): Bool =
         Interop/NIO/File/Path.startsWith(prefix = prefix.prefix, path2)
 
 

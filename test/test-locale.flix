@@ -19,13 +19,13 @@ namespace TestLocale {
 
     @test
     def getIsoCountries01(): Unit & Impure = 
-        Basis/Util/Locale.getIsoCountries() |> List.foreach(println)
+        Basis/Util/Locale.getIsoCountries() |> List.forEach(println)
 
 
     @test
     def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
         match Basis/Util/Locale.getIsoCountriesWithIsoCountryCode(Interop/Util/Locale/IsoCountryCode.Part1Alpha2) {
-            case Ok(s) => Set.foreach(println, s) 
+            case Ok(s) => Set.forEach(println, s) 
             case Err(msg) => println("Err: ${msg}")
         }
 
@@ -33,7 +33,7 @@ namespace TestLocale {
     @test
     def test03(): Unit & Impure = 
         match Basis/Util/Locale.getIsoLanguages() {
-            case Ok(l) => List.foreach(println, l) 
+            case Ok(l) => List.forEach(println, l) 
             case Err(msg) => println("Err: ${msg}")
         }
 
@@ -41,7 +41,7 @@ namespace TestLocale {
     @test
     def test04(): Unit & Impure = 
         Basis/Util/Locale.getAvailableLocales()
-            |> List.foreach(println) 
+            |> List.forEach(println) 
 
 
     @test
@@ -55,13 +55,13 @@ namespace TestLocale {
     def getUnicodeLocaleAttributes01(): Unit & Impure =
         let l1 = Basis/Util/Locale.japan();
         Basis/Util/Locale.getUnicodeLocaleAttributes(l1) 
-            |> Set.foreach(x1 -> println("Attr: ${x1}"))
+            |> Set.forEach(x1 -> println("Attr: ${x1}"))
 
     @test
     def getUnicodeLocaleKeys01(): Unit & Impure =
         let l1 = Basis/Util/Locale.japan();
         Basis/Util/Locale.getUnicodeLocaleKeys(l1) 
-            |> Set.foreach(x1 -> println("Key: ${x1}"))
+            |> Set.forEach(x1 -> println("Key: ${x1}"))
 
     @test
     def lookup01(): Unit & Impure =

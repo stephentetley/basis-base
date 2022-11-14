@@ -19,11 +19,11 @@ namespace TestCharset {
 
     @test
     def aliases01(): Unit & Impure = 
-        Basis/NIO/Charset/Charset.utf_8() |> Basis/NIO/Charset/Charset.aliases |> Set.foreach(println)
+        Basis/NIO/Charset/Charset.utf_8() |> Basis/NIO/Charset/Charset.aliases |> Set.forEach(println)
 
     @test
     def availableCharsets01(): Unit & Impure = 
-        Basis/NIO/Charset/Charset.availableCharsets() |> Map.toList |> List.foreach(println)
+        Basis/NIO/Charset/Charset.availableCharsets() |> Map.toList |> List.forEach(println)
 
 
 }

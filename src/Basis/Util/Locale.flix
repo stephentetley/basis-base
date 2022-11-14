@@ -74,7 +74,7 @@ namespace Basis/Util/Locale {
     ///
     /// Returns a new Locale for the supplied language and country.
     ///
-    pub def newLocaleWithCountry(lang: {lang :: String}, country: {country :: String}): Locale =
+    pub def newLocaleWithCountry(lang: {lang = String}, country: {country = String}): Locale =
         Interop/Util/Locale.newLocaleWithCountry(lang = lang.lang, country = country.country)
 
     ///
@@ -85,7 +85,7 @@ namespace Basis/Util/Locale {
     ///
     /// For guidelines to the formatting of a valid tag see the Javadoc for `java.util.Locale`.
     /// 
-    pub def newLocaleWithVariant(lang: {lang :: String}, country: {country :: String}, variant: {variant :: String}): Locale =
+    pub def newLocaleWithVariant(lang: {lang = String}, country: {country = String}, variant: {variant = String}): Locale =
         Interop/Util/Locale.newLocaleWithVariant(lang = lang.lang, country = country.country, variant = variant.variant)
 
 
@@ -198,33 +198,33 @@ namespace Basis/Util/Locale {
     pub def getDisplayCountry(loc: Locale): String =
         Interop/Util/Locale.getDisplayCountry(loc)
 
-    pub def getDisplayCountryWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
+    pub def getDisplayCountryWithLocale(inLocale: {inLocale = Locale}, loc: Locale): String =
         Interop/Util/Locale.getDisplayCountryWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayLanguage(loc: Locale): String =
         Interop/Util/Locale.getDisplayLanguage(loc)
 
 
-    pub def getDisplayLanguageWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
+    pub def getDisplayLanguageWithLocale(inLocale: {inLocale = Locale}, loc: Locale): String =
         Interop/Util/Locale.getDisplayLanguageWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayName(loc: Locale): String =
         Interop/Util/Locale.getDisplayName(loc)
 
-    pub def getDisplayNameWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
+    pub def getDisplayNameWithLocale(inLocale: {inLocale = Locale}, loc: Locale): String =
         Interop/Util/Locale.getDisplayNameWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def getDisplayScript(loc: Locale): String =
         Interop/Util/Locale.getDisplayScript(loc)
 
-    pub def getDisplayScriptWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
+    pub def getDisplayScriptWithLocale(inLocale: {inLocale = Locale}, loc: Locale): String =
         Interop/Util/Locale.getDisplayScriptWithLocale(inLocale = inLocale.inLocale, loc)
 
 
     pub def getDisplayVariant(loc: Locale): String =
         Interop/Util/Locale.getDisplayVariant(loc)
 
-    pub def getDisplayVariantWithLocale(inLocale: {inLocale :: Locale}, loc: Locale): String =
+    pub def getDisplayVariantWithLocale(inLocale: {inLocale = Locale}, loc: Locale): String =
         Interop/Util/Locale.getDisplayVariantWithLocale(inLocale = inLocale.inLocale, loc)
 
     pub def hasExtensions(loc: Locale): Bool =

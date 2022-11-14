@@ -56,13 +56,13 @@ namespace Basis/Lang/Process {
 
 
     pub type alias ProcessArgs =
-        { cmd :: String
-        , args :: List[String]
-        , charset :: Charset
+        { cmd = String
+        , args = List[String]
+        , charset = Charset
         }
 
     /// Return with an Exit Code
-    pub def processWithExitCode(args: ProcessArgs): Result[{exitCode :: Int32, processResponse :: String}, String] \ IO =
+    pub def processWithExitCode(args: ProcessArgs): Result[{exitCode = Int32, processResponse = String}, String] \ IO =
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);
@@ -74,7 +74,7 @@ namespace Basis/Lang/Process {
         }
 
 
-    pub def process(args: ProcessArgs): Result[{processResponse :: String}, String] \ IO =
+    pub def process(args: ProcessArgs): Result[{processResponse = String}, String] \ IO =
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);
