@@ -35,8 +35,12 @@ namespace Basis/Util/Currency {
     use Basis/Util.Locale;
     
 
-    pub def getAvailableCurrencies(): Result[List[Currency], String] \ IO = 
-        Interop/Util/Currency.getAvailableCurrencies()
+    pub def getAvailableCurrencies(): List[Currency] \ IO = region r {
+        Interop/Util/Currency.getAvailableCurrencies(r)
+            |> Interop/Util/SetZ.toFlixList
+    }
+
+
 
     pub def getInstance(code: String): Result[Currency, String] \ IO = 
         Interop/Util/Currency.getInstance(code)

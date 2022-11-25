@@ -26,10 +26,10 @@ namespace Basis/Text {
 
 namespace Basis/Text/DecimalFormatSymbols {
 
-    use Basis/Text.DecimalFormatSymbols;
-    use Basis/Text.DecimalFormatSymbols.{DecimalFormatSymbols};
-    use Basis/I18n.Locale;
-    use Basis/I18n.Currency;
+    use Basis/Text.DecimalFormatSymbols
+    use Basis/Text.DecimalFormatSymbols.{DecimalFormatSymbols}
+    // use Basis/I18n.Locale;
+    // use Basis/I18n.Currency;
 
     def toInteropDecimalFormatSymbols(r: Region[r], syms: DecimalFormatSymbols): Interop/Text.DecimalFormatSymbols[r] = 
         let DecimalFormatSymbols(syms1) = syms;

@@ -29,10 +29,10 @@ namespace Basis/Text {
 
 namespace Basis/Text/Collator {
 
-    use Basis/Text.Collator;
-    use Basis/Text.Collator.{Collator};
+    use Basis/Text.Collator
+    use Basis/Text.Collator.{Collator}
 
-    use Basis/I18n.Locale;
+    // use Basis/I18n.Locale;
 
 
 

@@ -36,10 +36,9 @@ namespace Basis/NIO/Charset {
 
 namespace Basis/NIO/Charset/Charset {
 
-    use Basis/NIO/Charset.Charset;
+    use Basis/NIO/Charset.Charset
 
-    use Basis/Util.Locale;
-    use Basis/Util.Locale.{Locale};
+    use Basis/Util.Locale
 
 
     pub def forName(name: String): Option[Charset] =
