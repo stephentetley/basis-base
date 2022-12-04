@@ -32,9 +32,6 @@ namespace Basis/Text/Collator {
     use Basis/Text.Collator
     use Basis/Text.Collator.{Collator}
 
-    // use Basis/I18n.Locale;
-
-
 
     // Note - Java's Collator dates from 1.1 and predates enums (1.5), I think the use of 
     // enums here is safe.

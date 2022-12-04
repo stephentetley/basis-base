@@ -29,11 +29,11 @@ namespace Basis/Lang/CharSequence {
     use Interop/Lang.CharSequence.{CharSequence};
 
     pub def fromString(_: Region[r], s: String): CharSequence[r] \ Write(r) = 
-        CharSequence(s as ##java.lang.CharSequence) as \ Write(r)
+        unsafe_cast CharSequence(unsafe_cast s as ##java.lang.CharSequence) as \ Write(r)
 
     pub def fromStringBuilder(sb: StringBuilder[r]): CharSequence[r] \ Write(r) = 
         let StringBuilder(sb1) = sb;
-        CharSequence(sb1 as ##java.lang.CharSequence) as \ Write(r)
+        unsafe_cast CharSequence(unsafe_cast sb1 as ##java.lang.CharSequence) as \ Write(r)
 
 
 }

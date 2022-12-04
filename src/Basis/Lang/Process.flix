@@ -44,14 +44,14 @@ namespace Basis/Lang/Process {
         use Result.flatMap;
         let strm    = Interop/Lang/Process.getInputStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
-        Ok(Interop/Lang/String.fromArrayWithCharset(cs, bytes))
+        Ok(Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes))
 
 
     pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO =
         use Result.flatMap;
         let strm    = Interop/Lang/Process.getErrorStream(p);
         let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
-        Ok(Interop/Lang/String.fromArrayWithCharset(cs, bytes))
+        Ok(Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes))
 
 
 

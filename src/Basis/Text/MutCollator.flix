@@ -37,6 +37,9 @@ namespace Basis/Text/MutCollator {
     use Basis/Util.Locale;
 
     ///
+    /// TODO - this is wrong, we can only `thaw` an immutable Collator to a mutable one.
+    /// `freeze` does not prevent the underlying MutCollator being changed elsewhere which
+    /// will change the "immutable" Collator.
     /// Uses a Collator to be accurate with the locale of the JVM.
     ///
     pub def freeze(col: MutCollator[r]): Collator =

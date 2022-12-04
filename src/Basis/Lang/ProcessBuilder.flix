@@ -92,7 +92,7 @@ namespace Basis/Lang/ProcessBuilder {
 
 
     pub def start(r: Region[r], ma: ProcessBuilder[r, a, a]): Result[Process[r], String] \ { Write(r), IO } = 
-        let state1 = Interop/Lang/ProcessBuilder.new(r, Nil) as \ { Write(r), IO };
+        let state1 = unsafe_cast Interop/Lang/ProcessBuilder.new(r, Nil) as \ { Write(r), IO };
         match runBuilder(r, ma, state1) {
             case Err(msg) => Err(msg)
             case Ok(_)    => Interop/Lang/ProcessBuilder.start(state1)
