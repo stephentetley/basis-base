@@ -28,12 +28,15 @@ namespace Basis/Lang/CharSequence {
     use Basis/Lang.CharSequence;
     use Interop/Lang.CharSequence.{CharSequence};
 
+    /// TODO - to remove? CharSequence is an interface - should we just deal 
+    /// with concrete implementations - String, StringBuilder... ?
+
     pub def fromString(_: Region[r], s: String): CharSequence[r] \ Write(r) = 
-        unsafe_cast CharSequence(unsafe_cast s as ##java.lang.CharSequence) as \ Write(r)
+        unsafe_cast CharSequence(unsafe_cast s as ##java.lang.CharSequence) as _ \ Write(r)
 
     pub def fromStringBuilder(sb: StringBuilder[r]): CharSequence[r] \ Write(r) = 
         let StringBuilder(sb1) = sb;
-        unsafe_cast CharSequence(unsafe_cast sb1 as ##java.lang.CharSequence) as \ Write(r)
+        unsafe_cast CharSequence(unsafe_cast sb1 as ##java.lang.CharSequence) as _ \ Write(r)
 
 
 }
