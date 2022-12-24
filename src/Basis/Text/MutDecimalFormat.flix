@@ -117,9 +117,8 @@ namespace Basis/Text/MutDecimalFormat {
 
     /// Returns an immutable DecimalFormat
     /// TODO - should build on an initial `DecimalFormat` to avoid proliferating `build...` functions
-    pub def build(df: MutDecimalFormat[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
-        let r = Scoped.regionOf(df);
-        match runBuilder(r, ma, df) {
+    pub def build(rh: Region[r], df: MutDecimalFormat[r], ma: DecimalFormatBuilder[r, a, a]): Result[DecimalFormat, String] \ Write(r) =
+        match runBuilder(rh, ma, df) {
             case Err(msg) => Err(msg)
             case Ok(_)    => freeze(df) |> Ok
         }

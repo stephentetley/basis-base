@@ -23,7 +23,7 @@ namespace Basis/Text {
 
 }
 
-
+/*
 namespace Basis/Text/DecimalFormat {
 
     use Basis/Text.DecimalFormat;
@@ -102,3 +102,4 @@ namespace Basis/Text/DecimalFormat {
 
 
 }
+*/
