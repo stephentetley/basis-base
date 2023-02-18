@@ -71,11 +71,11 @@ namespace Basis/Util/Locale/Builder {
         Builder(Graded/MutStateError.throwError(msg))
 
 
-    def liftSetter!(f: Interop/Util/Locale.Builder[r] -> Interop/Util/Locale.Builder[r] \ ef): Builder[r, ka, ef, Unit] =
-        Builder(Graded/MutStateError.liftSetter!(f) |> Functor.ignore)
+    def liftSetter!(f: Interop/Util/Locale.Builder[r] -> Interop/Util/Locale.Builder[r] \ {r, ef}): Builder[r, ka, ef and r, Unit] =
+        Builder(Graded/MutStateError.liftSetter!(f) |> GradedFunctor.ignore)
 
-    def liftSetterResult!(f: Interop/Util/Locale.Builder[r] -> Result[err, Interop/Util/Locale.Builder[r]] \ ef): Builder[r, ka, ef, Unit] with ToString[err] =
-        Builder(Graded/MutStateError.liftSetterResult!(f) |> Functor.ignore)
+    def liftSetterResult!(f: Interop/Util/Locale.Builder[r] -> Result[err, Interop/Util/Locale.Builder[r]] \ {r, ef}): Builder[r, ka, ef and r, Unit] with ToString[err] =
+        Builder(Graded/MutStateError.liftSetterResult!(f) |> GradedFunctor.ignore)
 
     // def liftGetter(f: Interop/Util/Locale.Builder[r] -> a \ ef): Builder[r, ka, a] \ ef =
     //     Builder(Graded/MutStateError.liftGetter(f))
@@ -87,56 +87,56 @@ namespace Basis/Util/Locale/Builder {
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(r: Region[r], 
-                        ma: Builder[r, a, ef, a], 
-                        s: Interop/Util/Locale.Builder[r]): Result[String, a] \ { r, ef }  = 
-        Graded/MutStateError.runMutStateError(r, getBuilder(ma), s)
+    def runBuilder(_: Region[r], 
+                    ma: Builder[r, a, ef, a], 
+                    s: Interop/Util/Locale.Builder[r]): Result[String, a] \ ef  = 
+        Graded/MutStateError.runMutStateError(getBuilder(ma), s)
 
 
-    pub def build(r: Region[r], ma: Builder[r, a, ef, a]): Result[String, Locale] \ { ef, Read(r), Write(r) } = 
-        let state1 = Interop/Util/Locale/Builder.new(r);
-        match runBuilder(r, ma, state1) {
+    pub def build(rc: Region[r], ma: Builder[r, a, ef, a]): Result[String, Locale] \ {r, ef} = 
+        let state1 = Interop/Util/Locale/Builder.new(rc);
+        match runBuilder(rc, ma, state1) {
             case Err(msg) => Err(msg)
             case Ok(_)    => Ok(Interop/Util/Locale/Builder.build(state1))
         }
 
 
-    pub def clear!(): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def clear!(): Builder[r, ka, r, Unit] = 
         liftSetter!(Interop/Util/Locale/Builder.clear!)
 
-    pub def clearExtensions!(): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def clearExtensions!(): Builder[r, ka, r, Unit] = 
         liftSetter!(Interop/Util/Locale/Builder.clearExtensions!)
 
-    pub def setExtension(k: Char, v: String): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setExtension(k: Char, v: String): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.setExtension!(k, v))
 
-    pub def setUnicodeLocaleKeyword!(k: String, ty: String): Builder[r, ka, ef, Unit] \ Write(r) =
+    pub def setUnicodeLocaleKeyword!(k: String, ty: String): Builder[r, ka, r, Unit] =
         liftSetterResult!(Interop/Util/Locale/Builder.setUnicodeLocaleKeyword!(k, ty))
 
-    pub def setLanguage!(lang: String): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setLanguage!(lang: String): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.setLanguage!(lang))
 
-    pub def setLanguageTag!(tag: String): Builder[r, ka, ef, Unit] \ Write(r) =
+    pub def setLanguageTag!(tag: String): Builder[r, ka, r, Unit] =
         liftSetterResult!(Interop/Util/Locale/Builder.setLanguageTag!(tag))
 
-    pub def setLocale!(loc: Locale): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setLocale!(loc: Locale): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.setLocale!(loc))
 
-    pub def setRegion!(rgn: String): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setRegion!(rgn: String): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.setRegion!(rgn))
 
 
-    pub def setScript!(script: String): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setScript!(script: String): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.setScript!(script))
 
-    pub def setVariant!(vrnt: String): Builder[r, ka, ef, Unit] \ Write(r) =
+    pub def setVariant!(vrnt: String): Builder[r, ka, r, Unit] =
         liftSetterResult!(Interop/Util/Locale/Builder.setVariant!(vrnt))
 
     
-    pub def addUnicodeLocaleAttribute!(attr: String): Builder[r, ka, ef, Unit] \ Write(r) = 
+    pub def addUnicodeLocaleAttribute!(attr: String): Builder[r, ka, r, Unit] = 
         liftSetterResult!(Interop/Util/Locale/Builder.addUnicodeLocaleAttribute!(attr))
 
-    pub def removeUnicodeLocaleAttribute!(attr: String): Builder[r, ka, ef, Unit] \ Write(r) =
+    pub def removeUnicodeLocaleAttribute!(attr: String): Builder[r, ka, r, Unit] =
         liftSetterResult!(Interop/Util/Locale/Builder.removeUnicodeLocaleAttribute!(attr))
 
 }   

@@ -218,7 +218,7 @@ namespace Basis/NIO/File/Path {
         use Option.flatMap;
         let* s = getFileName(path) |> Option.map(toString);
         let* ix = String.indexOfRight({substr = "."}, s);
-        Some(String.sliceRight(ix+1, s))
+        Some(String.sliceRight(start = ix+1, s))
 
     ///
     /// Replaces the extension.
@@ -289,7 +289,7 @@ namespace Basis/NIO/File/Path {
         use Option.flatMap;
         let* s = getFileName(path) |> Option.map(toString);
         let* ix = String.indexOfLeft({substr = "."}, s);
-        Some(String.sliceRight(ix + 1, s))
+        Some(String.sliceRight(start = ix + 1, s))
 
     ///
     /// Drop all extensions if the Path has mutliple extensions,

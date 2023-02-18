@@ -73,10 +73,10 @@ namespace Basis/Lang/ProcessBuilder {
         ProcessBuilder(Graded/MutStateError.throwError(msg))
 
     def liftSetter!(f: Interop/Lang.ProcessBuilder[r] -> Interop/Lang.ProcessBuilder[r] \ ef): ProcessBuilder[r, ka, ef, Unit] =
-        ProcessBuilder(Graded/MutStateError.liftSetter!(f) |> Functor.ignore)
+        ProcessBuilder(Graded/MutStateError.liftSetter!(f) |> GradedFunctor.ignore)
 
     def liftSetterResult!(f: Interop/Lang.ProcessBuilder[r] -> Result[err, Interop/Lang.ProcessBuilder[r]] \ ef): ProcessBuilder[r, ka, ef, Unit] with ToString[err] =
-        ProcessBuilder(Graded/MutStateError.liftSetterResult!(f) |> Functor.ignore)
+        ProcessBuilder(Graded/MutStateError.liftSetterResult!(f) |> GradedFunctor.ignore)
 
     // def liftGetter(f: Interop/Lang.ProcessBuilder[r] -> a \ ef): ProcessBuilder[r, ka, a] \ ef =
     //     ProcessBuilder(Graded/MutStateError.liftGetter(f))
@@ -87,43 +87,43 @@ namespace Basis/Lang/ProcessBuilder {
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(r: Region[r], 
+    def runBuilder(_: Region[r], 
                         ma: ProcessBuilder[r, a, ef, a], 
-                        s: Interop/Lang.ProcessBuilder[r]): Result[String, a] \ { r, ef } = 
-        Graded/MutStateError.runMutStateError(r, getProcessBuilder(ma), s)
+                        s: Interop/Lang.ProcessBuilder[r]): Result[String, a] \ ef = 
+        Graded/MutStateError.runMutStateError(getProcessBuilder(ma), s)
 
 
-    pub def start(r: Region[r], ma: ProcessBuilder[r, a, ef, a]): Result[String, Process[r]] \ { ef, Write(r), IO } = 
-        let state1 = unsafe_cast Interop/Lang/ProcessBuilder.new(r, Nil) as _ \ { Write(r), IO };
-        match runBuilder(r, ma, state1) {
+    pub def start(rc: Region[r], ma: ProcessBuilder[r, a, ef, a]): Result[String, Process[r]] \ { r, ef } = 
+        let state1 = Interop/Lang/ProcessBuilder.new(rc, Nil);
+        match runBuilder(rc, ma, state1) {
             case Err(msg) => Err(msg)
-            case Ok(_)    => Interop/Lang/ProcessBuilder.start(state1)
+            case Ok(_)    => Interop/Lang/ProcessBuilder.start(rc, state1)
         }
 
 
     /// API...
 
 
-    pub def command!(cmd: String, args: List[String]): ProcessBuilder[r, ka, ef, Unit] \ Write(r) =
+    pub def command!(cmd: String, args: List[String]): ProcessBuilder[r, ka, r, Unit] =
         liftSetter!(Interop/Lang/ProcessBuilder.command!(cmd :: args))
 
 
-    pub def setDirectory!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
+    pub def setDirectory!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
             Ok(Interop/Lang/ProcessBuilder.directory!(file1, pb))
         };
         liftSetterResult!(step)
-        
 
-    pub def getDirectory(): ProcessBuilder[r, ka, ef, Path] \ Read(r) = 
-        liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/NIO/File/Path.fromFile)
+    // TODO
+    // pub def getDirectory(): ProcessBuilder[r, ka, r, Path] = 
+    //     liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/NIO/File/Path.fromFile)
 
-    pub def getEnvironment(): ProcessBuilder[r, ka, ef, Map[String, String]] \ Read(r) = 
+    pub def getEnvironment(): ProcessBuilder[r, ka, r and Impure, Map[String, String]] = 
         liftGetterResult(Interop/Lang/ProcessBuilder.environment)
 
-    pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
+    pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
@@ -131,7 +131,7 @@ namespace Basis/Lang/ProcessBuilder {
         };
         liftSetterResult!(step)
 
-    pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
+    pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
@@ -140,7 +140,7 @@ namespace Basis/Lang/ProcessBuilder {
         liftSetterResult!(step)
 
 
-    pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
+    pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);

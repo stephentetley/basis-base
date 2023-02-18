@@ -33,7 +33,7 @@ namespace Basis/Lang/Process {
     use Basis/Lang.ProcessBuilder.{ProcessBuilder};
 
 
-    pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, ef, Unit] \ Write(r) =
+    pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, r, Unit] =
         Basis/Lang/ProcessBuilder.command!(cmd, args)
 
 
@@ -41,17 +41,17 @@ namespace Basis/Lang/Process {
         Interop/Lang/Process.waitFor!(p)
 
 
-    pub def getInput(cs: Charset, p: Process[r]): Result[String, String] \ IO = region r {
+    pub def getInput(cs: Charset, p: Process[r]): Result[String, String] \ IO = region rc {
         use Result.flatMap;
-        let strm    = Interop/Lang/Process.getInputStream(r, p);
-        let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
+        let strm    = Interop/Lang/Process.getInputStream(rc, p);
+        let* bytes  = Interop/IO/InputStream.readAllBytes(rc, strm);
         Ok(Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes))
 }
 
-    pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO = region r {
+    pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO = region rc {
         use Result.flatMap;
-        let strm    = Interop/Lang/Process.getErrorStream(r, p);
-        let* bytes  = Interop/IO/InputStream.readAllBytes(strm);
+        let strm    = Interop/Lang/Process.getErrorStream(rc, p);
+        let* bytes  = Interop/IO/InputStream.readAllBytes(rc, strm);
         Ok(Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes))
     }
 
