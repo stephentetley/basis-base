@@ -17,12 +17,12 @@
 
 namespace Basis/NIO/File/Files {
 
-    use Basis/NIO/Charset.Charset;
-    use Basis/NIO/File.Path;
-    use Basis/NIO/File/LinkOption.LinkOption;
-    use Basis/NIO/File.OpenOption;
-    use Basis/IO.InputStream;
-    use Basis/Lang.CharSequence;
+    use Basis/NIO/Charset.Charset
+    use Basis/NIO/File.Path
+    use Basis/NIO/File/LinkOption.LinkOption
+    use Basis/NIO/File.OpenOption
+    use Basis/IO.InputStream
+    use Basis/Lang.CharSequence
 
 
     pub def exists(path: Path, opts: List[LinkOption]): Result[String, Bool] \ IO = 
@@ -31,8 +31,8 @@ namespace Basis/NIO/File/Files {
 
 
     /// TODO - should be able to take LinkOption.NofollowLinks
-    pub def newInputStream(r: Region[r], path: Path, opts: List[OpenOption]): Result[String, InputStream[r]] \ IO = 
-        Interop/NIO/File/Files.newInputStream(r, path, opts)
+    pub def newInputStream(rc: Region[r], path: Path, opts: List[OpenOption]): Result[String, InputStream[r]] \ IO = 
+        Interop/NIO/File/Files.newInputStream(rc, path, opts)
 
 
     /// UTF_8
