@@ -90,10 +90,10 @@ namespace Basis/Util/Locale {
 
 
 
-    pub def setJvmDefaultLocale!(loc: Locale): Result[Unit, String] \ IO =
+    pub def setJvmDefaultLocale!(loc: Locale): Result[String, Unit] \ IO =
         Interop/Util/Locale.setJvmDefaultLocale!(loc)
 
-    pub def setJvmDefaultLocaleWithCategory!(category: Category, loc: Locale): Result[Unit, String] \ IO =
+    pub def setJvmDefaultLocaleWithCategory!(category: Category, loc: Locale): Result[String, Unit] \ IO =
         Interop/Util/Locale.setJvmDefaultLocaleWithCategory!(category, loc)
 
     ///
@@ -248,10 +248,10 @@ namespace Basis/Util/Locale {
     pub def getIsoCountries(): List[String] =
         Interop/Util/Locale.getIsoCountries()
 
-    pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[Set[String], String] =
+    pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[String, Set[String]] =
         Interop/Util/Locale.getIsoCountriesWithIsoCountryCode(icc)
 
-    pub def getIsoLanguages(): Result[List[String], String] =
+    pub def getIsoLanguages(): Result[String, List[String]] =
         Interop/Util/Locale.getIsoLanguages()
 
     pub def getExtension(key: Char, loc: Locale): Option[String] =

@@ -25,13 +25,13 @@ namespace Basis/NIO/File/Files {
     use Basis/Lang.CharSequence;
 
 
-    pub def exists(path: Path, opts: List[LinkOption]): Result[Bool, String] \ IO = 
+    pub def exists(path: Path, opts: List[LinkOption]): Result[String, Bool] \ IO = 
         let opts1 = List.map(Basis/NIO/File/LinkOption.marshallLinkOption, opts);
         Interop/NIO/File/Files.exists(path, opts1)
 
 
     /// TODO - should be able to take LinkOption.NofollowLinks
-    pub def newInputStream(r: Region[r], path: Path, opts: List[OpenOption]): Result[InputStream[r], String] \ IO = 
+    pub def newInputStream(r: Region[r], path: Path, opts: List[OpenOption]): Result[String, InputStream[r]] \ IO = 
         Interop/NIO/File/Files.newInputStream(r, path, opts)
 
 
@@ -43,25 +43,25 @@ namespace Basis/NIO/File/Files {
         Interop/NIO/File/Files.readString(path, cs)
 
     // UTF_8
-    pub def writeStringUtf8!(path: Path, opts: List[OpenOption], s: String): Result[Unit, String] \ IO = region r {
+    pub def writeStringUtf8!(path: Path, opts: List[OpenOption], s: String): Result[String, Unit] \ IO = region r {
         let s1 = Basis/Lang/CharSequence.fromString(r, s);
         Interop/NIO/File/Files.writeStringUtf8!(path, s1, opts) |> Result.map(_ -> ())
     }
 
     // 
-    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], s: String): Result[Unit, String] \ IO = region r {
+    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], s: String): Result[String, Unit] \ IO = region r {
         let s1 = Basis/Lang/CharSequence.fromString(r, s);
         Interop/NIO/File/Files.writeString!(path, s1, cs, opts) |> Result.map(_ -> ())
     }
     
     // UTF_8
-    pub def writeStringBuilderUtf8!(path: Path, opts: List[OpenOption], sb: StringBuilder[r]): Result[Unit, String] \ {IO, Read(r)} =
+    pub def writeStringBuilderUtf8!(path: Path, opts: List[OpenOption], sb: StringBuilder[r]): Result[String, Unit] \ {IO, Read(r)} =
         let sb1 = Basis/Lang/CharSequence.fromStringBuilder(sb);
         Interop/NIO/File/Files.writeStringUtf8!(path, sb1, opts) |> Result.map(_ -> ())
     
 
     // 
-    pub def writeStringBuilderWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], sb: StringBuilder[r]): Result[Unit, String] \ {IO, Read(r)} = 
+    pub def writeStringBuilderWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], sb: StringBuilder[r]): Result[String, Unit] \ {IO, Read(r)} = 
         let sb1 = Basis/Lang/CharSequence.fromStringBuilder(sb);
         Interop/NIO/File/Files.writeString!(path, sb1, cs, opts) |> Result.map(_ -> ())
 

@@ -85,7 +85,7 @@ namespace TestLocale {
 
     @test
     def builder02(): Unit & Impure =
-        use Applicative.{*>};
+        use GradedApplicative.{*>};
         use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!};
         region r1 {
             println("TestLocale.builder02...");
@@ -97,7 +97,7 @@ namespace TestLocale {
 
     @test
     def builder03(): Unit & Impure =
-        use Applicative.{*>};
+        use GradedApplicative.{*>};
         use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!, setRegion!};
         region r1 {
             println("TestLocale.builder03... expect Err");

@@ -42,7 +42,7 @@ namespace Basis/IO/InputStreamReader {
     pub def getEncoding(rd: InputStreamReader[r]): String \ Read(r) = 
         Interop/IO/InputStreamReader.getEncoding(rd)
 
-    pub def close!(rd: InputStreamReader[r]): Result[Unit, String] \ Write(r) = 
+    pub def close!(rd: InputStreamReader[r]): Result[String, Unit] \ Write(r) = 
         Interop/IO/InputStreamReader.close!(rd)
 
 }

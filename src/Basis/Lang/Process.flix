@@ -33,11 +33,11 @@ namespace Basis/Lang/Process {
     use Basis/Lang.ProcessBuilder.{ProcessBuilder};
 
 
-    pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, Unit] \ Write(r) =
+    pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, ef, Unit] \ Write(r) =
         Basis/Lang/ProcessBuilder.command!(cmd, args)
 
 
-    pub def waitFor!(p: Process[r]): Result[Int32, String] \ { Write(r), IO } =
+    pub def waitFor!(p: Process[r]): Result[String, Int32] \ { Write(r), IO } =
         Interop/Lang/Process.waitFor!(p)
 
 
@@ -63,7 +63,7 @@ namespace Basis/Lang/Process {
         }
 
     /// Return with an Exit Code
-    pub def processWithExitCode(args: ProcessArgs): Result[{exitCode = Int32, processResponse = String}, String] \ IO =
+    pub def processWithExitCode(args: ProcessArgs): Result[String, {exitCode = Int32, processResponse = String}] \ IO =
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);
@@ -75,7 +75,7 @@ namespace Basis/Lang/Process {
         }
 
 
-    pub def process(args: ProcessArgs): Result[{processResponse = String}, String] \ IO =
+    pub def process(args: ProcessArgs): Result[String, {processResponse = String}] \ IO =
         use Result.flatMap;
         region r1 {
             let pb          = processBuilder(args.cmd, args.args);

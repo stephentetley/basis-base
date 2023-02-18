@@ -34,7 +34,7 @@ namespace Basis/IO/FileInputStream {
     pub def fromInputStream(s: InputStream[r]): FileInputStream[r] =
         Interop/IO/SubInputStream.fromInputStream(s)
 
-    pub def newWithPath(r: Region[r], path: Path): Result[FileInputStream[r], String] \ {IO, Write(r)} = 
+    pub def newWithPath(r: Region[r], path: Path): Result[String, FileInputStream[r]] \ {IO, Write(r)} = 
         Interop/NIO/File/Path.toString(path) |> Interop/IO/FileInputStream.newWithPath(r)
 
 }        

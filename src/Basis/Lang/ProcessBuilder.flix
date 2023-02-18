@@ -17,23 +17,25 @@
 
 namespace Basis/Lang {
 
-    pub enum ProcessBuilder[r: Region, ka: Type, a: Type](MonadLib.MutStateError[r, ka, Interop/Lang.ProcessBuilder[r], a])
+    pub enum ProcessBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.MutStateError[ka, Interop/Lang.ProcessBuilder[r], ef, a])
 
-    instance Functor[ProcessBuilder[r, ka]] {
-        pub def map(f: a -> b \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef = 
+    instance GradedFunctor[ProcessBuilder[r, ka]] {
+        pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] = 
             Basis/Lang/ProcessBuilder.map(f, ma)
     }
 
-    instance Applicative[ProcessBuilder[r, ka]] {
-        pub def point(x: a): ProcessBuilder[r, ka, a] =  
+    instance GradedApplicative[ProcessBuilder[r, ka]] {
+        pub def point(x: a): ProcessBuilder[r, ka, Pure, a] =  
             Basis/Lang/ProcessBuilder.point(x)
 
-        pub def ap(mf: ProcessBuilder[r, ka, a -> b \ ef], ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
+        pub def ap(mf: ProcessBuilder[r, ka, ef1, a -> b \ ef2], 
+                    ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
             Basis/Lang/ProcessBuilder.ap(mf, ma)
     }
 
-    instance Monad[ProcessBuilder[r, ka]] {
-        pub def flatMap(f: a -> ProcessBuilder[r, ka, b] \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
+    instance GradedMonad[ProcessBuilder[r, ka]] {
+        pub def flatMap(f: a -> ProcessBuilder[r, ka, ef1, b] \ ef2, 
+                        ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
             Basis/Lang/ProcessBuilder.flatMap(f, ma)
     }
 
@@ -51,47 +53,47 @@ namespace Basis/Lang/ProcessBuilder {
     use Basis/NIO/File.Path;
 
 
-    pub def getProcessBuilder(x: ProcessBuilder[r, ka, a]): MonadLib.MutStateError[r, ka, Interop/Lang.ProcessBuilder[r], a] = 
+    pub def getProcessBuilder(x: ProcessBuilder[r, ka, ef, a]): Graded.MutStateError[ka, Interop/Lang.ProcessBuilder[r], ef, a] = 
         let ProcessBuilder(x1) = x;
         x1
 
-    pub def point(x: a): ProcessBuilder[r, ka, a] = ProcessBuilder(MonadLib/MutStateError.point(x))
+    pub def point(x: a): ProcessBuilder[r, ka, Pure, a] = ProcessBuilder(Graded/MutStateError.point(x))
 
-    pub def map(f: a -> b \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
-        ProcessBuilder(MonadLib/MutStateError.map(f, getProcessBuilder(ma)))
+    pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] =
+        ProcessBuilder(Graded/MutStateError.map(f, getProcessBuilder(ma)))
 
-    pub def ap(mf: ProcessBuilder[r, ka, a -> b \ ef], ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
-        ProcessBuilder(MonadLib/MutStateError.ap(getProcessBuilder(mf), getProcessBuilder(ma)))
+    pub def ap(mf: ProcessBuilder[r, ka, ef1, a -> b \ ef2], ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
+        ProcessBuilder(Graded/MutStateError.ap(getProcessBuilder(mf), getProcessBuilder(ma)))
 
 
-    pub def flatMap(f: a -> ProcessBuilder[r, ka, b] \ ef, ma: ProcessBuilder[r, ka, a]): ProcessBuilder[r, ka, b] \ ef =
-        ProcessBuilder(MonadLib/MutStateError.flatMap(f >> getProcessBuilder, getProcessBuilder(ma)))
+    pub def flatMap(f: a -> ProcessBuilder[r, ka, ef1, b] \ ef2, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
+        ProcessBuilder(Graded/MutStateError.flatMap(f >> getProcessBuilder, getProcessBuilder(ma)))
 
-    pub def throwError(msg: String): ProcessBuilder[r, ka, a] =
-        ProcessBuilder(MonadLib/MutStateError.throwError(msg))
+    pub def throwError(msg: String): ProcessBuilder[r, ka, ef, a] =
+        ProcessBuilder(Graded/MutStateError.throwError(msg))
 
-    def liftSetter!(f: Interop/Lang.ProcessBuilder[r] -> Interop/Lang.ProcessBuilder[r] \ ef): ProcessBuilder[r, ka, Unit] \ ef =
-        ProcessBuilder(MonadLib/MutStateError.liftSetter!(f) |> Functor.ignore)
+    def liftSetter!(f: Interop/Lang.ProcessBuilder[r] -> Interop/Lang.ProcessBuilder[r] \ ef): ProcessBuilder[r, ka, ef, Unit] =
+        ProcessBuilder(Graded/MutStateError.liftSetter!(f) |> Functor.ignore)
 
-    def liftSetterResult!(f: Interop/Lang.ProcessBuilder[r] -> Result[Interop/Lang.ProcessBuilder[r], err] \ ef): ProcessBuilder[r, ka, Unit] \ ef with ToString[err] =
-        ProcessBuilder(MonadLib/MutStateError.liftSetterResult!(f) |> Functor.ignore)
+    def liftSetterResult!(f: Interop/Lang.ProcessBuilder[r] -> Result[err, Interop/Lang.ProcessBuilder[r]] \ ef): ProcessBuilder[r, ka, ef, Unit] with ToString[err] =
+        ProcessBuilder(Graded/MutStateError.liftSetterResult!(f) |> Functor.ignore)
 
     // def liftGetter(f: Interop/Lang.ProcessBuilder[r] -> a \ ef): ProcessBuilder[r, ka, a] \ ef =
-    //     ProcessBuilder(MonadLib/MutStateError.liftGetter(f))
+    //     ProcessBuilder(Graded/MutStateError.liftGetter(f))
 
-    def liftGetterResult(f: Interop/Lang.ProcessBuilder[r] -> Result[a, err] \ ef): ProcessBuilder[r, ka, a] \ ef with ToString[err] =
-        ProcessBuilder(MonadLib/MutStateError.liftGetterResult(f))
+    def liftGetterResult(f: Interop/Lang.ProcessBuilder[r] -> Result[err, a] \ ef): ProcessBuilder[r, ka, ef, a] with ToString[err] =
+        ProcessBuilder(Graded/MutStateError.liftGetterResult(f))
 
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
     def runBuilder(r: Region[r], 
-                        ma: ProcessBuilder[r, a, a], 
-                        s: Interop/Lang.ProcessBuilder[r]): Result[a, String] \ r = 
-        MonadLib/MutStateError.runMutStateError(r, getProcessBuilder(ma), s)
+                        ma: ProcessBuilder[r, a, ef, a], 
+                        s: Interop/Lang.ProcessBuilder[r]): Result[String, a] \ { r, ef } = 
+        Graded/MutStateError.runMutStateError(r, getProcessBuilder(ma), s)
 
 
-    pub def start(r: Region[r], ma: ProcessBuilder[r, a, a]): Result[Process[r], String] \ { Write(r), IO } = 
+    pub def start(r: Region[r], ma: ProcessBuilder[r, a, ef, a]): Result[String, Process[r]] \ { ef, Write(r), IO } = 
         let state1 = unsafe_cast Interop/Lang/ProcessBuilder.new(r, Nil) as _ \ { Write(r), IO };
         match runBuilder(r, ma, state1) {
             case Err(msg) => Err(msg)
@@ -102,11 +104,11 @@ namespace Basis/Lang/ProcessBuilder {
     /// API...
 
 
-    pub def command!(cmd: String, args: List[String]): ProcessBuilder[r, ka, Unit] \ Write(r) =
+    pub def command!(cmd: String, args: List[String]): ProcessBuilder[r, ka, ef, Unit] \ Write(r) =
         liftSetter!(Interop/Lang/ProcessBuilder.command!(cmd :: args))
 
 
-    pub def setDirectory!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def setDirectory!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
@@ -115,13 +117,13 @@ namespace Basis/Lang/ProcessBuilder {
         liftSetterResult!(step)
         
 
-    pub def getDirectory(): ProcessBuilder[r, ka, Path] \ Read(r) = 
+    pub def getDirectory(): ProcessBuilder[r, ka, ef, Path] \ Read(r) = 
         liftGetterResult(Interop/Lang/ProcessBuilder.getDirectory >> Basis/NIO/File/Path.fromFile)
 
-    pub def getEnvironment(): ProcessBuilder[r, ka, Map[String, String]] \ Read(r) = 
+    pub def getEnvironment(): ProcessBuilder[r, ka, ef, Map[String, String]] \ Read(r) = 
         liftGetterResult(Interop/Lang/ProcessBuilder.environment)
 
-    pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
@@ -129,7 +131,7 @@ namespace Basis/Lang/ProcessBuilder {
         };
         liftSetterResult!(step)
 
-    pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);
@@ -138,7 +140,7 @@ namespace Basis/Lang/ProcessBuilder {
         liftSetterResult!(step)
 
 
-    pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, Unit] \ Write(r) = 
+    pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, ef, Unit] \ Write(r) = 
         use Result.flatMap;
         let step = pb -> region r1 {
             let* file1 = Basis/NIO/File/Path.toFile(r1, path);

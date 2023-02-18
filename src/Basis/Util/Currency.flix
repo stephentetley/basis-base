@@ -42,10 +42,10 @@ namespace Basis/Util/Currency {
 
 
 
-    pub def getInstance(code: String): Result[Currency, String] \ IO = 
+    pub def getInstance(code: String): Result[String, Currency] \ IO = 
         Interop/Util/Currency.getInstance(code)
 
-    pub def getInstanceWithLocale(loc: Locale): Result[Currency, String] \ IO = 
+    pub def getInstanceWithLocale(loc: Locale): Result[String, Currency] \ IO = 
         Interop/Util/Currency.getInstanceWithLocale(loc)
 
     pub def getCurrencyCode(cur: Currency): String = 

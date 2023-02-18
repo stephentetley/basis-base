@@ -36,7 +36,7 @@ namespace Basis/NIO/File/Path {
     ///
     /// Returns a new Path.
     ///
-    pub def newPath(s: String): Result[Path, String] =
+    pub def newPath(s: String): Result[String, Path] =
         Interop/NIO/File/Path.of(s, Nil)
 
 
@@ -60,7 +60,7 @@ namespace Basis/NIO/File/Path {
     ///     }
 
 
-    pub def tryNew(s: String): Result[Path, String] =
+    pub def tryNew(s: String): Result[String, Path] =
         region r {
             import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
             try {
@@ -85,7 +85,7 @@ namespace Basis/NIO/File/Path {
 
     /// If `path` is a relative path `toAbsolutePath` resolves the path in a system specific manner.
     /// Should this be Impure?
-    pub def toAbsolutePath(path: Path): Result[Path, String] =
+    pub def toAbsolutePath(path: Path): Result[String, Path] =
         Interop/NIO/File/Path.toAbsolutePath(path)
 
 
@@ -353,7 +353,7 @@ namespace Basis/NIO/File/Path {
                 case None => k(Nil)
             }
 /*
-    def pathMatcherMatches(path: Path, syntaxAndPatt: String): Result[Bool, String] & Impure =
+    def pathMatcherMatches(path: Path, syntaxAndPatt: String): Result[String, Bool] & Impure =
         import static java.nio.file.FileSystems.getDefault(): ##java.nio.file.FileSystem & Impure;
         import java.nio.file.FileSystem.getPathMatcher(String): ##java.nio.file.PathMatcher & Impure;
         import java.nio.file.PathMatcher.matches(##java.nio.file.Path): Bool & Impure;
@@ -366,18 +366,18 @@ namespace Basis/NIO/File/Path {
             case _: ##java.lang.Exception => Err("pathMatcherMatches")
         }
 
-    pub def isGlobMatch(glob: String, path: Path): Result[Bool, String] =
+    pub def isGlobMatch(glob: String, path: Path): Result[String, Bool] =
         pathMatcherMatches(path, "glob:" + glob) as & Pure
 
-    pub def isRegexMatch(patt: String, path: Path): Result[Bool, String] =
+    pub def isRegexMatch(patt: String, path: Path): Result[String, Bool] =
         pathMatcherMatches(path, "regex:" + patt) as & Pure
 
 */
 
-    pub def toFile(r: Region[r], path: Path): Result[Interop/IO.File[r], String] \ Write(r) =
+    pub def toFile(r: Region[r], path: Path): Result[String, Interop/IO.File[r]] \ Write(r) =
         Interop/NIO/File/Path.toFile(r, path)
 
-    pub def fromFile(file: Interop/IO.File[r]): Result[Path, String] \ Read(r) =
+    pub def fromFile(file: Interop/IO.File[r]): Result[String, Path] \ Read(r) =
         Interop/IO/File.toPath(file)
 
 }

@@ -82,15 +82,15 @@ namespace Basis/Util/Locale/LanguageRange {
         getLanguageRange(rng) |> Interop/Util/Locale/LanguageRange.getWeight
 
 
-    pub def parse(ranges: String): Result[List[LanguageRange], String] =
+    pub def parse(ranges: String): Result[String, List[LanguageRange]] =
         Interop/Util/Locale/LanguageRange.parse(ranges) 
             |> Result.map(List.map(LanguageRange))
 
-    pub def parseWithCustomizations(ranges: String, customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
+    pub def parseWithCustomizations(ranges: String, customizations: Map[String, List[String]]): Result[String, List[LanguageRange]] =
         Interop/Util/Locale/LanguageRange.parseWithCustomizations(ranges, customizations) 
             |> Result.map(List.map(LanguageRange))
 
-    pub def mapEquivalents(priorityList: List[LanguageRange], customizations: Map[String, List[String]]): Result[List[LanguageRange], String] =
+    pub def mapEquivalents(priorityList: List[LanguageRange], customizations: Map[String, List[String]]): Result[String, List[LanguageRange]] =
         let ps = List.map(getLanguageRange, priorityList);
         Interop/Util/Locale/LanguageRange.mapEquivalents(ps, customizations) 
             |> Result.map(List.map(LanguageRange))

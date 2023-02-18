@@ -40,16 +40,16 @@ namespace Basis/IO/BufferedReader {
 
 
 
-    pub def close!(br: BufferedReader[r]): Result[Unit, String] \ Write(r) =
+    pub def close!(br: BufferedReader[r]): Result[String, Unit] \ Write(r) =
         Interop/IO/BufferedReader.close!(br)
 
-    pub def linesIterator!(rh: Region[rh], br: BufferedReader[r]): Result[Iterator[String, rh], String] \ { Read(r), Write(rh) } =
+    pub def linesIterator!(rh: Region[rh], br: BufferedReader[r]): Result[String, Iterator[String, rh, rh]] \ { Read(r), Write(rh) } =
         Interop/IO/BufferedReader.lines!(br) |> Result.map(Interop/Util/Stream/Stream.iterator(rh))
 
-    pub def read!(br: BufferedReader[r]): Result[Option[Int32], String] \ Read(r) = 
+    pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ Read(r) = 
         Interop/IO/BufferedReader.read!(br)
 
-    pub def skip!(n: Int64, br: BufferedReader[r]): Result[Int64, String] \ Read(r) = 
+    pub def skip!(n: Int64, br: BufferedReader[r]): Result[String, Int64] \ Read(r) = 
         toReader(br) |> Interop/IO/Reader.skip!(n)
 
 

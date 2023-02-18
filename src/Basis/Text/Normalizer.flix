@@ -39,7 +39,7 @@ namespace Basis/Text/Normalizer {
         let nform1 = marshal(nform);
         Interop/Text/Normalizer.normalize(nform1, src)
 
-    pub def isNormalized(nform: NormalizerForm, src: String): Result[Bool, String] =
+    pub def isNormalized(nform: NormalizerForm, src: String): Result[String, Bool] =
         let nform1 = marshal(nform);
         Interop/Text/Normalizer.isNormalized(nform1, src)
 
