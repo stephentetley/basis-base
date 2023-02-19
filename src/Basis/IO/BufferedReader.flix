@@ -34,8 +34,8 @@ namespace Basis/IO/BufferedReader {
         Interop/IO/SubReader.toReader(rd)
 
 
-    // pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ { Read(r), Write(r1) } =
-    //     Interop/IO/BufferedReader.newWithReader(rc, rd)
+    pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ { Read(r), Write(r1) } =
+        Interop/IO/BufferedReader.newWithReader(rc, rd)
 
 
 
