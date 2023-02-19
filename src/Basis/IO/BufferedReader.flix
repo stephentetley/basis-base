@@ -30,8 +30,8 @@ namespace Basis/IO/BufferedReader {
 
 
 
-    pub def toReader(rc: Region[r1], rd: BufferedReader[r]): Reader[r1] = 
-        Interop/IO/SubReader.toReader(rc, rd)
+    pub def toReader(rd: BufferedReader[r]): Reader[r] = 
+        Interop/IO/SubReader.toReader(rd)
 
 
     // pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ { Read(r), Write(r1) } =
@@ -42,15 +42,16 @@ namespace Basis/IO/BufferedReader {
     pub def close!(br: BufferedReader[r]): Result[String, Unit] \ Write(r) =
         Interop/IO/BufferedReader.close!(br)
 
-    // pub def linesIterator!(rh: Region[rh], br: BufferedReader[r]): Result[String, Iterator[String, rh, rh]] \ { Read(r), Write(rh) } =
-    //     Interop/IO/BufferedReader.lines!(br) |> Result.map(Interop/Util/Stream/Stream.iterator(rh))
+    pub def linesIterator!(rc: Region[r1], br: BufferedReader[r]): Result[String, Iterator[String, r1, r1]] \ { Read(r), Write(r1) } =
+        Interop/IO/BufferedReader.lines!(rc, br) |> Result.map(Interop/Util/Stream/Stream.iterator(rc))
 
     pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ Read(r) = 
         Interop/IO/BufferedReader.read!(br)
 
-    /// TODO - obviously we don't want to pass a region about just to cast BufferedReader to Reader...
-    pub def skip!(rc: Region[r1], n: Int64, br: BufferedReader[r]): Result[String, Int64] \ Read(r1) = 
-        toReader(rc, br) |> Interop/IO/Reader.skip!(n)
+    /// Note - this is an example of using the services of the super class in the current class.
+    /// Because `Reader` is an abstract class in should probably not be expose in the basis API.
+    pub def skip!(n: Int64, br: BufferedReader[r]): Result[String, Int64] \ Read(r) = 
+        toReader(br) |> Interop/IO/Reader.skip!(n)
     
 
 }

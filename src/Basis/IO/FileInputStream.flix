@@ -28,11 +28,11 @@ namespace Basis/IO/FileInputStream {
     use Basis/IO.InputStream
     use Basis/NIO/File.Path
 
-    pub def toInputStream(rc: Region[r1], s: FileInputStream[r]): InputStream[r1] =
-        Interop/IO/SubInputStream.toInputStream(rc, s)
+    pub def toInputStream(s: FileInputStream[r]): InputStream[r] =
+        Interop/IO/SubInputStream.toInputStream(s)
 
-    pub def fromInputStream(rc: Region[r1], s: InputStream[r]): FileInputStream[r1] =
-        Interop/IO/SubInputStream.fromInputStream(rc, s)
+    pub def fromInputStream(s: InputStream[r]): FileInputStream[r] =
+        Interop/IO/SubInputStream.fromInputStream(s)
 
     pub def newWithPath(rc: Region[r], path: Path): Result[String, FileInputStream[r]] \ {IO, Write(r)} = 
         Interop/NIO/File/Path.toString(path) |> Interop/IO/FileInputStream.newWithPath(rc)

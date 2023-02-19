@@ -28,9 +28,9 @@ namespace Basis/IO/FilterInputStream {
     use Basis/IO.FilterInputStream;
     use Basis/IO.InputStream;
 
-    pub def toInputStream(rc: Region[r1], s: FilterInputStream[r]): InputStream[r1] =
-        Interop/IO/SubInputStream.toInputStream(rc, s)
+    pub def toInputStream(s: FilterInputStream[r]): InputStream[r] =
+        Interop/IO/SubInputStream.toInputStream(s)
 
-    pub def fromInputStream(rc: Region[r1], s: InputStream[r]): FilterInputStream[r1] =
-        Interop/IO/SubInputStream.fromInputStream(rc, s)
+    pub def fromInputStream(s: InputStream[r]): FilterInputStream[r] =
+        Interop/IO/SubInputStream.fromInputStream(s)
 }        
