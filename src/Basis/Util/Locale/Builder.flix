@@ -28,7 +28,7 @@ namespace Basis/Util/Locale {
     }
 
     instance GradedApplicative[Builder[r, ka]] {
-        pub def point(x: a): Builder[r, ka, Pure, a] = 
+        pub def point(x: a): Builder[r, ka, ef, a] = 
             Basis/Util/Locale/Builder.point(x)
             
         pub def ap(mf: Builder[r, ka, ef1, a -> b \ ef2], ma: Builder[r, ka, ef, a]): Builder[r, ka, ef and ef1 and ef2, b] = 

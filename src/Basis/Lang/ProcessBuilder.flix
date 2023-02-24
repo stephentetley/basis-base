@@ -25,7 +25,7 @@ namespace Basis/Lang {
     }
 
     instance GradedApplicative[ProcessBuilder[r, ka]] {
-        pub def point(x: a): ProcessBuilder[r, ka, Pure, a] =  
+        pub def point(x: a): ProcessBuilder[r, ka, ef, a] =  
             Basis/Lang/ProcessBuilder.point(x)
 
         pub def ap(mf: ProcessBuilder[r, ka, ef1, a -> b \ ef2], 
@@ -57,7 +57,7 @@ namespace Basis/Lang/ProcessBuilder {
         let ProcessBuilder(x1) = x;
         x1
 
-    pub def point(x: a): ProcessBuilder[r, ka, Pure, a] = ProcessBuilder(Graded/MutStateError.point(x))
+    pub def point(x: a): ProcessBuilder[r, ka, ef, a] = ProcessBuilder(Graded/MutStateError.point(x))
 
     pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] =
         ProcessBuilder(Graded/MutStateError.map(f, getProcessBuilder(ma)))

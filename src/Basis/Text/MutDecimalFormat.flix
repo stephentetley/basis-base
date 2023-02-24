@@ -26,7 +26,7 @@ namespace Basis/Text {
     }
 
     instance GradedApplicative[DecimalFormatBuilder[r, ka]] {
-        pub def point(x: a): DecimalFormatBuilder[r, ka, Pure, a] =
+        pub def point(x: a): DecimalFormatBuilder[r, ka, ef, a] =
             Basis/Text/MutDecimalFormat.point(x)
 
         pub def ap(mf: DecimalFormatBuilder[r, ka, ef1, a -> b \ ef2], 
@@ -59,7 +59,7 @@ namespace Basis/Text/MutDecimalFormat {
         let DecimalFormatBuilder(x1) = x;
         x1
 
-    pub def point(x: a): DecimalFormatBuilder[r, ka, Pure, a] =
+    pub def point(x: a): DecimalFormatBuilder[r, ka, ef, a] =
         DecimalFormatBuilder(Graded/MutStateError.point(x))
 
     pub def map(f: a -> b \ ef1, ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1, b] =
