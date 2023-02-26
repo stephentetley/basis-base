@@ -19,7 +19,7 @@ namespace Basis/Util/Locale {
 
     ///
     ///
-    pub enum Builder[r: Region, ka: Type, ef: Bool, a: Type](Graded.MutStateError[ka, Interop/Util/Locale.Builder[r], ef, a])
+    pub enum Builder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Util/Locale.Builder, ef, a])
 
 
     instance GradedFunctor[Builder[r, ka]] {
@@ -51,51 +51,50 @@ namespace Basis/Util/Locale/Builder {
     use Basis/Util.Locale
 
 
-    pub def getBuilder(x: Builder[r, ka, ef, a]): Graded.MutStateError[ka, Interop/Util/Locale.Builder[r], ef, a] = 
+    pub def getBuilder(x: Builder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Util/Locale.Builder, ef, a] = 
         let Builder(x1) = x;
         x1
 
 
-    pub def point(x: a): Builder[r, ka, ef, a] = Builder(Graded/MutStateError.point(x))
+    pub def point(x: a): Builder[r, ka, ef, a] = Builder(Graded/Builder.point(x))
 
     pub def map(f: a -> b \ ef1, ma: Builder[r, ka, ef, a]): Builder[r, ka, ef and ef1, b] =
-        Builder(Graded/MutStateError.map(f, getBuilder(ma)))
+        Builder(Graded/Builder.map(f, getBuilder(ma)))
         
     pub def ap(mf: Builder[r, ka, ef1, a -> b \ ef2], ma: Builder[r, ka, ef, a]): Builder[r, ka, ef and ef1 and ef2, b] =
-        Builder(Graded/MutStateError.ap(getBuilder(mf), getBuilder(ma)))
+        Builder(Graded/Builder.ap(getBuilder(mf), getBuilder(ma)))
 
     pub def flatMap(f: a -> Builder[r, ka, ef1, b] \ ef2, ma: Builder[r, ka, ef, a]): Builder[r, ka, ef and ef1 and ef2, b] =
-        Builder(Graded/MutStateError.flatMap(f >> getBuilder, getBuilder(ma)))
+        Builder(Graded/Builder.flatMap(f >> getBuilder, getBuilder(ma)))
 
     pub def throwError(msg: String): Builder[r, ka, ef, a] = 
-        Builder(Graded/MutStateError.throwError(msg))
+        Builder(Graded/Builder.throwError(msg))
 
 
-    def liftSetter!(f: Interop/Util/Locale.Builder[r] -> Interop/Util/Locale.Builder[r] \ {r, ef}): Builder[r, ka, ef and r, Unit] =
-        Builder(Graded/MutStateError.liftSetter!(f) |> GradedFunctor.ignore)
+    def liftSetter!(f: Interop/Util/Locale.Builder[r] -> Interop/Util/Locale.Builder[r] \ {Write(r), ef}): Builder[r, ka, ef and r, Unit] =
+        Builder(Graded/Builder.liftSetter!(f) |> GradedFunctor.ignore)
 
-    def liftSetterResult!(f: Interop/Util/Locale.Builder[r] -> Result[err, Interop/Util/Locale.Builder[r]] \ {r, ef}): Builder[r, ka, ef and r, Unit] with ToString[err] =
-        Builder(Graded/MutStateError.liftSetterResult!(f) |> GradedFunctor.ignore)
+    def liftSetterResult!(f: Interop/Util/Locale.Builder[r] -> Result[err, Interop/Util/Locale.Builder[r]] \ {Write(r), ef}): Builder[r, ka, ef and r, Unit] with ToString[err] =
+        Builder(Graded/Builder.liftSetterResult!(f) |> GradedFunctor.ignore)
 
     // def liftGetter(f: Interop/Util/Locale.Builder[r] -> a \ ef): Builder[r, ka, a] \ ef =
-    //     Builder(Graded/MutStateError.liftGetter(f))
+    //     Builder(Graded/Builder.liftGetter(f))
 
     // def liftGetterResult(f: Interop/Util/Locale.Builder[r] -> Result[err, a] \ ef): Builder[r, ka, a] \ ef with ToString[err] =
-    //     Builder(Graded/MutStateError.liftGetterResult(f))
+    //     Builder(Graded/Builder.liftGetterResult(f))
 
 
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(_: Region[r], 
-                    ma: Builder[r, a, ef, a], 
+    def runBuilder(ma: Builder[r, a, ef, a], 
                     s: Interop/Util/Locale.Builder[r]): Result[String, a] \ ef  = 
-        Graded/MutStateError.runMutStateError(getBuilder(ma), s)
+        Graded/Builder.runBuilder(getBuilder(ma), s)
 
 
     pub def build(rc: Region[r], ma: Builder[r, a, ef, a]): Result[String, Locale] \ {r, ef} = 
         let state1 = Interop/Util/Locale/Builder.new(rc);
-        match runBuilder(rc, ma, state1) {
+        match runBuilder(ma, state1) {
             case Err(msg) => Err(msg)
             case Ok(_)    => Ok(Interop/Util/Locale/Builder.build(state1))
         }

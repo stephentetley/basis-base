@@ -18,7 +18,7 @@ namespace Basis/Text {
 
     pub type alias MutDecimalFormat[r: Region] = Interop/Text.DecimalFormat[r]
 
-    pub enum DecimalFormatBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.MutStateError[ka, Interop/Text.DecimalFormat[r], ef, a])
+    pub enum DecimalFormatBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Text.DecimalFormat, ef, a])
 
     instance GradedFunctor[DecimalFormatBuilder[r, ka]] {
         pub def map(f: a -> b \ ef1, ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1, b] =
@@ -55,37 +55,35 @@ namespace Basis/Text/MutDecimalFormat {
     use Basis/Util.Locale;
     use Basis/Util.Currency;
 
-    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, ef, a]): Graded.MutStateError[ka, Interop/Text.DecimalFormat[r], ef, a] =
+    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Text.DecimalFormat, ef, a] =
         let DecimalFormatBuilder(x1) = x;
         x1
 
     pub def point(x: a): DecimalFormatBuilder[r, ka, ef, a] =
-        DecimalFormatBuilder(Graded/MutStateError.point(x))
+        DecimalFormatBuilder(Graded/Builder.point(x))
 
     pub def map(f: a -> b \ ef1, ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1, b] =
-        DecimalFormatBuilder(Graded/MutStateError.map(f, getDecimalFormatBuilder(ma)))
+        DecimalFormatBuilder(Graded/Builder.map(f, getDecimalFormatBuilder(ma)))
 
     pub def ap(mf: DecimalFormatBuilder[r, ka, ef1, a -> b \ ef2], 
                 ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1 and ef2, b] =
-        DecimalFormatBuilder(Graded/MutStateError.ap(getDecimalFormatBuilder(mf), getDecimalFormatBuilder(ma)))
+        DecimalFormatBuilder(Graded/Builder.ap(getDecimalFormatBuilder(mf), getDecimalFormatBuilder(ma)))
 
 
     pub def flatMap(f: a -> DecimalFormatBuilder[r, ka, ef1, b] \ ef2, 
                     ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1 and ef2, b] =
-        DecimalFormatBuilder(Graded/MutStateError.flatMap(f >> getDecimalFormatBuilder, getDecimalFormatBuilder(ma)))
+        DecimalFormatBuilder(Graded/Builder.flatMap(f >> getDecimalFormatBuilder, getDecimalFormatBuilder(ma)))
 
     pub def throwError(msg: String): DecimalFormatBuilder[r, ka, ef, a] =
-        DecimalFormatBuilder(Graded/MutStateError.throwError(msg))
+        DecimalFormatBuilder(Graded/Builder.throwError(msg))
 
-    // def liftSetter(f: Interop/Text.DecimalFormat[r] -> Interop/Text.DecimalFormat[r] \ ef): DecimalFormatBuilder[r, ka, Unit] \ ef =
-    //     DecimalFormatBuilder(Graded/Builder.liftSetter(f))
-
-    def liftSetter!(f: Interop/Text.DecimalFormat[r] -> a \ {ef, r}): DecimalFormatBuilder[r, ka, ef and r, a] =
-        DecimalFormatBuilder(Graded/MutStateError.liftSetter!(f))
+    
+    def liftSetter!(f: Interop/Text.DecimalFormat[r] -> a \ {ef, Write(r)}): DecimalFormatBuilder[r, ka, ef and r, a] =
+        DecimalFormatBuilder(Graded/Builder.liftSetter!(f))
 
 
-    def liftSetterResult!(f: Interop/Text.DecimalFormat[r] -> Result[err, a] \ {ef, r}): DecimalFormatBuilder[r, ka, ef and r, a] with ToString[err] =
-        DecimalFormatBuilder(Graded/MutStateError.liftSetterResult!(f))
+    def liftSetterResult!(f: Interop/Text.DecimalFormat[r] -> Result[err, a] \ {ef, Write(r)}): DecimalFormatBuilder[r, ka, ef and r, a] with ToString[err] =
+        DecimalFormatBuilder(Graded/Builder.liftSetterResult!(f))
 
     // def liftGetter(f: Interop/Text.DecimalFormat[r] -> a \ ef): DecimalFormatBuilder[r, ka, a] \ ef =
     //     DecimalFormatBuilder(Graded/Builder.liftGetter(f))
@@ -114,14 +112,13 @@ namespace Basis/Text/MutDecimalFormat {
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(_: Region[r],
-                    ma: DecimalFormatBuilder[r, a, ef, a],
+    def runBuilder(ma: DecimalFormatBuilder[r, a, ef, a],
                     s: Interop/Text.DecimalFormat[r]): Result[String, a] \ ef =
-        Graded/MutStateError.runMutStateError(getDecimalFormatBuilder(ma), s)
+        Graded/Builder.runBuilder(getDecimalFormatBuilder(ma), s)
 
     /// Returns an immutable DecimalFormat
-    pub def build(rc: Region[r], df: MutDecimalFormat[r], ma: DecimalFormatBuilder[r, a, ef, a]): Result[String, DecimalFormat] \ {r, ef} =
-        match runBuilder(rc, ma, df) {
+    pub def build(_: Region[r], df: MutDecimalFormat[r], ma: DecimalFormatBuilder[r, a, ef, a]): Result[String, DecimalFormat] \ {r, ef} =
+        match runBuilder(ma, df) {
             case Err(msg) => Err(msg)
             case Ok(_)    => freeze(df) |> Ok
         }

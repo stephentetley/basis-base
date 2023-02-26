@@ -17,7 +17,7 @@
 
 namespace Basis/Lang {
 
-    pub enum ProcessBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.MutStateError[ka, Interop/Lang.ProcessBuilder[r], ef, a])
+    pub enum ProcessBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Lang.ProcessBuilder, ef, a])
 
     instance GradedFunctor[ProcessBuilder[r, ka]] {
         pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] = 
@@ -53,49 +53,48 @@ namespace Basis/Lang/ProcessBuilder {
     use Basis/NIO/File.Path;
 
 
-    pub def getProcessBuilder(x: ProcessBuilder[r, ka, ef, a]): Graded.MutStateError[ka, Interop/Lang.ProcessBuilder[r], ef, a] = 
+    pub def getProcessBuilder(x: ProcessBuilder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Lang.ProcessBuilder, ef, a] = 
         let ProcessBuilder(x1) = x;
         x1
 
-    pub def point(x: a): ProcessBuilder[r, ka, ef, a] = ProcessBuilder(Graded/MutStateError.point(x))
+    pub def point(x: a): ProcessBuilder[r, ka, ef, a] = ProcessBuilder(Graded/Builder.point(x))
 
     pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] =
-        ProcessBuilder(Graded/MutStateError.map(f, getProcessBuilder(ma)))
+        ProcessBuilder(Graded/Builder.map(f, getProcessBuilder(ma)))
 
     pub def ap(mf: ProcessBuilder[r, ka, ef1, a -> b \ ef2], ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
-        ProcessBuilder(Graded/MutStateError.ap(getProcessBuilder(mf), getProcessBuilder(ma)))
+        ProcessBuilder(Graded/Builder.ap(getProcessBuilder(mf), getProcessBuilder(ma)))
 
 
     pub def flatMap(f: a -> ProcessBuilder[r, ka, ef1, b] \ ef2, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1 and ef2, b] =
-        ProcessBuilder(Graded/MutStateError.flatMap(f >> getProcessBuilder, getProcessBuilder(ma)))
+        ProcessBuilder(Graded/Builder.flatMap(f >> getProcessBuilder, getProcessBuilder(ma)))
 
     pub def throwError(msg: String): ProcessBuilder[r, ka, ef, a] =
-        ProcessBuilder(Graded/MutStateError.throwError(msg))
+        ProcessBuilder(Graded/Builder.throwError(msg))
 
-    def liftSetter!(f: Interop/Lang.ProcessBuilder[r] -> Interop/Lang.ProcessBuilder[r] \ ef): ProcessBuilder[r, ka, ef, Unit] =
-        ProcessBuilder(Graded/MutStateError.liftSetter!(f) |> GradedFunctor.ignore)
+    def liftSetter!(f: Interop/Lang.ProcessBuilder[r] -> Interop/Lang.ProcessBuilder[r] \ {ef, Write(r)}): ProcessBuilder[r, ka, ef and r, Unit] =
+        ProcessBuilder(Graded/Builder.liftSetter!(f) |> GradedFunctor.ignore)
 
-    def liftSetterResult!(f: Interop/Lang.ProcessBuilder[r] -> Result[err, Interop/Lang.ProcessBuilder[r]] \ ef): ProcessBuilder[r, ka, ef, Unit] with ToString[err] =
-        ProcessBuilder(Graded/MutStateError.liftSetterResult!(f) |> GradedFunctor.ignore)
+    def liftSetterResult!(f: Interop/Lang.ProcessBuilder[r] -> Result[err, Interop/Lang.ProcessBuilder[r]] \ {ef, Write(r)}): ProcessBuilder[r, ka, ef and r, Unit] with ToString[err] =
+        ProcessBuilder(Graded/Builder.liftSetterResult!(f) |> GradedFunctor.ignore)
 
-    // def liftGetter(f: Interop/Lang.ProcessBuilder[r] -> a \ ef): ProcessBuilder[r, ka, a] \ ef =
-    //     ProcessBuilder(Graded/MutStateError.liftGetter(f))
+    // def liftGetter(f: Interop/Lang.ProcessBuilder[r] -> a \ {ef, Read(r)}): ProcessBuilder[r, ka, ef and r, a] \ ef =
+    //     ProcessBuilder(Graded/Builder.liftGetter(f))
 
-    def liftGetterResult(f: Interop/Lang.ProcessBuilder[r] -> Result[err, a] \ ef): ProcessBuilder[r, ka, ef, a] with ToString[err] =
-        ProcessBuilder(Graded/MutStateError.liftGetterResult(f))
+    def liftGetterResult(f: Interop/Lang.ProcessBuilder[r] -> Result[err, a] \ {ef, Read(r)}): ProcessBuilder[r, ka, ef and r, a] with ToString[err] =
+        ProcessBuilder(Graded/Builder.liftGetterResult(f))
 
     ///
     /// Returns the result of applying `ma` to the initial state `s`.
     ///
-    def runBuilder(_: Region[r], 
-                        ma: ProcessBuilder[r, a, ef, a], 
-                        s: Interop/Lang.ProcessBuilder[r]): Result[String, a] \ ef = 
-        Graded/MutStateError.runMutStateError(getProcessBuilder(ma), s)
+    def runBuilder(ma: ProcessBuilder[r, a, ef, a], 
+                    s: Interop/Lang.ProcessBuilder[r]): Result[String, a] \ ef = 
+        Graded/Builder.runBuilder(getProcessBuilder(ma), s)
 
 
     pub def start(rc: Region[r], ma: ProcessBuilder[r, a, ef, a]): Result[String, Process[r]] \ { r, ef } = 
         let state1 = Interop/Lang/ProcessBuilder.new(rc, Nil);
-        match runBuilder(rc, ma, state1) {
+        match runBuilder(ma, state1) {
             case Err(msg) => Err(msg)
             case Ok(_)    => Interop/Lang/ProcessBuilder.start(rc, state1)
         }
