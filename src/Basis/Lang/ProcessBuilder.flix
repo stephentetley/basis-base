@@ -17,7 +17,7 @@
 
 namespace Basis/Lang {
 
-    pub enum ProcessBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Lang.ProcessBuilder, ef, a])
+    pub enum ProcessBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[ka, Interop/Lang.ProcessBuilder[r], ef, a])
 
     instance GradedFunctor[ProcessBuilder[r, ka]] {
         pub def map(f: a -> b \ ef1, ma: ProcessBuilder[r, ka, ef, a]): ProcessBuilder[r, ka, ef and ef1, b] = 
@@ -53,7 +53,7 @@ namespace Basis/Lang/ProcessBuilder {
     use Basis/NIO/File.Path;
 
 
-    pub def getProcessBuilder(x: ProcessBuilder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Lang.ProcessBuilder, ef, a] = 
+    pub def getProcessBuilder(x: ProcessBuilder[r, ka, ef, a]): Graded.Builder[ka, Interop/Lang.ProcessBuilder[r], ef, a] = 
         let ProcessBuilder(x1) = x;
         x1
 

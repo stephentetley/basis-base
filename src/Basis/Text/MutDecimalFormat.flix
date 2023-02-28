@@ -18,7 +18,7 @@ namespace Basis/Text {
 
     pub type alias MutDecimalFormat[r: Region] = Interop/Text.DecimalFormat[r]
 
-    pub enum DecimalFormatBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Text.DecimalFormat, ef, a])
+    pub enum DecimalFormatBuilder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[ka, Interop/Text.DecimalFormat[r], ef, a])
 
     instance GradedFunctor[DecimalFormatBuilder[r, ka]] {
         pub def map(f: a -> b \ ef1, ma: DecimalFormatBuilder[r, ka, ef, a]): DecimalFormatBuilder[r, ka, ef and ef1, b] =
@@ -55,7 +55,7 @@ namespace Basis/Text/MutDecimalFormat {
     use Basis/Util.Locale;
     use Basis/Util.Currency;
 
-    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Text.DecimalFormat, ef, a] =
+    def getDecimalFormatBuilder(x: DecimalFormatBuilder[r, ka, ef, a]): Graded.Builder[ka, Interop/Text.DecimalFormat[r], ef, a] =
         let DecimalFormatBuilder(x1) = x;
         x1
 

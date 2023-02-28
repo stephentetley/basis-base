@@ -19,7 +19,7 @@ namespace Basis/Util/Locale {
 
     ///
     ///
-    pub enum Builder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[r, ka, Interop/Util/Locale.Builder, ef, a])
+    pub enum Builder[r: Region, ka: Type, ef: Bool, a: Type](Graded.Builder[ka, Interop/Util/Locale.Builder[r], ef, a])
 
 
     instance GradedFunctor[Builder[r, ka]] {
@@ -51,7 +51,7 @@ namespace Basis/Util/Locale/Builder {
     use Basis/Util.Locale
 
 
-    pub def getBuilder(x: Builder[r, ka, ef, a]): Graded.Builder[r, ka, Interop/Util/Locale.Builder, ef, a] = 
+    pub def getBuilder(x: Builder[r, ka, ef, a]): Graded.Builder[ka, Interop/Util/Locale.Builder[r], ef, a] = 
         let Builder(x1) = x;
         x1
 
