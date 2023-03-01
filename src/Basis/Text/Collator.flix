@@ -19,18 +19,15 @@ namespace Basis/Text {
     ///
     /// Represents a Collator.
     ///
-    pub enum Collator(##java.text.Collator)
+    pub type alias Collator = Interop/Text.Collator
     
-    /// Design Note - we want to use Collator in pure settings (e.g. Datalog)
-    /// hence the Java class functions are split between MutCollator (for creation)
-    /// and Collator for the services (comparing Strings).
 
 }
 
 namespace Basis/Text/Collator {
 
     use Basis/Text.Collator
-    use Basis/Text.Collator.{Collator}
+    use Interop/Text.Collator.{Collator}
 
 
     // Note - Java's Collator dates from 1.1 and predates enums (1.5), I think the use of 
@@ -84,32 +81,28 @@ namespace Basis/Text/Collator {
             case n                                              => bug!("unmarshallCollatorStrength: ${n}")
         }
 
-    def toInteropCollator(r: Region[r], df: Collator): Interop/Text.Collator[r] = 
-        let Collator(df1) = df;
-        Interop/Text/Collator.wrapHH(r, df1)
+
 
     ///
     /// Test equality of strings `s1` and `s2` with the collator `x``.
     ///
-    pub def equals(s1: String, s2: String, col: Collator): Bool = region r {
-        toInteropCollator(r, col) |> Interop/Text/Collator.equals(s1, s2)
-    }
+    pub def equals(s1: String, s2: String, col: Collator): Bool = 
+        Interop/Text/Collator.equals(s1, s2, col)
+
 
     ///
     /// Compare strings `s1` and `s2` with the collator `x``.
     ///
-    pub def compare(s1: String, s2: String, col: Collator): Comparison = region r {
-        toInteropCollator(r, col) |> Interop/Text/Collator.compare(s1, s2)
-    }
+    pub def compare(s1: String, s2: String, col: Collator): Comparison = 
+        Interop/Text/Collator.compare(s1, s2, col)
 
-    pub def getDecomposition(col: Collator): DecompositionMode = region r {
-        toInteropCollator(r, col) |> Interop/Text/Collator.getDecomposition |> unmarshallDecompositionMode
-    }
+    pub def getDecomposition(col: Collator): DecompositionMode =
+        Interop/Text/Collator.getDecomposition(col) |> unmarshallDecompositionMode
 
 
-    pub def getStrength(col: Collator): CollatorStrength = region r {
-        toInteropCollator(r, col) |> Interop/Text/Collator.getStrength |> unmarshallCollatorStrength
-    }
+    pub def getStrength(col: Collator): CollatorStrength =
+        Interop/Text/Collator.getStrength(col) |> unmarshallCollatorStrength
+
 
         
 }
