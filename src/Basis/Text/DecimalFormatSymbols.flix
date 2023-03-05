@@ -19,7 +19,7 @@ namespace Basis/Text {
     /// Treat as immutable
     /// Represents a DecimalFormat.
     ///
-    pub enum DecimalFormatSymbols(##java.text.DecimalFormatSymbols)
+    pub type alias DecimalFormatSymbols = Interop/Text.DecimalFormatSymbols
 
 }
 
@@ -27,24 +27,18 @@ namespace Basis/Text {
 namespace Basis/Text/DecimalFormatSymbols {
 
     use Basis/Text.DecimalFormatSymbols
-    use Basis/Text.DecimalFormatSymbols.{DecimalFormatSymbols}
+    use Interop/Text.DecimalFormatSymbols.{DecimalFormatSymbols}
     // use Basis/I18n.Locale;
     // use Basis/I18n.Currency;
 
-    def toInteropDecimalFormatSymbols(r: Region[r], syms: DecimalFormatSymbols): Interop/Text.DecimalFormatSymbols[r] = 
-        let DecimalFormatSymbols(syms1) = syms;
-        Interop/Text/DecimalFormatSymbols.wrapHH(r, syms1)
 
 
 
-    pub def hashCode(df: DecimalFormatSymbols): Int32 = region r {
-        toInteropDecimalFormatSymbols(r, df) |> Interop/Text/DecimalFormatSymbols.hashCode
-    }
+    pub def hashCode(df: DecimalFormatSymbols): Int32 = Interop/Text/DecimalFormatSymbols.hashCode(df)
 
-    pub def equals(x: DecimalFormatSymbols, y: DecimalFormatSymbols): Bool = region r {
-        let x1 = toInteropDecimalFormatSymbols(r, x);
-        let y1 = toInteropDecimalFormatSymbols(r, y);
-        Interop/Text/DecimalFormatSymbols.equals(x1, y1)
-    }
+
+    pub def equals(x: DecimalFormatSymbols, y: DecimalFormatSymbols): Bool = 
+        Interop/Text/DecimalFormatSymbols.equals(x, y)
+    
 
 }

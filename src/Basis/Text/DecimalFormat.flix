@@ -19,7 +19,7 @@ namespace Basis/Text {
     /// Treat as immutable
     /// Represents a DecimalFormat.
     ///
-    pub enum DecimalFormat(##java.text.DecimalFormat)
+    pub type alias DecimalFormat = Interop/Text.DecimalFormat
 
 }
 

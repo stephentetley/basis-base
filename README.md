@@ -1,8 +1,10 @@
 # basis-base
 
-Flix wrappers over the JDK.
+Flix wrappers over the JDK built on `interop-base`.
 
-Core user level modules built on `interop-base`.
+Note - `basis-base` was supposed to be user level modules encapsulating 
+`interop-base`, but it is not panning out as a user level library. I
+don't recommend depending on `basis-basis` as it needs a rethink.
 
 Dependencies: 
 
