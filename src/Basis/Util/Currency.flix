@@ -57,4 +57,7 @@ namespace Basis/Util/Currency {
     pub def getDisplayName(cur: Currency): String = 
         Interop/Util/Currency.getDisplayName(cur)
 
+    pub def getSymbol(cur: Currency): String = 
+        Interop/Util/Currency.getSymbol(cur)
+
 }

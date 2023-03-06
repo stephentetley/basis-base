@@ -28,6 +28,9 @@ namespace Basis/Text/Collator {
 
     use Basis/Text.Collator
     use Interop/Text.Collator.{Collator}
+    use Interop/Util.Locale
+    use Interop/Flix.Setter
+    use Interop/Flix.Setter.Setter
 
 
     // Note - Java's Collator dates from 1.1 and predates enums (1.5), I think the use of 
@@ -80,6 +83,30 @@ namespace Basis/Text/Collator {
             case n if n == Interop/Text/Collator.tertiary()     => Tertiary
             case n                                              => bug!("unmarshallCollatorStrength: ${n}")
         }
+
+    pub type alias CollatorProperty = Interop/Text/Collator.CollatorProperty
+
+    pub def decomposition(x: DecompositionMode): CollatorProperty = 
+        use Interop/Text/Collator.CollatorProperty.Decomposition;
+        Decomposition(marshallDecompositionMode(x))
+
+    pub def strength(x: CollatorStrength): CollatorProperty = 
+        use Interop/Text/Collator.CollatorProperty.Strength;
+        Strength(marshallCollatorStrength(x))
+
+
+
+    ///
+    /// Get a Collator with the locale of the JVM.
+    /// Apply the setters in `fs` to further configure the Collator.
+    ///
+    pub def getInstance(props: List[CollatorProperty]): Collator \ IO =
+        Interop/Text/Collator.getInstance(props)
+
+        
+    pub def getInstanceWithLocale(loc: Locale, props: List[CollatorProperty]): Collator =
+        Interop/Text/Collator.getInstanceWithLocale(loc, props)
+
 
 
 
