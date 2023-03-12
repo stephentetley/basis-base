@@ -62,13 +62,10 @@ namespace Basis/NIO/File/Path {
 
     pub def tryNew(s: String): Result[String, Path] =
         region r {
-            import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
-            try {
-
-                Ok(Path(of1(s, [] @ r)))
-            } catch {
-                case _: ##java.lang.Exception => Err("Invalid Path")
-            }
+            Result.tryCatch(_ -> {
+                import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
+                Path(of1(s, [] @ r))
+            })
         }
 */
 

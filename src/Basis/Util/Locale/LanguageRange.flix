@@ -63,10 +63,9 @@ namespace Basis/Util/Locale/LanguageRange {
     ///
     /// Returns a new LanguageRange for the supplied `range`.
     ///
-    pub def newLanguageRange(range: String): Option[LanguageRange] =
-        Interop/Util/Locale/LanguageRange.newLanguageRange(range) 
+    pub def new(range: String): Result[String, LanguageRange] =
+        Interop/Util/Locale/LanguageRange.new(range) 
             |> Result.map(LanguageRange)
-            |> Result.toOption
 
     pub def maxWeight(): Float64 =
         Interop/Util/Locale/LanguageRange.maxWeight()

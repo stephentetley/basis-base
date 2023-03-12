@@ -60,10 +60,6 @@ namespace Basis/Util/Locale {
     pub type alias IsoCountryCode = Interop/Util/Locale.IsoCountryCode
 
 
-    /// Design note
-    /// `new` functions should not return Result as there isn't a tangible notion of failure.
-    /// Unrecognized locales can be built - operations on them won't produce results.
-
 
     ///
     /// Returns a new Locale for the supplied language.

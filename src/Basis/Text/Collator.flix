@@ -100,11 +100,11 @@ namespace Basis/Text/Collator {
     /// Get a Collator with the locale of the JVM.
     /// Apply the setters in `fs` to further configure the Collator.
     ///
-    pub def getInstance(props: List[CollatorProperty]): Collator \ IO =
+    pub def getInstance(props: List[CollatorProperty]): Result[String, Collator] \ IO =
         Interop/Text/Collator.getInstance(props)
 
         
-    pub def getInstanceWithLocale(loc: Locale, props: List[CollatorProperty]): Collator =
+    pub def getInstanceWithLocale(loc: Locale, props: List[CollatorProperty]): Result[String, Collator] =
         Interop/Text/Collator.getInstanceWithLocale(loc, props)
 
 
