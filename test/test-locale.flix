@@ -67,44 +67,40 @@ namespace TestLocale {
     def lookup01(): Unit & Impure =
         println("TestLocale.lookup01...");
         let ls = Basis/Util/Locale.japan() :: Basis/Util/Locale.french() :: Basis/Util/Locale.english() :: Nil;
-        match Basis/Util/Locale/LanguageRange.newLanguageRange("en") {
-            case None     => println("Err: newLanguageRange")
-            case Some(p1) => println("lookup: ${Basis/Util/Locale.lookup(p1 :: Nil, ls)}")
+        match Basis/Util/Locale/LanguageRange.new("en") {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(p1) => println("lookup: ${Basis/Util/Locale.lookup(p1 :: Nil, ls)}")
         }
 
     @test
     def builder01(): Unit & Impure =
-        use Basis/Util/Locale/Builder.{build, setLanguage!};
-        region r1 {
-            println("TestLocale.builder01...");
-            match build(r1, setLanguage!("da")) {
-                case Err(msg) => println("Err: ${msg}")
-                case Ok(loc)  => println("locale is: ${loc}")
-            }
+        use Basis/Util/Locale/Builder.{buildLocale, setLanguage};
+        println("TestLocale.builder01...");
+        match buildLocale(List#{setLanguage("da")}) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
         }
+
 
     @test
     def builder02(): Unit & Impure =
         use GradedApplicative.{*>};
-        use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!};
-        region r1 {
-            println("TestLocale.builder02...");
-            match build(r1, setLanguage!("da") *> setScript!("Latn")) {
-                case Err(msg) => println("Err: ${msg}")
-                case Ok(loc)  => println("locale is: ${loc}")
-            }
+        use Basis/Util/Locale/Builder.{buildLocale, setLanguage, setScript};
+        println("TestLocale.builder02...");
+        match buildLocale(List#{setLanguage("da"), setScript("Latn")}) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
         }    
 
     @test
     def builder03(): Unit & Impure =
         use GradedApplicative.{*>};
-        use Basis/Util/Locale/Builder.{build, setLanguage!, setScript!, setRegion!};
-        region r1 {
-            println("TestLocale.builder03... expect Err");
-            match build(r1, setLanguage!("da") *> setScript!("Latn") *> setRegion!("BAD_REGION")) {
-                case Err(msg) => println("Err: ${msg}")
-                case Ok(loc)  => println("locale is: ${loc}")
-            } 
-        }
+        use Basis/Util/Locale/Builder.{buildLocale, setLanguage, setScript, setRegion};
+        println("TestLocale.builder03... expect Err");
+        match buildLocale(List#{setLanguage("da"), setScript("Latn"), setRegion("BAD_REGION")}) {
+            case Err(msg) => println("Err: ${msg}")
+            case Ok(loc)  => println("locale is: ${loc}")
+        } 
+
 
 }
