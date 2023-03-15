@@ -17,6 +17,8 @@
 
 namespace Basis/Text/Normalizer {
 
+    use Basis/Text/Normalizer.NormalizerForm
+    use Basis/Text/Normalizer.NormalizerForm.{Nfc, Nfd, Nfkc, Nfkd}
 
     ///
     pub enum NormalizerForm with Eq, Order, ToString, Hash, Boxable {

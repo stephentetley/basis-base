@@ -17,6 +17,10 @@
 
 namespace Basis/Math/RoundingMode {
 
+    use Basis/Math/RoundingMode.RoundingMode.{
+        Ceiling, Down, Floor, HalfDown, 
+        HalfEven, HalfUp, Unnecessary, Up
+    }
 
     pub enum RoundingMode with Eq, Order, ToString, Hash, Boxable {
         case Ceiling

@@ -17,6 +17,8 @@
 
 namespace Basis/NIO/ByteOrder {
 
+    use Basis/NIO/ByteOrder.ByteOrder
+    use Basis/NIO/ByteOrder.ByteOrder.{BigEndian, LittleEndian}
 
     pub enum ByteOrder with Eq, Order, ToString, Hash, Boxable {
         case BigEndian

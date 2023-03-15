@@ -17,7 +17,14 @@
 
 namespace Basis/NIO/File/StandardOpenOption {
 
-    use Basis/NIO/File.OpenOption;
+    use Basis/NIO/File.OpenOption
+
+    use Basis/NIO/File/StandardOpenOption.StandardOpenOption
+    use Basis/NIO/File/StandardOpenOption.StandardOpenOption.{
+        Append, Create, CreateNew, DeleteOnClose,
+        Dsync, ReadAccess, Sparse, Sync, 
+        TruncateExisting, WriteAccess
+    }
 
     pub enum StandardOpenOption with Eq, Order, ToString, Hash, Boxable {
         case Append

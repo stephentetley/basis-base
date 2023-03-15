@@ -28,6 +28,10 @@ namespace Basis/Text/Collator {
 
     use Basis/Text.Collator
     use Interop/Text.Collator.{Collator}
+    use Basis/Text/Collator.DecompositionMode
+    use Basis/Text/Collator.DecompositionMode.{NoDecomposition, CanonicalDecomposition, FullDecomposition}
+    use Basis/Text/Collator.CollatorStrength
+    use Basis/Text/Collator.CollatorStrength.{Identical, Primary, Secondary, Tertiary}
     use Interop/Util.Locale
     use Interop/Flix.Setter
     use Interop/Flix.Setter.Setter

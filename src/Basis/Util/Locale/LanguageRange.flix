@@ -17,55 +17,50 @@
 namespace Basis/Util/Locale {
 
     /// TODO change to alias
-    pub enum LanguageRange(Interop/Util/Locale.LanguageRange)
+    pub type alias LanguageRange = Interop/Util/Locale.LanguageRange
 
-    instance ToString[LanguageRange] {
-        pub def toString(rng: LanguageRange): String = 
-            let LanguageRange(rng1) = rng;
-            Interop/Util/Locale/LanguageRange.toString(rng1)
-    }
+    // instance ToString[LanguageRange] {
+    //     pub def toString(rng: LanguageRange): String = 
+    //         let LanguageRange(rng1) = rng;
+    //         Interop/Util/Locale/LanguageRange.toString(rng1)
+    // }
 
-    instance Eq[LanguageRange] {
-        pub def eq(x: LanguageRange, y: LanguageRange): Bool = 
-            let LanguageRange(x1) = x;
-            let LanguageRange(y1) = y;
-            Interop/Util/Locale/LanguageRange.equals(x1, y1)
-    }
+    // instance Eq[LanguageRange] {
+    //     pub def eq(x: LanguageRange, y: LanguageRange): Bool = 
+    //         let LanguageRange(x1) = x;
+    //         let LanguageRange(y1) = y;
+    //         Interop/Util/Locale/LanguageRange.equals(x1, y1)
+    // }
 
-    instance Hash[LanguageRange] {
-        pub def hash(rng: LanguageRange): Int32 = 
-            let LanguageRange(rng1) = rng;
-            Interop/Util/Locale/LanguageRange.hashCode(rng1)
-    }
+    // instance Hash[LanguageRange] {
+    //     pub def hash(rng: LanguageRange): Int32 = 
+    //         let LanguageRange(rng1) = rng;
+    //         Interop/Util/Locale/LanguageRange.hashCode(rng1)
+    // }
 
-    instance Interop/Flix.Marshal[LanguageRange] {
-        pub def toJavaObject(rng: LanguageRange): ##java.lang.Object = 
-            let LanguageRange(rng1) = rng;
-            Interop/Flix/Marshal.toJavaObject(rng1)
+    // instance Interop/Flix.Marshal[LanguageRange] {
+    //     pub def toJavaObject(rng: LanguageRange): ##java.lang.Object = 
+    //         let LanguageRange(rng1) = rng;
+    //         Interop/Flix/Marshal.toJavaObject(rng1)
         
-        pub def fromJavaObject(o: ##java.lang.Object): LanguageRange = 
-            LanguageRange(Interop/Flix/Marshal.fromJavaObject(o))
-    }
+    //     pub def fromJavaObject(o: ##java.lang.Object): LanguageRange = 
+    //         LanguageRange(Interop/Flix/Marshal.fromJavaObject(o))
+    // }
 
 }
 
 
 namespace Basis/Util/Locale/LanguageRange {
 
-    use Basis/Util/Locale.LanguageRange;
-    use Basis/Util/Locale.LanguageRange.{LanguageRange};
-
-    pub def getLanguageRange(rng: LanguageRange): Interop/Util/Locale.LanguageRange = 
-        let LanguageRange(rng1) = rng;
-        rng1
-
+    use Basis/Util/Locale.LanguageRange
+    
+    
 
     ///
     /// Returns a new LanguageRange for the supplied `range`.
     ///
     pub def new(range: String): Result[String, LanguageRange] =
         Interop/Util/Locale/LanguageRange.new(range) 
-            |> Result.map(LanguageRange)
 
     pub def maxWeight(): Float64 =
         Interop/Util/Locale/LanguageRange.maxWeight()
@@ -74,25 +69,23 @@ namespace Basis/Util/Locale/LanguageRange {
         Interop/Util/Locale/LanguageRange.minWeight()
 
     pub def getRange(rng: LanguageRange): String =
-        getLanguageRange(rng) |> Interop/Util/Locale/LanguageRange.getRange
+        Interop/Util/Locale/LanguageRange.getRange(rng)
 
 
     pub def getWeight(rng: LanguageRange): Float64 =
-        getLanguageRange(rng) |> Interop/Util/Locale/LanguageRange.getWeight
+        Interop/Util/Locale/LanguageRange.getWeight(rng)
 
 
     pub def parse(ranges: String): Result[String, List[LanguageRange]] =
         Interop/Util/Locale/LanguageRange.parse(ranges) 
-            |> Result.map(List.map(LanguageRange))
 
     pub def parseWithCustomizations(ranges: String, customizations: Map[String, List[String]]): Result[String, List[LanguageRange]] =
         Interop/Util/Locale/LanguageRange.parseWithCustomizations(ranges, customizations) 
-            |> Result.map(List.map(LanguageRange))
+
 
     pub def mapEquivalents(priorityList: List[LanguageRange], customizations: Map[String, List[String]]): Result[String, List[LanguageRange]] =
-        let ps = List.map(getLanguageRange, priorityList);
-        Interop/Util/Locale/LanguageRange.mapEquivalents(ps, customizations) 
-            |> Result.map(List.map(LanguageRange))
+        Interop/Util/Locale/LanguageRange.mapEquivalents(priorityList, customizations) 
+
 
 
 }   

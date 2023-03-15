@@ -17,6 +17,8 @@
 
 namespace Basis/Lang {
 
+    /// TODO - to remove? CharSequence is an interface - should we just deal 
+    /// with concrete implementations - String, StringBuilder... ?
 
     /// Make an alias so clients reference only the Basis namespace
     pub type alias CharSequence[r: Region] = Interop/Lang.CharSequence[r]
@@ -25,11 +27,11 @@ namespace Basis/Lang {
 
 namespace Basis/Lang/CharSequence {
 
-    use Basis/Lang.CharSequence;
-    use Interop/Lang.CharSequence.{CharSequence};
+    use StringBuilder.StringBuilder
 
-    /// TODO - to remove? CharSequence is an interface - should we just deal 
-    /// with concrete implementations - String, StringBuilder... ?
+    use Basis/Lang.CharSequence
+    use Interop/Lang.CharSequence.{CharSequence}
+
 
     pub def fromString(_: Region[r], s: String): CharSequence[r] \ Write(r) = 
         unchecked_cast(CharSequence(unchecked_cast(s as ##java.lang.CharSequence)) as _ \ Write(r))
