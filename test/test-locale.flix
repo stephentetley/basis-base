@@ -24,7 +24,7 @@ namespace TestLocale {
 
     @test
     def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
-        match Basis/Util/Locale.getIsoCountriesWithIsoCountryCode(Interop/Util/Locale/IsoCountryCode.Part1Alpha2) {
+        match Basis/Util/Locale.getIsoCountriesWithIsoCountryCode(Basis/Util/Locale/IsoCountryCode.Part1Alpha2) {
             case Ok(s) => Set.forEach(println, s) 
             case Err(msg) => println("Err: ${msg}")
         }

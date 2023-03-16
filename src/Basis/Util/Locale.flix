@@ -39,9 +39,20 @@ namespace Basis/Util {
 namespace Basis/Util/Locale {
 
     use Basis/Util.Locale
-
+    use Basis/Util/Locale.Category
+    use Basis/Util/Locale.Category.{Display, Format}
+    use Basis/Util/Locale.FilteringMode
+    use Basis/Util/Locale.FilteringMode.{
+        AutoselectFiltering, ExtendedFiltering,
+        IgnoreExtendedRanges, MapExtendedRanges, 
+        RejectExtendedRanges
+    }
+    use Basis/Util/Locale.IsoCountryCode
+    use Basis/Util/Locale.IsoCountryCode.{
+        Part1Alpha2, Part1Alpha3, Part3
+    }
     use Basis/Util/Locale.LanguageRange
-   
+    
 
 
     /// 
@@ -51,13 +62,52 @@ namespace Basis/Util/Locale {
     //
     /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
     //
-    pub type alias Category = Interop/Util/Locale.Category
+    /// 
+    /// `Category` is an enum for Locale categories.
+    /// 
+    /// Case `Display` represents the default locale for displaying user interfaces.
+    //
+    /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
+    //
+    pub enum Category with Eq, Order, Boxable, Hash, ToString {
+        case Display
+        case Format
+    }
 
 
-    pub type alias FilteringMode = Interop/Util/Locale.FilteringMode
+    pub enum FilteringMode with Eq, Order, Boxable, Hash, ToString {
+        case AutoselectFiltering
+        case ExtendedFiltering
+        case IgnoreExtendedRanges
+        case MapExtendedRanges
+        case RejectExtendedRanges
+    }
 
-    pub type alias IsoCountryCode = Interop/Util/Locale.IsoCountryCode
+    pub enum IsoCountryCode with Eq, Order, Boxable, Hash, ToString {
+        case Part1Alpha2
+        case Part1Alpha3
+        case Part3
+    }
 
+
+    pub def marshalCategory(x: Category): Interop/Util.LocaleCategory = match x {
+        case Display    => Interop/Util/LocaleCategory.display()
+        case Format     => Interop/Util/LocaleCategory.format()
+    }
+
+    pub def marshalFilteringMode(x: FilteringMode): Interop/Util.LocaleFilteringMode = match x {
+        case AutoselectFiltering    => Interop/Util/LocaleFilteringMode.autoselect_filtering()
+        case ExtendedFiltering      => Interop/Util/LocaleFilteringMode.extended_filtering()
+        case IgnoreExtendedRanges   => Interop/Util/LocaleFilteringMode.ignore_extended_ranges()
+        case MapExtendedRanges      => Interop/Util/LocaleFilteringMode.map_extended_ranges()
+        case RejectExtendedRanges   => Interop/Util/LocaleFilteringMode.reject_extended_ranges()
+    }
+
+    pub def marshalIsoCountryCode(x: IsoCountryCode): Interop/Util.LocaleIsoCountryCode = match x {
+        case Part1Alpha2    => Interop/Util/LocaleIsoCountryCode.part1_alpha2()
+        case Part1Alpha3    => Interop/Util/LocaleIsoCountryCode.part1_alpha3()
+        case Part3          => Interop/Util/LocaleIsoCountryCode.part3()
+    }
 
 
     ///
@@ -89,7 +139,8 @@ namespace Basis/Util/Locale {
         Interop/Util/Locale.setJvmDefaultLocale!(loc)
 
     pub def setJvmDefaultLocaleWithCategory!(category: Category, loc: Locale): Result[String, Unit] \ IO =
-        Interop/Util/Locale.setJvmDefaultLocaleWithCategory!(category, loc)
+        let category1 = marshalCategory(category);
+        Interop/Util/Locale.setJvmDefaultLocaleWithCategory!(category1, loc)
 
     ///
     /// Returns the "root" locale.
@@ -173,7 +224,7 @@ namespace Basis/Util/Locale {
         Interop/Util/Locale.getDefault()
 
     pub def getDefaultWithCategory(cat: Category): Locale \ IO =
-        Interop/Util/Locale.getDefaultWithCategory(cat)
+        marshalCategory(cat) |> Interop/Util/Locale.getDefaultWithCategory
 
     pub def getCountry(loc: Locale): String =
         Interop/Util/Locale.getCountry(loc)
@@ -244,7 +295,8 @@ namespace Basis/Util/Locale {
         Interop/Util/Locale.getIsoCountries()
 
     pub def getIsoCountriesWithIsoCountryCode(icc: IsoCountryCode): Result[String, Set[String]] =
-        Interop/Util/Locale.getIsoCountriesWithIsoCountryCode(icc)
+        marshalIsoCountryCode(icc) 
+            |> Interop/Util/Locale.getIsoCountriesWithIsoCountryCode
 
     pub def getIsoLanguages(): Result[String, List[String]] =
         Interop/Util/Locale.getIsoLanguages()
@@ -276,13 +328,15 @@ namespace Basis/Util/Locale {
             |> Result.getWithDefault(Nil)
 
     pub def filterWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, locales: List[Locale]): List[Locale] = 
-        Interop/Util/Locale.filterWithFilteringMode(priorityList, mode, locales) |> Result.getWithDefault(Nil)
+        let mode1 = marshalFilteringMode(mode);
+        Interop/Util/Locale.filterWithFilteringMode(priorityList, mode1, locales) |> Result.getWithDefault(Nil)
 
     pub def filterTags(priorityList: List[LanguageRange], tags: List[String]): List[String] = 
         Interop/Util/Locale.filterTags(priorityList, tags) |> Result.getWithDefault(Nil)
 
-    pub def filterTagsWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, tags: List[String]): List[String] = 
-        Interop/Util/Locale.filterTagsWithFilteringMode(priorityList, mode, tags) |> Result.getWithDefault(Nil)
+    pub def filterTagsWithFilteringMode(priorityList: List[LanguageRange], mode: FilteringMode, tags: List[String]): List[String] =
+        let mode1 = marshalFilteringMode(mode);
+        Interop/Util/Locale.filterTagsWithFilteringMode(priorityList, mode1, tags) |> Result.getWithDefault(Nil)
 
 
 }
