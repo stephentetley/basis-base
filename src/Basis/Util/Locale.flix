@@ -54,21 +54,13 @@ namespace Basis/Util/Locale {
     use Basis/Util/Locale.LanguageRange
     
 
-
     /// 
     /// `Category` is an enum for Locale categories.
     /// 
     /// Case `Display` represents the default locale for displaying user interfaces.
-    //
+    ///
     /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
-    //
-    /// 
-    /// `Category` is an enum for Locale categories.
-    /// 
-    /// Case `Display` represents the default locale for displaying user interfaces.
-    //
-    /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
-    //
+    ///
     pub enum Category with Eq, Order, Boxable, Hash, ToString {
         case Display
         case Format
