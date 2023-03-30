@@ -108,10 +108,9 @@ namespace Basis/Lang/ProcessBuilder {
 
 
     pub def setDirectory!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
-        use Result.flatMap;
+        use Functor.{<$>};
         let step = pb -> region r1 {
-            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
-            Ok(Interop/Lang/ProcessBuilder.directory!(file1, pb))
+            flip(Interop/Lang/ProcessBuilder.directory!, pb) <$> Basis/NIO/File/Path.toFile(r1, path)
         };
         liftSetterResult!(step)
 
@@ -123,27 +122,25 @@ namespace Basis/Lang/ProcessBuilder {
         liftGetterResult(Interop/Lang/ProcessBuilder.environment)
 
     pub def redirectErrorTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
-        use Result.flatMap;
+        use Functor.{<$>};
         let step = pb -> region r1 {
-            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
-            Interop/Lang/ProcessBuilder.redirectErrorTo!(file1, pb) |> Ok
+            flip(Interop/Lang/ProcessBuilder.redirectErrorTo!, pb) <$> Basis/NIO/File/Path.toFile(r1, path)
         };
         liftSetterResult!(step)
 
     pub def redirectInputTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
-        use Result.flatMap;
+        use Functor.{<$>};
         let step = pb -> region r1 {
-            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
-            Interop/Lang/ProcessBuilder.redirectInputTo!(file1, pb) |> Ok
+            flip(Interop/Lang/ProcessBuilder.redirectInputTo!, pb) <$> Basis/NIO/File/Path.toFile(r1, path)
         };
         liftSetterResult!(step)
 
 
     pub def redirectOutputTo!(path: Path): ProcessBuilder[r, ka, r, Unit] = 
-        use Result.flatMap;
+        use Functor.{<$>};
         let step = pb -> region r1 {
-            let* file1 = Basis/NIO/File/Path.toFile(r1, path);
-            Interop/Lang/ProcessBuilder.redirectOutputTo!(file1, pb) |> Ok
+            flip(Interop/Lang/ProcessBuilder.redirectOutputTo!, pb) <$> Basis/NIO/File/Path.toFile(r1, path)            
         };
         liftSetterResult!(step)
+
 }

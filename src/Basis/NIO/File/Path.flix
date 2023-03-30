@@ -112,10 +112,9 @@ namespace Basis/NIO/File/Path {
 
     /// e.g. getBaseName('/home/stephen/temp01.txt') = "temp01"
     pub def getBaseName(path: Path): Option[String] =
-        use Option.flatMap;
-        let* file = getFileName(path);
-        let base = dropExtensions(file);
-        Some(toString(base))
+        forM (file <- getFileName(path);
+                base <- Some(dropExtensions(file))
+        ) yield toString(base)
 
     pub def putBaseName(path: Path, name: String): Path =
         match (getParent(path), getExtensions(path)) {
@@ -212,10 +211,9 @@ namespace Basis/NIO/File/Path {
 
 
     pub def getExtension(path: Path): Option[String] =
-        use Option.flatMap;
-        let* s = getFileName(path) |> Option.map(toString);
-        let* ix = String.indexOfRight({substr = "."}, s);
-        Some(String.sliceRight(start = ix+1, s))
+        forM (s <- getFileName(path) |> Option.map(toString);
+                ix <- String.indexOfRight({substr = "."}, s)
+        ) yield String.sliceRight(start = ix+1, s)
 
     ///
     /// Replaces the extension.
@@ -284,9 +282,9 @@ namespace Basis/NIO/File/Path {
     ///
     pub def getExtensions(path: Path): Option[String] =
         use Option.flatMap;
-        let* s = getFileName(path) |> Option.map(toString);
-        let* ix = String.indexOfLeft({substr = "."}, s);
-        Some(String.sliceRight(start = ix + 1, s))
+        forM (s <- getFileName(path) |> Option.map(toString);
+                ix <- String.indexOfLeft({substr = "."}, s)
+        ) yield String.sliceRight(start = ix + 1, s)
 
     ///
     /// Drop all extensions if the Path has mutliple extensions,
@@ -320,21 +318,15 @@ namespace Basis/NIO/File/Path {
     /// does not have an extension return None.
     ///
     pub def stripExtension(path: Path, ext: String): Option[Path] =
-        use Option.flatMap;
-        let* ext1 = getExtension(path);
-        if (ext1 == ext)
-            Some(dropExtension(path))
-        else
-            None
+        forM (ext1 <- getExtension(path);
+                ans <- if (ext1 == ext) Some(dropExtension(path)) else None
+        ) yield ans
 
     /// Multiple extension version of `stripExtension`.
     pub def stripExtensions(path: Path, exts: String): Option[Path] =
-        use Option.flatMap;
-        let* exts1 = getExtensions(path);
-        if (exts1 == exts)
-            Some(dropExtensions(path))
-        else
-            None
+        forM (exts1 <- getExtensions(path);
+                ans <- if (exts1 == exts) Some(dropExtensions(path)) else None
+        ) yield ans
 
     pub def split(path: Path): List[Path] =
         let n = getNameCount(path);

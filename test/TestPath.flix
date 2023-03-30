@@ -23,10 +23,9 @@ namespace TestPath {
 
     @test
     def toString01(): Bool =
-        use Result.flatMap;
+        use Functor.{<$>};
         let step = () -> { 
-            let* p1 = Basis/NIO/File/Path.newPath("src.flix");
-            Ok(ToString.toString(p1) == "src.flix")
+            (p1 -> ToString.toString(p1) == "src.flix") <$> Basis/NIO/File/Path.newPath("src.flix")
         };
         step() |> Result.getWithDefault(false)
 
