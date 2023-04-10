@@ -15,26 +15,26 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
-    pub type alias FileInputStream[r: Region] = Interop/IO.FileInputStream[r]
+    pub type alias FileInputStream[r: Region] = Interop.IO.FileInputStream[r]
 
 }
 
-namespace Basis/IO/FileInputStream {
+mod Basis.IO.FileInputStream {
 
-    use Basis/IO.FileInputStream
-    use Basis/IO.InputStream
-    use Basis/NIO/File.Path
+    use Basis.IO.FileInputStream
+    use Basis.IO.InputStream
+    use Basis.NIO.File.Path
 
     pub def toInputStream(s: FileInputStream[r]): InputStream[r] =
-        Interop/IO/SubInputStream.toInputStream(s)
+        Interop.IO.SubInputStream.toInputStream(s)
 
     pub def fromInputStream(s: InputStream[r]): FileInputStream[r] =
-        Interop/IO/SubInputStream.fromInputStream(s)
+        Interop.IO.SubInputStream.fromInputStream(s)
 
     pub def newWithPath(rc: Region[r], path: Path): Result[String, FileInputStream[r]] \ {IO, Write(r)} = 
-        Interop/NIO/File/Path.toString(path) |> Interop/IO/FileInputStream.newWithPath(rc)
+        Interop.NIO.File.Path.toString(path) |> Interop.IO.FileInputStream.newWithPath(rc)
 
 }

@@ -15,10 +15,10 @@
  */
 
 
-namespace Basis/Text/Normalizer {
+mod Basis.Text.Normalizer {
 
-    use Basis/Text/Normalizer.NormalizerForm
-    use Basis/Text/Normalizer.NormalizerForm.{Nfc, Nfd, Nfkc, Nfkd}
+    use Basis.Text.Normalizer.NormalizerForm
+    use Basis.Text.Normalizer.NormalizerForm.{Nfc, Nfd, Nfkc, Nfkd}
 
     ///
     pub enum NormalizerForm with Eq, Order, ToString, Hash, Boxable {
@@ -28,21 +28,21 @@ namespace Basis/Text/Normalizer {
         case Nfkd
     }
 
-    def marshal(x: NormalizerForm): Interop/Text.NormalizerForm =
+    def marshal(x: NormalizerForm): Interop.Text.NormalizerForm =
         match x {
-            case Nfc    => Interop/Text/NormalizerForm.nfc()
-            case Nfd    => Interop/Text/NormalizerForm.nfd()
-            case Nfkc   => Interop/Text/NormalizerForm.nfkc()
-            case Nfkd   => Interop/Text/NormalizerForm.nfkd()
+            case Nfc    => Interop.Text.NormalizerForm.nfc()
+            case Nfd    => Interop.Text.NormalizerForm.nfd()
+            case Nfkc   => Interop.Text.NormalizerForm.nfkc()
+            case Nfkd   => Interop.Text.NormalizerForm.nfkd()
         }
 
 
     pub def normalize(nform: NormalizerForm, src: String): Result[String, String] =
         let nform1 = marshal(nform);
-        Interop/Text/Normalizer.normalize(nform1, src)
+        Interop.Text.Normalizer.normalize(nform1, src)
 
     pub def isNormalized(nform: NormalizerForm, src: String): Result[String, Bool] =
         let nform1 = marshal(nform);
-        Interop/Text/Normalizer.isNormalized(nform1, src)
+        Interop.Text.Normalizer.isNormalized(nform1, src)
 
 }

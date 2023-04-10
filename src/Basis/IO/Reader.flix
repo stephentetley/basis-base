@@ -15,11 +15,11 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
     
-    pub type alias Reader[r: Region] = Interop/IO.Reader[r]
+    pub type alias Reader[r: Region] = Interop.IO.Reader[r]
     
 }
 

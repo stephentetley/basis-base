@@ -14,90 +14,90 @@
  * limitations under the License.
  */
 
-namespace Basis/Text {
+mod Basis.Text {
     
     /// Treat as immutable
     /// Represents a DecimalFormat.
     ///
-    pub type alias DecimalFormat = Interop/Text.DecimalFormat
+    pub type alias DecimalFormat = Interop.Text.DecimalFormat
 
 }
 
 /*
-namespace Basis/Text/DecimalFormat {
+mod Basis.Text.DecimalFormat {
 
-    use Basis/Text.DecimalFormat;
-    use Basis/Text.DecimalFormat.{DecimalFormat};
-    use Basis/Util.Locale;
-    use Basis/Util.Currency;
+    use Basis.Text.DecimalFormat;
+    use Basis.Text.DecimalFormat.{DecimalFormat};
+    use Basis.Util.Locale;
+    use Basis.Util.Currency;
 
-    def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop/Text.DecimalFormat[r] = 
+    def toInteropDecimalFormat(r: Region[r], df: DecimalFormat): Interop.Text.DecimalFormat[r] = 
         let DecimalFormat(df1) = df;
-        Interop/Text/DecimalFormat.wrapHH(r, df1)
+        Interop.Text.DecimalFormat.wrapHH(r, df1)
 
 
 
     pub def hashCode(df: DecimalFormat): Int32 = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.hashCode
+        toInteropDecimalFormat(r, df) |> Interop.Text.DecimalFormat.hashCode
     }
 
     pub def formatFloat64(d: Float64, df: DecimalFormat): Result[String, String] = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatFloat64(d)
+        toInteropDecimalFormat(r, df) |> Interop.Text.NumberFormat.formatFloat64(d)
     }
 
     pub def formatInt64(i: Int64, df: DecimalFormat): Result[String, String] = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/NumberFormat.formatInt64(i)
+        toInteropDecimalFormat(r, df) |> Interop.Text.NumberFormat.formatInt64(i)
     }
 
     pub def parseInt8(s: String, df: DecimalFormat): Result[String, Int8] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.byteValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.byteValue)
     }
 
     pub def parseInt16(s: String, df: DecimalFormat): Result[String, Int16] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.shortValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.shortValue)
     }
 
     pub def parseInt32(s: String, df: DecimalFormat): Result[String, Int32] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.intValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.intValue)
     }
 
     pub def parseInt64(s: String, df: DecimalFormat): Result[String, Int64] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.longValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.longValue)
     }
 
     pub def parseFloat32(s: String, df: DecimalFormat): Result[String, Float32] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.floatValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.floatValue)
     }
 
     pub def parseFloat64(s: String, df: DecimalFormat): Result[String, Float64] = region r {
         toInteropDecimalFormat(r, df) 
-            |> Interop/Text/NumberFormat.parse(s)
-            |> Result.map(Interop/Lang/Number.doubleValue)
+            |> Interop.Text.NumberFormat.parse(s)
+            |> Result.map(Interop.Lang.Number.doubleValue)
     }
 
     ///
     pub def toPattern(df: DecimalFormat): String = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.toPattern
+        toInteropDecimalFormat(r, df) |> Interop.Text.DecimalFormat.toPattern
     }
 
 
     ///
     pub def toLocalizedPattern(df: DecimalFormat): String = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.toLocalizedPattern
+        toInteropDecimalFormat(r, df) |> Interop.Text.DecimalFormat.toLocalizedPattern
     }
 
     pub def getCurrency(df: DecimalFormat): Result[String, Currency] = region r {
-        toInteropDecimalFormat(r, df) |> Interop/Text/DecimalFormat.getCurrency
+        toInteropDecimalFormat(r, df) |> Interop.Text.DecimalFormat.getCurrency
     }
 
 

@@ -14,68 +14,68 @@
  * limitations under the License.
  */
 
-namespace Basis/Util/Locale {
+mod Basis.Util {
 
-    pub type alias Builder = Interop/Util.LocaleBuilder
+    pub type alias LocaleBuilder = Interop.Util.LocaleBuilder
 
 }
 
 
-namespace Basis/Util/Locale/Builder {
+mod Basis.Util.Locale.Builder {
 
-    use Basis/Util/Locale.Builder
-    use Basis/Util.Locale
-    use Interop/Util/LocaleBuilder.LocaleBuilderAction
+    use Basis.Util.Locale.Builder
+    use Basis.Util.Locale
+    use Interop.Util.LocaleBuilder.LocaleBuilderAction
 
     pub def buildLocale(xs: List[LocaleBuilderAction]): Result[String, Locale] =
-        Interop/Util/LocaleBuilder.buildLocale(xs)
+        Interop.Util.LocaleBuilder.buildLocale(xs)
 
     pub def addUnicodeLocaleAttribute(attr: String): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{AddUnicodeLocaleAttribute};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{AddUnicodeLocaleAttribute};
         AddUnicodeLocaleAttribute(attr)
 
     pub def clear(): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{Clear};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{Clear};
         Clear()
 
     pub def clearExtensions(): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{Clear};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{Clear};
         Clear()
 
     pub def removeUnicodeLocaleAttribute(attr: String): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{RemoveUnicodeLocaleAttribute};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{RemoveUnicodeLocaleAttribute};
         RemoveUnicodeLocaleAttribute(attr)
 
     pub def setExtension(k: Char, v: String): LocaleBuilderAction =  
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetExtension};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetExtension};
         SetExtension(k, v)
 
     pub def setUnicodeLocaleKeyword(k: String, ty: String): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetUnicodeLocaleKeyword};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetUnicodeLocaleKeyword};
         SetUnicodeLocaleKeyword(k, ty)
 
     pub def setLanguage(lang: String): LocaleBuilderAction =  
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetLanguage};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLanguage};
         SetLanguage(lang)
 
     pub def setLanguageTag(tag: String): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetLanguageTag};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLanguageTag};
         SetLanguageTag(tag) 
 
     pub def setLocale(loc: Locale): LocaleBuilderAction =  
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetLocale};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLocale};
         SetLocale(loc)
 
     pub def setRegion(rgn: String): LocaleBuilderAction =  
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetRegion};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetRegion};
         SetRegion(rgn)
 
     pub def setScript(script: String): LocaleBuilderAction =  
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetScript};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetScript};
         SetScript(script)
 
     pub def setVariant(vrnt: String): LocaleBuilderAction = 
-        use Interop/Util/LocaleBuilder.LocaleBuilderAction.{SetVariant};
+        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetVariant};
         SetVariant(vrnt)
 
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-namespace Basis/Util {
+mod Basis.Util {
 
 
-    pub type alias Currency = Interop/Util.Currency
+    pub type alias Currency = Interop.Util.Currency
 
     /// Note - Currency is an oddity because a currency is immutable, but there are no Currency 
     /// constructors (in Java), only `getInstance` static methods.
@@ -28,36 +28,36 @@ namespace Basis/Util {
 
 
 
-namespace Basis/Util/Currency {
+mod Basis.Util.Currency {
 
-    use Basis/Util.Currency;
+    use Basis.Util.Currency;
 
-    use Basis/Util.Locale;
+    use Basis.Util.Locale;
     
 
     pub def getAvailableCurrencies(): List[Currency] \ IO = region r {
-        Interop/Util/Currency.getAvailableCurrencies(r)
-            |> Interop/Util/SetZ.toFlixList
+        Interop.Util.Currency.getAvailableCurrencies(r)
+            |> Interop.Util.SetZ.toFlixList
     }
 
 
 
     pub def getInstance(code: String): Result[String, Currency] \ IO = 
-        Interop/Util/Currency.getInstance(code)
+        Interop.Util.Currency.getInstance(code)
 
     pub def getInstanceWithLocale(loc: Locale): Result[String, Currency] \ IO = 
-        Interop/Util/Currency.getInstanceWithLocale(loc)
+        Interop.Util.Currency.getInstanceWithLocale(loc)
 
     pub def getCurrencyCode(cur: Currency): String = 
-        Interop/Util/Currency.getCurrencyCode(cur)
+        Interop.Util.Currency.getCurrencyCode(cur)
 
     pub def getNumericCode(cur: Currency): Int32 = 
-        Interop/Util/Currency.getNumericCode(cur)
+        Interop.Util.Currency.getNumericCode(cur)
 
     pub def getDisplayName(cur: Currency): String = 
-        Interop/Util/Currency.getDisplayName(cur)
+        Interop.Util.Currency.getDisplayName(cur)
 
     pub def getSymbol(cur: Currency): String = 
-        Interop/Util/Currency.getSymbol(cur)
+        Interop.Util.Currency.getSymbol(cur)
 
 }

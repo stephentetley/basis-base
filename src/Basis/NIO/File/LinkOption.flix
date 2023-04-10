@@ -15,34 +15,34 @@
  */
 
 
-namespace Basis/NIO/File/LinkOption {
+mod Basis.NIO.File.LinkOption {
 
-    use Basis/NIO/File.OpenOption
-    use Basis/NIO/File/LinkOption.LinkOption
-    use Basis/NIO/File/LinkOption.LinkOption.{NofollowLinks}
+    use Basis.NIO.File.OpenOption
+    use Basis.NIO.File.LinkOption.LinkOption
+    use Basis.NIO.File.LinkOption.LinkOption.{NofollowLinks}
 
     pub enum LinkOption with Eq, Order, ToString, Hash, Boxable {
         case NofollowLinks
     }
 
 
-    pub def marshallLinkOption(x: LinkOption): Interop/NIO/File.LinkOption =
+    pub def marshallLinkOption(x: LinkOption): Interop.NIO.File.LinkOption =
         match x {
-            case NofollowLinks => Interop/NIO/File/LinkOption.nofollow_links()
+            case NofollowLinks => Interop.NIO.File.LinkOption.nofollow_links()
         }
 
 
-    pub def unmarshallLinkOption(x: Interop/NIO/File.LinkOption): LinkOption =
+    pub def unmarshallLinkOption(x: Interop.NIO.File.LinkOption): LinkOption =
         match x {
-            case n if primEquals(n, Interop/NIO/File/LinkOption.nofollow_links())               => NofollowLinks
+            case n if primEquals(n, Interop.NIO.File.LinkOption.nofollow_links())               => NofollowLinks
             case _                                                                              => bug!("unmarshallLinkOption")
         }
 
-    def primEquals(x: Interop/NIO/File.LinkOption, y: Interop/NIO/File.LinkOption): Bool = 
-        Interop/Lang/Enum.equals(Interop/Lang/SubEnum.toEnum(x), Interop/Lang/SubEnum.toEnum(y))
+    def primEquals(x: Interop.NIO.File.LinkOption, y: Interop.NIO.File.LinkOption): Bool = 
+        Interop.Lang.Enum.equals(Interop.Lang.SubEnum.toEnum(x), Interop.Lang.SubEnum.toEnum(y))
 
 
     pub def toOpenOption(x: LinkOption): OpenOption = 
-        marshallLinkOption(x) |> Interop/NIO/File/ImpOpenOption.toOpenOption
+        marshallLinkOption(x) |> Interop.NIO.File.ImpOpenOption.toOpenOption
 
 }

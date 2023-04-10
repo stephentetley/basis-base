@@ -15,14 +15,14 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
-    pub type alias InputStream[r: Region] = Interop/IO.InputStream[r]
+    pub type alias InputStream[r: Region] = Interop.IO.InputStream[r]
 
 }
 
-namespace Basis/IO/InputStream {
+mod Basis.IO.InputStream {
 
 
 }        

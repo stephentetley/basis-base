@@ -15,43 +15,43 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
-    /// Make an alias so clients reference only the Basis namespace
-    pub type alias BufferedReader[r: Region] = Interop/IO.BufferedReader[r]
+    /// Make an alias so clients reference only the Basis mod
+    pub type alias BufferedReader[r: Region] = Interop.IO.BufferedReader[r]
 }
 
 
-namespace Basis/IO/BufferedReader {
+mod Basis.IO.BufferedReader {
 
-    use Basis/IO.BufferedReader
-    use Basis/IO.Reader
+    use Basis.IO.BufferedReader
+    use Basis.IO.Reader
 
 
 
     pub def toReader(rd: BufferedReader[r]): Reader[r] = 
-        Interop/IO/SubReader.toReader(rd)
+        Interop.IO.SubReader.toReader(rd)
 
 
     pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ { Read(r), Write(r1) } =
-        Interop/IO/BufferedReader.newWithReader(rc, rd)
+        Interop.IO.BufferedReader.newWithReader(rc, rd)
 
 
 
     pub def close!(br: BufferedReader[r]): Result[String, Unit] \ Write(r) =
-        Interop/IO/BufferedReader.close!(br)
+        Interop.IO.BufferedReader.close!(br)
 
     pub def linesIterator!(rc: Region[r1], br: BufferedReader[r]): Result[String, Iterator[String, r and r1, r1]] =
-        Interop/IO/BufferedReader.lines!(rc, br) |> Result.map(Interop/Util/Stream/Stream.iterator(rc))
+        Interop.IO.BufferedReader.lines!(rc, br) |> Result.map(Interop.Util.Stream.Stream.iterator(rc))
 
     pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ Read(r) = 
-        Interop/IO/BufferedReader.read!(br)
+        Interop.IO.BufferedReader.read!(br)
 
     /// Note - this is an example of using the services of the super class in the current class.
     /// Because `Reader` is an abstract class in should probably not be expose in the basis API.
     pub def skip!(n: Int64, br: BufferedReader[r]): Result[String, Int64] \ Read(r) = 
-        toReader(br) |> Interop/IO/Reader.skip!(n)
+        toReader(br) |> Interop.IO.Reader.skip!(n)
     
 
 }

@@ -15,10 +15,10 @@
  */
 
 
-namespace Basis/NIO/ByteOrder {
+mod Basis.NIO.ByteOrder {
 
-    use Basis/NIO/ByteOrder.ByteOrder
-    use Basis/NIO/ByteOrder.ByteOrder.{BigEndian, LittleEndian}
+    use Basis.NIO.ByteOrder.ByteOrder
+    use Basis.NIO.ByteOrder.ByteOrder.{BigEndian, LittleEndian}
 
     pub enum ByteOrder with Eq, Order, ToString, Hash, Boxable {
         case BigEndian
@@ -26,24 +26,24 @@ namespace Basis/NIO/ByteOrder {
     }
 
 
-    pub def marshallByteOrder(x: ByteOrder): Interop/NIO.ByteOrder =
+    pub def marshallByteOrder(x: ByteOrder): Interop.NIO.ByteOrder =
         match x {
-            case BigEndian    => Interop/NIO/ByteOrder.big_endian()
-            case LittleEndian => Interop/NIO/ByteOrder.little_endian()
+            case BigEndian    => Interop.NIO.ByteOrder.big_endian()
+            case LittleEndian => Interop.NIO.ByteOrder.little_endian()
         }
 
 
-    pub def unmarshallByteOrder(x: Interop/NIO.ByteOrder): ByteOrder =
+    pub def unmarshallByteOrder(x: Interop.NIO.ByteOrder): ByteOrder =
         match x {
-            case n if primEquals(n, Interop/NIO/ByteOrder.big_endian())     => BigEndian
-            case n if primEquals(n, Interop/NIO/ByteOrder.little_endian())  => LittleEndian
+            case n if primEquals(n, Interop.NIO.ByteOrder.big_endian())     => BigEndian
+            case n if primEquals(n, Interop.NIO.ByteOrder.little_endian())  => LittleEndian
             case _                                                          => bug!("unmarshallByteOrder")
         }
 
-    def primEquals(x: Interop/NIO.ByteOrder, y: Interop/NIO.ByteOrder): Bool = 
-        Interop/NIO/ByteOrder.toString(x) == Interop/NIO/ByteOrder.toString(y)
+    def primEquals(x: Interop.NIO.ByteOrder, y: Interop.NIO.ByteOrder): Bool = 
+        Interop.NIO.ByteOrder.toString(x) == Interop.NIO.ByteOrder.toString(y)
 
     pub def nativeOrder(): ByteOrder \ IO = 
-        Interop/NIO/ByteOrder.nativeOrder() |> unmarshallByteOrder
+        Interop.NIO.ByteOrder.nativeOrder() |> unmarshallByteOrder
 
 }

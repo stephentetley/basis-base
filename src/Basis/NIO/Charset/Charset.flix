@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace Basis/NIO/Charset {
+mod Basis.NIO.Charset {
 
     /// 
     /// Charset is a wrapper over the Java class `java.nio.charset.Charset`.
@@ -30,55 +30,55 @@ namespace Basis/NIO/Charset {
     /// This module generally follows the class `java.nio.charset.Charset` 
     /// so the Javadoc documentation is relevant.
     ///
-    pub type alias Charset = Interop/NIO/Charset.Charset
+    pub type alias Charset = Interop.NIO.Charset.Charset
 
 }
 
-namespace Basis/NIO/Charset/Charset {
+mod Basis.NIO.Charset.Charset {
 
-    use Basis/NIO/Charset.Charset
+    use Basis.NIO.Charset.Charset
 
-    use Basis/Util.Locale
+    use Basis.Util.Locale
 
 
     pub def forName(name: String): Option[Charset] =
-        Interop/NIO/Charset/Charset.forName(name) |> Result.toOption
+        Interop.NIO.Charset.Charset.forName(name) |> Result.toOption
 
     pub def forNameWithDefault(d: Charset, name: String): Charset =
         forName(name) |> Option.getWithDefault(d)
 
 
     pub def defaultCharset(): Charset \ IO =
-        Interop/NIO/Charset/Charset.defaultCharset()
+        Interop.NIO.Charset.Charset.defaultCharset()
 
 
     pub def isSupported(name: String): Bool \ IO =
-        Interop/NIO/Charset/Charset.isSupported(name) |> Result.getWithDefault(false)
+        Interop.NIO.Charset.Charset.isSupported(name) |> Result.getWithDefault(false)
 
     pub def iso_8859_1(): Charset =
-        Interop/NIO/Charset/StandardCharsets.iso_8859_1()
+        Interop.NIO.Charset.StandardCharsets.iso_8859_1()
 
     pub def us_ascii(): Charset =
-        Interop/NIO/Charset/StandardCharsets.us_ascii()
+        Interop.NIO.Charset.StandardCharsets.us_ascii()
 
     pub def utf_16(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16()
+        Interop.NIO.Charset.StandardCharsets.utf_16()
 
     pub def utf_16be(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16be()
+        Interop.NIO.Charset.StandardCharsets.utf_16be()
 
     pub def utf_16le(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_16le()
+        Interop.NIO.Charset.StandardCharsets.utf_16le()
 
     pub def utf_8(): Charset =
-        Interop/NIO/Charset/StandardCharsets.utf_8()
+        Interop.NIO.Charset.StandardCharsets.utf_8()
 
 
     /// 
     /// Returns the canonical name of Charset `c`.
     /// 
     pub def name(cs: Charset): String =
-        Interop/NIO/Charset/Charset.name(cs)
+        Interop.NIO.Charset.Charset.name(cs)
 
     /// 
     /// Returns the human readable name of the Charset `c`.
@@ -86,7 +86,7 @@ namespace Basis/NIO/Charset/Charset {
     /// The name is interpreted using the system's default locale.
     ///
     pub def displayName(cs: Charset): String \ IO =
-        Interop/NIO/Charset/Charset.displayName(cs)
+        Interop.NIO.Charset.Charset.displayName(cs)
 
     /// 
     /// Returns the human readable name of the Charset `c`.
@@ -94,13 +94,13 @@ namespace Basis/NIO/Charset/Charset {
     /// The name is interpreted using the supplied locale.
     ///    
     pub def displayNameWithLocale(loc: Locale, cs: Charset): String =
-        Interop/NIO/Charset/Charset.displayNameWithLocale(loc, cs)
+        Interop.NIO.Charset.Charset.displayNameWithLocale(loc, cs)
 
     pub def isRegistered(cs: Charset): Bool =
-        Interop/NIO/Charset/Charset.isRegistered(cs)
+        Interop.NIO.Charset.Charset.isRegistered(cs)
 
     pub def canEncode(cs: Charset): Bool =
-        Interop/NIO/Charset/Charset.canEncode(cs)
+        Interop.NIO.Charset.Charset.canEncode(cs)
 
 
     // pub def contains(x: Charset, y: Charset): Bool =
@@ -110,10 +110,10 @@ namespace Basis/NIO/Charset/Charset {
     //     contains(x1, y1)
 
     pub def aliases(cs: Charset): Set[String] =
-        Interop/NIO/Charset/Charset.aliases(cs)
+        Interop.NIO.Charset.Charset.aliases(cs)
 
     pub def availableCharsets(): Map[String, Charset] \ IO =
-        Interop/NIO/Charset/Charset.availableCharsets()
+        Interop.NIO.Charset.Charset.availableCharsets()
 
 
 

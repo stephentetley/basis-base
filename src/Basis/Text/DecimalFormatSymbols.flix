@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-namespace Basis/Text {
+mod Basis.Text {
     
     /// Treat as immutable
     /// Represents a DecimalFormat.
     ///
-    pub type alias DecimalFormatSymbols = Interop/Text.DecimalFormatSymbols
+    pub type alias DecimalFormatSymbols = Interop.Text.DecimalFormatSymbols
 
 }
 
 
-namespace Basis/Text/DecimalFormatSymbols {
+mod Basis.Text.DecimalFormatSymbols {
 
-    use Basis/Text.DecimalFormatSymbols
-    use Interop/Text.DecimalFormatSymbols.{DecimalFormatSymbols}
-    // use Basis/I18n.Locale;
-    // use Basis/I18n.Currency;
-
-
+    use Basis.Text.DecimalFormatSymbols
+    use Interop.Text.DecimalFormatSymbols.{DecimalFormatSymbols}
+    // use Basis.I18n.Locale
+    // use Basis.I18n.Currency
 
 
-    pub def hashCode(df: DecimalFormatSymbols): Int32 = Interop/Text/DecimalFormatSymbols.hashCode(df)
+
+
+    pub def hashCode(df: DecimalFormatSymbols): Int32 = Interop.Text.DecimalFormatSymbols.hashCode(df)
 
 
     pub def equals(x: DecimalFormatSymbols, y: DecimalFormatSymbols): Bool = 
-        Interop/Text/DecimalFormatSymbols.equals(x, y)
+        Interop.Text.DecimalFormatSymbols.equals(x, y)
     
 
 }

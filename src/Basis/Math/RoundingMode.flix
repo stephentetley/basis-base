@@ -15,9 +15,9 @@
  */
 
 
-namespace Basis/Math/RoundingMode {
+mod Basis.Math.RoundingMode {
 
-    use Basis/Math/RoundingMode.RoundingMode.{
+    use Basis.Math.RoundingMode.RoundingMode.{
         Ceiling, Down, Floor, HalfDown, 
         HalfEven, HalfUp, Unnecessary, Up
     }
@@ -34,33 +34,33 @@ namespace Basis/Math/RoundingMode {
     }
 
 
-    pub def marshallRoundingMode(x: RoundingMode): Interop/Math.RoundingMode =
+    pub def marshallRoundingMode(x: RoundingMode): Interop.Math.RoundingMode =
         match x {
-            case Ceiling        => Interop/Math/RoundingMode.ceiling()
-            case Down           => Interop/Math/RoundingMode.down()
-            case Floor          => Interop/Math/RoundingMode.floor()
-            case HalfDown       => Interop/Math/RoundingMode.half_down()
-            case HalfEven       => Interop/Math/RoundingMode.half_even()
-            case HalfUp         => Interop/Math/RoundingMode.half_up()
-            case Unnecessary    => Interop/Math/RoundingMode.unnecessary()
-            case Up             => Interop/Math/RoundingMode.up()
+            case Ceiling        => Interop.Math.RoundingMode.ceiling()
+            case Down           => Interop.Math.RoundingMode.down()
+            case Floor          => Interop.Math.RoundingMode.floor()
+            case HalfDown       => Interop.Math.RoundingMode.half_down()
+            case HalfEven       => Interop.Math.RoundingMode.half_even()
+            case HalfUp         => Interop.Math.RoundingMode.half_up()
+            case Unnecessary    => Interop.Math.RoundingMode.unnecessary()
+            case Up             => Interop.Math.RoundingMode.up()
         }
 
 
-    pub def unmarshallRoundingMode(i: Interop/Math.RoundingMode): RoundingMode =
+    pub def unmarshallRoundingMode(i: Interop.Math.RoundingMode): RoundingMode =
         match i {
-            case n if primEquals(n, Interop/Math/RoundingMode.ceiling())        => Ceiling
-            case n if primEquals(n, Interop/Math/RoundingMode.down())           => Down
-            case n if primEquals(n, Interop/Math/RoundingMode.floor())          => Floor
-            case n if primEquals(n, Interop/Math/RoundingMode.half_down())      => HalfDown
-            case n if primEquals(n, Interop/Math/RoundingMode.half_even())      => HalfEven
-            case n if primEquals(n, Interop/Math/RoundingMode.half_up())        => HalfUp
-            case n if primEquals(n, Interop/Math/RoundingMode.unnecessary())    => Unnecessary
-            case n if primEquals(n, Interop/Math/RoundingMode.up())             => Up
+            case n if primEquals(n, Interop.Math.RoundingMode.ceiling())        => Ceiling
+            case n if primEquals(n, Interop.Math.RoundingMode.down())           => Down
+            case n if primEquals(n, Interop.Math.RoundingMode.floor())          => Floor
+            case n if primEquals(n, Interop.Math.RoundingMode.half_down())      => HalfDown
+            case n if primEquals(n, Interop.Math.RoundingMode.half_even())      => HalfEven
+            case n if primEquals(n, Interop.Math.RoundingMode.half_up())        => HalfUp
+            case n if primEquals(n, Interop.Math.RoundingMode.unnecessary())    => Unnecessary
+            case n if primEquals(n, Interop.Math.RoundingMode.up())             => Up
             case _                                                              => bug!("unmarshallRoundingMode")
         }
 
-    def primEquals(x: Interop/Math.RoundingMode, y: Interop/Math.RoundingMode): Bool = 
-        Interop/Lang/Enum.equals(Interop/Lang/SubEnum.toEnum(x), Interop/Lang/SubEnum.toEnum(y))
+    def primEquals(x: Interop.Math.RoundingMode, y: Interop.Math.RoundingMode): Bool = 
+        Interop.Lang.Enum.equals(Interop.Lang.SubEnum.toEnum(x), Interop.Lang.SubEnum.toEnum(y))
 
 }

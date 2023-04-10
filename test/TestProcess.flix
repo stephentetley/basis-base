@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-namespace TestProcess {
+mod TestProcess {
 
     @test
     def process01(): Unit \ IO =
-        match Basis/Lang/Process.process({cmd = "java", args = "--version" :: Nil, charset = Basis/NIO/Charset/Charset.utf_8()}) {
+        match Basis.Lang.Process.process({cmd = "java", args = "--version" :: Nil, charset = Basis.NIO.Charset.Charset.utf_8()}) {
             case Err(msg) => println("Process Err: ${msg}")
             case Ok(ans)  => println("${ans.processResponse}")
         }
 
     @test
     def process02(): Unit \ IO =
-        match Basis/Lang/Process.process({cmd = "java", args = "--list-modules" :: Nil, charset = Basis/NIO/Charset/Charset.utf_8()}) {
+        match Basis.Lang.Process.process({cmd = "java", args = "--list-modules" :: Nil, charset = Basis.NIO.Charset.Charset.utf_8()}) {
             case Err(msg) => println("Process Err: ${msg}")
             case Ok(ans)  => println("${ans.processResponse}")
         }
 
     @test
     def process03(): Unit \ IO =
-        match Basis/Lang/Process.process({cmd = "java", args = "--BAD_ARGUMENT" :: Nil, charset = Basis/NIO/Charset/Charset.utf_8()}) {
+        match Basis.Lang.Process.process({cmd = "java", args = "--BAD_ARGUMENT" :: Nil, charset = Basis.NIO.Charset.Charset.utf_8()}) {
             case Err(msg) => println("Process Err: ${msg}")
             case Ok(ans)  => println("${ans.processResponse}")
         }

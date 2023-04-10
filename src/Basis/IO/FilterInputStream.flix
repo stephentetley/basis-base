@@ -15,22 +15,22 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
     /// FilterInputStream - has no public constructors, does this imply it should not be exposed by Basis?
-    pub type alias FilterInputStream[r: Region] = Interop/IO.FilterInputStream[r]
+    pub type alias FilterInputStream[r: Region] = Interop.IO.FilterInputStream[r]
 
 }
 
-namespace Basis/IO/FilterInputStream {
+mod Basis.IO.FilterInputStream {
 
-    use Basis/IO.FilterInputStream;
-    use Basis/IO.InputStream;
+    use Basis.IO.FilterInputStream;
+    use Basis.IO.InputStream;
 
     pub def toInputStream(s: FilterInputStream[r]): InputStream[r] =
-        Interop/IO/SubInputStream.toInputStream(s)
+        Interop.IO.SubInputStream.toInputStream(s)
 
     pub def fromInputStream(s: InputStream[r]): FilterInputStream[r] =
-        Interop/IO/SubInputStream.fromInputStream(s)
+        Interop.IO.SubInputStream.fromInputStream(s)
 }        

@@ -15,43 +15,43 @@
  */
 
 
-namespace Basis/Lang {
+mod Basis.Lang {
 
 
-    /// Make an alias so clients reference only the Basis namespace
-    pub type alias Process[r: Region] = Interop/Lang.Process[r]
+    /// Make an alias so clients reference only the Basis mod
+    pub type alias Process[r: Region] = Interop.Lang.Process[r]
 
 }
 
 
-namespace Basis/Lang/Process {
+mod Basis.Lang.Process {
 
-    use Basis/NIO/Charset.Charset;
+    use Basis.NIO.Charset.Charset;
 
-    use Basis/Lang.Process;
-    use Basis/Lang.ProcessBuilder;
-    use Basis/Lang.ProcessBuilder.{ProcessBuilder};
+    use Basis.Lang.Process;
+    use Basis.Lang.ProcessBuilder;
+    use Basis.Lang.ProcessBuilder.{ProcessBuilder};
 
 
     pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, r, Unit] =
-        Basis/Lang/ProcessBuilder.command!(cmd, args)
+        Basis.Lang.ProcessBuilder.command!(cmd, args)
 
 
     pub def waitFor!(p: Process[r]): Result[String, Int32] \ { Write(r), IO } =
-        Interop/Lang/Process.waitFor!(p)
+        Interop.Lang.Process.waitFor!(p)
 
 
     pub def getInput(cs: Charset, p: Process[r]): Result[String, String] \ IO = 
         region rc {
-            forM (strm <- Ok(Interop/Lang/Process.getInputStream(rc, p));
-                    bytes <- Interop/IO/InputStream.readAllBytes(rc, strm))
-            yield Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes)
+            forM (strm <- Ok(Interop.Lang.Process.getInputStream(rc, p));
+                    bytes <- Interop.IO.InputStream.readAllBytes(rc, strm))
+            yield Interop.Lang.StringZ.fromArrayWithCharset(cs, bytes)
         }
 
     pub def getError(cs: Charset, p: Process[r]): Result[String, String] \ IO = region rc {
-        forM (strm <- Ok(Interop/Lang/Process.getErrorStream(rc, p));
-                bytes <- Interop/IO/InputStream.readAllBytes(rc, strm))
-        yield Interop/Lang/StringZ.fromArrayWithCharset(cs, bytes)
+        forM (strm <- Ok(Interop.Lang.Process.getErrorStream(rc, p));
+                bytes <- Interop.IO.InputStream.readAllBytes(rc, strm))
+        yield Interop.Lang.StringZ.fromArrayWithCharset(cs, bytes)
     }
 
 
@@ -65,7 +65,7 @@ namespace Basis/Lang/Process {
     pub def processWithExitCode(args: ProcessArgs): Result[String, {exitCode = Int32, processResponse = String}] \ IO =
         region r1 {
             forM (pb        <- Ok(processBuilder(args.cmd, args.args));
-                    proc        <- Basis/Lang/ProcessBuilder.start(r1, pb);
+                    proc        <- Basis.Lang.ProcessBuilder.start(r1, pb);
                     respGood    <- getInput(args.charset, proc);
                     respBad     <- getError(args.charset, proc);
                     code        <- waitFor!(proc)
@@ -76,7 +76,7 @@ namespace Basis/Lang/Process {
     pub def process(args: ProcessArgs): Result[String, {processResponse = String}] \ IO =
         region r1 {
             forM (pb        <- Ok(processBuilder(args.cmd, args.args));
-                    proc        <- Basis/Lang/ProcessBuilder.start(r1, pb);
+                    proc        <- Basis.Lang.ProcessBuilder.start(r1, pb);
                     respGood    <- getInput(args.charset, proc);
                     respBad     <- getError(args.charset, proc);
                     code        <- waitFor!(proc);

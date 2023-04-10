@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-namespace Basis/Text {
+mod Basis.Text {
     
     ///
     /// Represents a RuleBasedCollator.
     ///
-    pub type alias RuleBasedCollator = Interop/Text.RuleBasedCollator
+    pub type alias RuleBasedCollator = Interop.Text.RuleBasedCollator
     
 
 }
 
-namespace Basis/Text/RuleBasedCollator {
+mod Basis.Text.RuleBasedCollator {
 
-    use Basis/Text.RuleBasedCollator
-    use Basis/Text/Collator.CollatorStrength
-    use Basis/Text/Collator.DecompositionMode
-    use Interop/Text.RuleBasedCollator.{RuleBasedCollator}
-    use Interop/Util.Locale
-    use Interop/Flix.Setter
-    use Interop/Flix.Setter.Setter
+    use Basis.Text.RuleBasedCollator
+    use Basis.Text.Collator.CollatorStrength
+    use Basis.Text.Collator.DecompositionMode
+    use Interop.Text.RuleBasedCollator.{RuleBasedCollator}
+    use Interop.Util.Locale
+    use Interop.Flix.Setter
+    use Interop.Flix.Setter.Setter
 
 
-    pub type alias CollatorProperty = Basis/Text/Collator.CollatorProperty
+    pub type alias CollatorProperty = Basis.Text.Collator.CollatorProperty
 
     ///
     /// Get a Collator from the rules.
@@ -43,7 +43,7 @@ namespace Basis/Text/RuleBasedCollator {
     ///
     /// > fs: List[CollatorProperty] <
     pub def new(rules: String, props: List[CollatorProperty]): Result[String, RuleBasedCollator] =
-        Interop/Text/RuleBasedCollator.new(rules, props)
+        Interop.Text.RuleBasedCollator.new(rules, props)
     
         
 
@@ -52,21 +52,21 @@ namespace Basis/Text/RuleBasedCollator {
     /// Test equality of strings `s1` and `s2` with the collator `x``.
     ///
     pub def equals(s1: String, s2: String, c: RuleBasedCollator): Bool = 
-        Interop/Text/SubCollator.toCollator(c) |> Interop/Text/Collator.equals(s1, s2)
+        Interop.Text.SubCollator.toCollator(c) |> Interop.Text.Collator.equals(s1, s2)
 
 
     ///
     /// Compare strings `s1` and `s2` with the collator `x``.
     ///
     pub def compare(s1: String, s2: String, c: RuleBasedCollator): Comparison = 
-        Interop/Text/SubCollator.toCollator(c) |> Interop/Text/Collator.compare(s1, s2)
+        Interop.Text.SubCollator.toCollator(c) |> Interop.Text.Collator.compare(s1, s2)
 
 
     pub def getDecomposition(c: RuleBasedCollator): DecompositionMode =
-        Interop/Text/SubCollator.toCollator(c) |> Basis/Text/Collator.getDecomposition
+        Interop.Text.SubCollator.toCollator(c) |> Basis.Text.Collator.getDecomposition
             
     pub def getStrength(c: RuleBasedCollator): CollatorStrength =
-        Interop/Text/SubCollator.toCollator(c) |> Basis/Text/Collator.getStrength
+        Interop.Text.SubCollator.toCollator(c) |> Basis.Text.Collator.getStrength
             
 
 

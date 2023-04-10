@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-namespace TestLocale { 
+mod TestLocale { 
 
 
     @test
     def getIsoCountries01(): Unit & Impure = 
-        Basis/Util/Locale.getIsoCountries() |> List.forEach(println)
+        Basis.Util.Locale.getIsoCountries() |> List.forEach(println)
 
 
     @test
     def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
-        match Basis/Util/Locale.getIsoCountriesWithIsoCountryCode(Basis/Util/Locale/IsoCountryCode.Part1Alpha2) {
+        match Basis.Util.Locale.getIsoCountriesWithIsoCountryCode(Basis.Util.Locale.IsoCountryCode.Part1Alpha2) {
             case Ok(s) => Set.forEach(println, s) 
             case Err(msg) => println("Err: ${msg}")
         }
@@ -32,7 +32,7 @@ namespace TestLocale {
 
     @test
     def test03(): Unit & Impure = 
-        match Basis/Util/Locale.getIsoLanguages() {
+        match Basis.Util.Locale.getIsoLanguages() {
             case Ok(l) => List.forEach(println, l) 
             case Err(msg) => println("Err: ${msg}")
         }
@@ -40,41 +40,41 @@ namespace TestLocale {
 
     @test
     def test04(): Unit & Impure = 
-        Basis/Util/Locale.getAvailableLocales()
+        Basis.Util.Locale.getAvailableLocales()
             |> List.forEach(println) 
 
 
     @test
     def testCanada(): Unit & Impure = 
-        let l1 = Basis/Util/Locale.canada();
+        let l1 = Basis.Util.Locale.canada();
         println("Canada: ${l1}");
         ()
 
 
     @test
     def getUnicodeLocaleAttributes01(): Unit & Impure =
-        let l1 = Basis/Util/Locale.japan();
-        Basis/Util/Locale.getUnicodeLocaleAttributes(l1) 
+        let l1 = Basis.Util.Locale.japan();
+        Basis.Util.Locale.getUnicodeLocaleAttributes(l1) 
             |> Set.forEach(x1 -> println("Attr: ${x1}"))
 
     @test
     def getUnicodeLocaleKeys01(): Unit & Impure =
-        let l1 = Basis/Util/Locale.japan();
-        Basis/Util/Locale.getUnicodeLocaleKeys(l1) 
+        let l1 = Basis.Util.Locale.japan();
+        Basis.Util.Locale.getUnicodeLocaleKeys(l1) 
             |> Set.forEach(x1 -> println("Key: ${x1}"))
 
     @test
     def lookup01(): Unit & Impure =
         println("TestLocale.lookup01...");
-        let ls = Basis/Util/Locale.japan() :: Basis/Util/Locale.french() :: Basis/Util/Locale.english() :: Nil;
-        match Basis/Util/Locale/LanguageRange.new("en") {
+        let ls = Basis.Util.Locale.japan() :: Basis.Util.Locale.french() :: Basis.Util.Locale.english() :: Nil;
+        match Basis.Util.Locale.LanguageRange.new("en") {
             case Err(msg) => println("Err: ${msg}")
-            case Ok(p1) => println("lookup: ${Basis/Util/Locale.lookup(p1 :: Nil, ls)}")
+            case Ok(p1) => println("lookup: ${Basis.Util.Locale.lookup(p1 :: Nil, ls)}")
         }
 
     @test
     def builder01(): Unit & Impure =
-        use Basis/Util/Locale/Builder.{buildLocale, setLanguage};
+        use Basis.Util.Locale.Builder.{buildLocale, setLanguage};
         println("TestLocale.builder01...");
         match buildLocale(List#{setLanguage("da")}) {
             case Err(msg) => println("Err: ${msg}")
@@ -85,7 +85,7 @@ namespace TestLocale {
     @test
     def builder02(): Unit & Impure =
         use GradedApplicative.{*>};
-        use Basis/Util/Locale/Builder.{buildLocale, setLanguage, setScript};
+        use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript};
         println("TestLocale.builder02...");
         match buildLocale(List#{setLanguage("da"), setScript("Latn")}) {
             case Err(msg) => println("Err: ${msg}")
@@ -95,7 +95,7 @@ namespace TestLocale {
     @test
     def builder03(): Unit & Impure =
         use GradedApplicative.{*>};
-        use Basis/Util/Locale/Builder.{buildLocale, setLanguage, setScript, setRegion};
+        use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript, setRegion};
         println("TestLocale.builder03... expect Err");
         match buildLocale(List#{setLanguage("da"), setScript("Latn"), setRegion("BAD_REGION")}) {
             case Err(msg) => println("Err: ${msg}")

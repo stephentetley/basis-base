@@ -15,35 +15,35 @@
  */
 
 
-namespace Basis/IO {
+mod Basis.IO {
 
 
     
-    pub type alias InputStreamReader[r: Region] = Interop/IO.InputStreamReader[r]
+    pub type alias InputStreamReader[r: Region] = Interop.IO.InputStreamReader[r]
 
 }
 
-namespace Basis/IO/InputStreamReader {
+mod Basis.IO.InputStreamReader {
 
-    use Basis/IO.InputStreamReader
-    use Basis/IO.InputStream
-    use Basis/IO.Reader
-    use Basis/NIO/Charset.Charset
+    use Basis.IO.InputStreamReader
+    use Basis.IO.InputStream
+    use Basis.IO.Reader
+    use Basis.NIO.Charset.Charset
 
     /// Provide a `to` function to upcast.
     /// TODO should this be in the API?  
     pub def toReader(rd: InputStreamReader[r]): Reader[r] = 
-        Interop/IO/SubReader.toReader(rd)
+        Interop.IO.SubReader.toReader(rd)
 
     pub def newInputStreamReader(rc: Region[r1], ins: InputStream[r], cs: Charset): InputStreamReader[r1] \ { Read(r), Write(r1) } = 
-        Interop/IO/InputStreamReader.newInputStreamReader(rc, ins, cs)
+        Interop.IO.InputStreamReader.newInputStreamReader(rc, ins, cs)
 
 
     pub def getEncoding(rd: InputStreamReader[r]): String \ Read(r) = 
-        Interop/IO/InputStreamReader.getEncoding(rd)
+        Interop.IO.InputStreamReader.getEncoding(rd)
 
     pub def close!(rd: InputStreamReader[r]): Result[String, Unit] \ Write(r) = 
-        Interop/IO/InputStreamReader.close!(rd)
+        Interop.IO.InputStreamReader.close!(rd)
 
 }
 

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-namespace TestCharset { 
+mod TestCharset { 
 
 
     @test
     def aliases01(): Unit & Impure = 
-        Basis/NIO/Charset/Charset.utf_8() |> Basis/NIO/Charset/Charset.aliases |> Set.forEach(println)
+        Basis.NIO.Charset.Charset.utf_8() |> Basis.NIO.Charset.Charset.aliases |> Set.forEach(println)
 
     @test
     def availableCharsets01(): Unit & Impure = 
-        Basis/NIO/Charset/Charset.availableCharsets() |> Map.toList |> List.forEach(println)
+        Basis.NIO.Charset.Charset.availableCharsets() |> Map.toList |> List.forEach(println)
 
 
 }

@@ -15,10 +15,10 @@
  */
 
 
-namespace Basis/NIO/File {
+mod Basis.NIO.File {
 
     // No direct constructors - options made by upcasting `LinkOption` or `StandardOpenOption`
 
-    pub type alias OpenOption = Interop/NIO/File.OpenOption
+    pub type alias OpenOption = Interop.NIO.File.OpenOption
 
 }

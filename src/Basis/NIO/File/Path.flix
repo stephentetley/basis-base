@@ -15,21 +15,21 @@
  */
 
 
-namespace Basis/NIO/File {
+mod Basis.NIO.File {
 
     ///
     /// Represents a Path.
     ///
-    pub type alias Path = Interop/NIO/File.Path
+    pub type alias Path = Interop.NIO.File.Path
 
 
 }
 
-namespace Basis/NIO/File/Path {
+mod Basis.NIO.File.Path {
 
     use ToString.toString;
 
-    use Basis/NIO/File.Path;
+    use Basis.NIO.File.Path;
 
 
 
@@ -37,7 +37,7 @@ namespace Basis/NIO/File/Path {
     /// Returns a new Path.
     ///
     pub def newPath(s: String): Result[String, Path] =
-        Interop/NIO/File/Path.of(s, Nil)
+        Interop.NIO.File.Path.of(s, Nil)
 
 
     def filePath1(s: String): Path = match newPath(s) {
@@ -51,7 +51,7 @@ namespace Basis/NIO/File/Path {
     ///         import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
     ///         try {
     ///             match l {
-    ///                 case x :: rs => Path(FlixSandbox/Deprecated/Marshal.runVaragsOfString(rs, of1(x), r)) as & Pure
+    ///                 case x :: rs => Path(FlixSandbox.Deprecated.Marshal.runVaragsOfString(rs, of1(x), r)) as & Pure
     ///                 case Nil     => empty()
     ///             }
     ///         } catch {
@@ -77,28 +77,28 @@ namespace Basis/NIO/File/Path {
 
 
     pub def normalize(path: Path): Path =
-        Interop/NIO/File/Path.normalize(path)
+        Interop.NIO.File.Path.normalize(path)
 
 
     /// If `path` is a relative path `toAbsolutePath` resolves the path in a system specific manner.
     /// Should this be Impure?
     pub def toAbsolutePath(path: Path): Result[String, Path] =
-        Interop/NIO/File/Path.toAbsolutePath(path)
+        Interop.NIO.File.Path.toAbsolutePath(path)
 
 
     pub def isAbsolute(path: Path): Bool =
-        Interop/NIO/File/Path.isAbsolute(path)
+        Interop.NIO.File.Path.isAbsolute(path)
 
     pub def isRelative(path: Path): Bool = not isAbsolute(path)
 
     pub def getRoot(path: Path): Option[Path] =
-        Interop/NIO/File/Path.getRoot(path)
+        Interop.NIO.File.Path.getRoot(path)
 
     pub def getParent(path: Path): Option[Path] =
-        Interop/NIO/File/Path.getParent(path)
+        Interop.NIO.File.Path.getParent(path)
 
     pub def getFileName(path: Path): Option[Path] =
-        Interop/NIO/File/Path.getFileName(path)
+        Interop.NIO.File.Path.getFileName(path)
 
     pub def splitFileName(path: Path): (Option[Path], Option[Path]) =
         (getParent(path), getFileName(path))
@@ -110,7 +110,7 @@ namespace Basis/NIO/File/Path {
             case None => file
         }
 
-    /// e.g. getBaseName('/home/stephen/temp01.txt') = "temp01"
+    /// e.g. getBaseName('/home.stephen.temp01.txt') = "temp01"
     pub def getBaseName(path: Path): Option[String] =
         forM (file <- getFileName(path);
                 base <- Some(dropExtensions(file))
@@ -137,7 +137,7 @@ namespace Basis/NIO/File/Path {
 
 
     pub def resolve(path: Path, other: Path): Path =
-        Interop/NIO/File/Path.resolve(path, other)
+        Interop.NIO.File.Path.resolve(path, other)
 
 
     pub def append(path: Path, other: Path): Path =
@@ -167,13 +167,13 @@ namespace Basis/NIO/File/Path {
     /// Returns `path1` with the path name contracted relative to `path2`.
     ///
     pub def makeRelative(path1: Path, path2: Path): Path =
-        Interop/NIO/File/Path.relativize(path1, path2)
+        Interop.NIO.File.Path.relativize(path1, path2)
 
     ///
     /// Returns `true` if the Path `path1` starts with the string `path2`.
     ///
     pub def startsWith(prefix: {prefix = Path}, path2: Path): Bool =
-        Interop/NIO/File/Path.startsWith(prefix = prefix.prefix, path2)
+        Interop.NIO.File.Path.startsWith(prefix = prefix.prefix, path2)
 
 
     pub def getNameCount(path: Path): Int32 =
@@ -184,7 +184,7 @@ namespace Basis/NIO/File/Path {
 
     /// Does not count root, if present.
     def getNameCountHelper(path: Path): Int32 =
-        Interop/NIO/File/Path.getNameCount(path)
+        Interop.NIO.File.Path.getNameCount(path)
 
     pub def getNameAt(path: Path, ix: Int32): Option[Path] =
         if (ix < 0)
@@ -201,7 +201,7 @@ namespace Basis/NIO/File/Path {
     /// look at root, if present.
     ///
     def getNameAtHelper(path: Path, ix: Int32): Option[Path] =
-        Interop/NIO/File/Path.getNameAt(ix, path) |> Result.toOption
+        Interop.NIO.File.Path.getNameAt(ix, path) |> Result.toOption
 
     pub def hasExtension(path: Path): Bool =
         match getFileName(path) |> Option.map(toString) {
@@ -363,10 +363,10 @@ namespace Basis/NIO/File/Path {
 
 */
 
-    pub def toFile(r: Region[r], path: Path): Result[String, Interop/IO.File[r]] \ Write(r) =
-        Interop/NIO/File/Path.toFile(r, path)
+    pub def toFile(r: Region[r], path: Path): Result[String, Interop.IO.File[r]] \ Write(r) =
+        Interop.NIO.File.Path.toFile(r, path)
 
-    pub def fromFile(file: Interop/IO.File[r]): Result[String, Path] \ Read(r) =
-        Interop/IO/File.toPath(file)
+    pub def fromFile(file: Interop.IO.File[r]): Result[String, Path] \ Read(r) =
+        Interop.IO.File.toPath(file)
 
 }
