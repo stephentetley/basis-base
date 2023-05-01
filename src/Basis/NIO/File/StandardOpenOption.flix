@@ -26,7 +26,7 @@ mod Basis.NIO.File.StandardOpenOption {
         TruncateExisting, WriteAccess
     }
 
-    pub enum StandardOpenOption with Eq, Order, ToString, Hash, Boxable {
+    pub enum StandardOpenOption with Eq, Order, ToString, Hash {
         case Append
         case Create
         case CreateNew

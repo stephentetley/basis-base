@@ -21,7 +21,7 @@ mod Basis.NIO.File.LinkOption {
     use Basis.NIO.File.LinkOption.LinkOption
     use Basis.NIO.File.LinkOption.LinkOption.{NofollowLinks}
 
-    pub enum LinkOption with Eq, Order, ToString, Hash, Boxable {
+    pub enum LinkOption with Eq, Order, ToString, Hash {
         case NofollowLinks
     }
 

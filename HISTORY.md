@@ -1,3 +1,7 @@
+### v0.2.1
+   Version bump to use updated `graded-lib` dependency.
+   Removed Boxable instances.
+   
 ### v0.2.0
    Updated to use `mod` rather than `mod`.
 

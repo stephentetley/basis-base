@@ -29,9 +29,6 @@ mod Basis.Util {
     pub type alias Locale = Interop.Util.Locale
 
 
-    /// No Order, so no Boxable
-
-
 }
 
 
@@ -61,13 +58,13 @@ mod Basis.Util.Locale {
     ///
     /// Case `Format` represents the default locale for formatting dates / times / numbers etc.
     ///
-    pub enum Category with Eq, Order, Boxable, Hash, ToString {
+    pub enum Category with Eq, Order, Hash, ToString {
         case Display
         case Format
     }
 
 
-    pub enum FilteringMode with Eq, Order, Boxable, Hash, ToString {
+    pub enum FilteringMode with Eq, Order, Hash, ToString {
         case AutoselectFiltering
         case ExtendedFiltering
         case IgnoreExtendedRanges
@@ -75,7 +72,7 @@ mod Basis.Util.Locale {
         case RejectExtendedRanges
     }
 
-    pub enum IsoCountryCode with Eq, Order, Boxable, Hash, ToString {
+    pub enum IsoCountryCode with Eq, Order, Hash, ToString {
         case Part1Alpha2
         case Part1Alpha3
         case Part3

@@ -40,13 +40,13 @@ mod Basis.Text.Collator {
     // Note - Java's Collator dates from 1.1 and predates enums (1.5), I think the use of 
     // enums here is safe.
 
-    pub enum DecompositionMode with Eq, Order, ToString, Hash, Boxable {
+    pub enum DecompositionMode with Eq, Order, ToString, Hash {
         case NoDecomposition
         case CanonicalDecomposition
         case FullDecomposition
     }
 
-    pub enum CollatorStrength with Eq, Order, ToString, Hash, Boxable {
+    pub enum CollatorStrength with Eq, Order, ToString, Hash {
         case Identical
         case Primary
         case Secondary

@@ -22,7 +22,7 @@ mod Basis.Math.RoundingMode {
         HalfEven, HalfUp, Unnecessary, Up
     }
 
-    pub enum RoundingMode with Eq, Order, ToString, Hash, Boxable {
+    pub enum RoundingMode with Eq, Order, ToString, Hash {
         case Ceiling
         case Down
         case Floor

@@ -21,7 +21,7 @@ mod Basis.Text.Normalizer {
     use Basis.Text.Normalizer.NormalizerForm.{Nfc, Nfd, Nfkc, Nfkd}
 
     ///
-    pub enum NormalizerForm with Eq, Order, ToString, Hash, Boxable {
+    pub enum NormalizerForm with Eq, Order, ToString, Hash {
         case Nfc
         case Nfd
         case Nfkc
