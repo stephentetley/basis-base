@@ -1,4 +1,4 @@
-### Pending
+### v0.2.2
    Updated dependecies.
    Removed & in effects signatures.
 
