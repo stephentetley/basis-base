@@ -19,14 +19,14 @@ mod TestMarshal {
 /*
 
 @test
-def testMarshal01(): Unit & Impure = 
+def testMarshal01(): Unit \ IO = 
     let upcast = x1 -> x1 as ##java.lang.Object;
     let s1 = Marshal.marshalSet(upcast, Set#{"hello", "world"});
     println("Marshal: ${setSize(s1)}");
     ()
 
 @test
-def testMarshal02(): Unit & Impure = 
+def testMarshal02(): Unit \ IO = 
     let upcast = x1 -> x1 as ##java.lang.Object;
     let downcast = x1 -> x1 as ##java.lang.String;
     let s1 = Marshal.marshalSet(upcast, Set#{"hello", "world", "!"});
@@ -36,7 +36,7 @@ def testMarshal02(): Unit & Impure =
 
 
 @test
-def testMarshal03(): Unit & Impure = 
+def testMarshal03(): Unit \ IO = 
     let upcast = x1 -> x1 as ##java.lang.Object;
     let downcast = x1 -> x1 as String;
     let l1 = Marshal.marshalList(upcast, "hello" :: "world" :: "!" :: Nil);
@@ -46,7 +46,7 @@ def testMarshal03(): Unit & Impure =
 
 
 @test
-def testMarshal04(): Unit & Impure = 
+def testMarshal04(): Unit \ IO = 
     let upcastK = x1 -> x1 as ##java.lang.Object;
     let upcastV = x1 -> x1 as ##java.lang.Object;
     let downcastK = x1 -> x1 as String;
@@ -57,7 +57,7 @@ def testMarshal04(): Unit & Impure =
     ()
 
 @test
-def testMarshal05(): Unit & Impure = 
+def testMarshal05(): Unit \ IO = 
     let upcastK = x1 -> valueOf(x1) as ##java.lang.Object;
     let upcastV = x1 -> x1 as ##java.lang.Object;
     let downcastK = x1 -> intValue(x1 as ##java.lang.Integer);
@@ -68,16 +68,16 @@ def testMarshal05(): Unit & Impure =
     ()
 
 
-def setSize(s: ##java.util.Set): Int32 & Impure =
-    import java.util.Set.size(): Int32 & Impure;
+def setSize(s: ##java.util.Set): Int32 \ IO =
+    import java.util.Set.size(): Int32 \ IO;
     size(s)
 
 def valueOf(i: Int32): ##java.lang.Integer = 
-    import static java.lang.Integer.valueOf(Int32): ##java.lang.Integer & Pure;
+    import static java.lang.Integer.valueOf(Int32): ##java.lang.Integer \ {};
     valueOf(i)
 
 def intValue(i: ##java.lang.Integer): Int32 = 
-    import java.lang.Integer.intValue(): Int32 & Pure;
+    import java.lang.Integer.intValue(): Int32 \ {};
     intValue(i)
 
 */

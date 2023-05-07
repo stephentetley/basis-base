@@ -1,3 +1,7 @@
+### Pending
+   Updated dependecies.
+   Removed & in effects signatures.
+
 ### v0.2.1
    Version bump to use updated `graded-lib` dependency.
    Removed Boxable instances.

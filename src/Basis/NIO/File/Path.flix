@@ -48,10 +48,10 @@ mod Basis.NIO.File.Path {
 /*
     /// pub def filePathConcat(l: List[String]): Path =
     ///     region r {
-    ///         import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
+    ///         import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path \ r as of1;
     ///         try {
     ///             match l {
-    ///                 case x :: rs => Path(FlixSandbox.Deprecated.Marshal.runVaragsOfString(rs, of1(x), r)) as & Pure
+    ///                 case x :: rs => Path(FlixSandbox.Deprecated.Marshal.runVaragsOfString(rs, of1(x), r)) as \ Pure
     ///                 case Nil     => empty()
     ///             }
     ///         } catch {
@@ -63,7 +63,7 @@ mod Basis.NIO.File.Path {
     pub def tryNew(s: String): Result[String, Path] =
         region r {
             Result.tryCatch(_ -> {
-                import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path & r as of1;
+                import static java.nio.file.Path.of(String, Array[String, r]): ##java.nio.file.Path \ r as of1;
                 Path(of1(s, [] @ r))
             })
         }
@@ -342,10 +342,10 @@ mod Basis.NIO.File.Path {
                 case None => k(Nil)
             }
 /*
-    def pathMatcherMatches(path: Path, syntaxAndPatt: String): Result[String, Bool] & Impure =
-        import static java.nio.file.FileSystems.getDefault(): ##java.nio.file.FileSystem & Impure;
-        import java.nio.file.FileSystem.getPathMatcher(String): ##java.nio.file.PathMatcher & Impure;
-        import java.nio.file.PathMatcher.matches(##java.nio.file.Path): Bool & Impure;
+    def pathMatcherMatches(path: Path, syntaxAndPatt: String): Result[String, Bool] \ IO =
+        import static java.nio.file.FileSystems.getDefault(): ##java.nio.file.FileSystem \ IO;
+        import java.nio.file.FileSystem.getPathMatcher(String): ##java.nio.file.PathMatcher \ IO;
+        import java.nio.file.PathMatcher.matches(##java.nio.file.Path): Bool \ IO;
         try {
             let Path(path1) = path;
             let fs = getDefault();
@@ -356,10 +356,10 @@ mod Basis.NIO.File.Path {
         }
 
     pub def isGlobMatch(glob: String, path: Path): Result[String, Bool] =
-        pathMatcherMatches(path, "glob:" + glob) as & Pure
+        pathMatcherMatches(path, "glob:" + glob)
 
     pub def isRegexMatch(patt: String, path: Path): Result[String, Bool] =
-        pathMatcherMatches(path, "regex:" + patt) as & Pure
+        pathMatcherMatches(path, "regex:" + patt)
 
 */
 

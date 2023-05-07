@@ -18,12 +18,12 @@ mod TestLocale {
 
 
     @test
-    def getIsoCountries01(): Unit & Impure = 
+    def getIsoCountries01(): Unit \ IO = 
         Basis.Util.Locale.getIsoCountries() |> List.forEach(println)
 
 
     @test
-    def getIsoCountriesWithIsoCountryCode01(): Unit & Impure = 
+    def getIsoCountriesWithIsoCountryCode01(): Unit \ IO = 
         match Basis.Util.Locale.getIsoCountriesWithIsoCountryCode(Basis.Util.Locale.IsoCountryCode.Part1Alpha2) {
             case Ok(s) => Set.forEach(println, s) 
             case Err(msg) => println("Err: ${msg}")
@@ -31,7 +31,7 @@ mod TestLocale {
 
 
     @test
-    def test03(): Unit & Impure = 
+    def test03(): Unit \ IO = 
         match Basis.Util.Locale.getIsoLanguages() {
             case Ok(l) => List.forEach(println, l) 
             case Err(msg) => println("Err: ${msg}")
@@ -39,32 +39,32 @@ mod TestLocale {
 
 
     @test
-    def test04(): Unit & Impure = 
+    def test04(): Unit \ IO = 
         Basis.Util.Locale.getAvailableLocales()
             |> List.forEach(println) 
 
 
     @test
-    def testCanada(): Unit & Impure = 
+    def testCanada(): Unit \ IO = 
         let l1 = Basis.Util.Locale.canada();
         println("Canada: ${l1}");
         ()
 
 
     @test
-    def getUnicodeLocaleAttributes01(): Unit & Impure =
+    def getUnicodeLocaleAttributes01(): Unit \ IO =
         let l1 = Basis.Util.Locale.japan();
         Basis.Util.Locale.getUnicodeLocaleAttributes(l1) 
             |> Set.forEach(x1 -> println("Attr: ${x1}"))
 
     @test
-    def getUnicodeLocaleKeys01(): Unit & Impure =
+    def getUnicodeLocaleKeys01(): Unit \ IO =
         let l1 = Basis.Util.Locale.japan();
         Basis.Util.Locale.getUnicodeLocaleKeys(l1) 
             |> Set.forEach(x1 -> println("Key: ${x1}"))
 
     @test
-    def lookup01(): Unit & Impure =
+    def lookup01(): Unit \ IO =
         println("TestLocale.lookup01...");
         let ls = Basis.Util.Locale.japan() :: Basis.Util.Locale.french() :: Basis.Util.Locale.english() :: Nil;
         match Basis.Util.Locale.LanguageRange.new("en") {
@@ -73,7 +73,7 @@ mod TestLocale {
         }
 
     @test
-    def builder01(): Unit & Impure =
+    def builder01(): Unit \ IO =
         use Basis.Util.Locale.Builder.{buildLocale, setLanguage};
         println("TestLocale.builder01...");
         match buildLocale(List#{setLanguage("da")}) {
@@ -83,7 +83,7 @@ mod TestLocale {
 
 
     @test
-    def builder02(): Unit & Impure =
+    def builder02(): Unit \ IO =
         use GradedApplicative.{*>};
         use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript};
         println("TestLocale.builder02...");
@@ -93,7 +93,7 @@ mod TestLocale {
         }    
 
     @test
-    def builder03(): Unit & Impure =
+    def builder03(): Unit \ IO =
         use GradedApplicative.{*>};
         use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript, setRegion};
         println("TestLocale.builder03... expect Err");

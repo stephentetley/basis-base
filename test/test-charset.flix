@@ -18,11 +18,11 @@ mod TestCharset {
 
 
     @test
-    def aliases01(): Unit & Impure = 
+    def aliases01(): Unit \ IO = 
         Basis.NIO.Charset.Charset.utf_8() |> Basis.NIO.Charset.Charset.aliases |> Set.forEach(println)
 
     @test
-    def availableCharsets01(): Unit & Impure = 
+    def availableCharsets01(): Unit \ IO = 
         Basis.NIO.Charset.Charset.availableCharsets() |> Map.toList |> List.forEach(println)
 
 

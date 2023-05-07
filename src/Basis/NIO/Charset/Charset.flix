@@ -104,7 +104,7 @@ mod Basis.NIO.Charset.Charset {
 
 
     // pub def contains(x: Charset, y: Charset): Bool =
-    //     import java.nio.charset.Charset.contains(##java.nio.charset.Charset): Bool & Pure;
+    //     import java.nio.charset.Charset.contains(##java.nio.charset.Charset): Bool \ {};
     //     let Charset(x1) = x;
     //     let Charset(y1) = y;
     //     contains(x1, y1)
@@ -118,17 +118,17 @@ mod Basis.NIO.Charset.Charset {
 
 
     // pub def encode(cs: Charset, s: String): ##java.nio.ByteBuffer = 
-    //     import java.nio.charset.Charset.encode(String): ##java.nio.ByteBuffer & Pure;
+    //     import java.nio.charset.Charset.encode(String): ##java.nio.ByteBuffer \ {};
     //     let Charset(cs1) = cs;
     //     encode(cs1, s)
 
     // pub def encodeCharBuffer(cs: Charset, cb: ##java.nio.CharBuffer): ##java.nio.ByteBuffer = 
-    //     import java.nio.charset.Charset.encode(##java.nio.CharBuffer): ##java.nio.ByteBuffer & Pure;
+    //     import java.nio.charset.Charset.encode(##java.nio.CharBuffer): ##java.nio.ByteBuffer \ {};
     //     let Charset(cs1) = cs;
     //     encode(cs1, cb)
     
     // pub def decode(cs: Charset, cb: ##java.nio.ByteBuffer): ##java.nio.CharBuffer = 
-    //     import java.nio.charset.Charset.decode(##java.nio.ByteBuffer): ##java.nio.CharBuffer & Pure;
+    //     import java.nio.charset.Charset.decode(##java.nio.ByteBuffer): ##java.nio.CharBuffer \ {};
     //     let Charset(cs1) = cs;
     //     decode(cs1, cb)
     

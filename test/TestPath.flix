@@ -40,7 +40,7 @@ mod TestPath {
     ///     ToString.toString(p1) == "src.flix"
 
     /// @test
-    /// def filePathConcat02(): Bool & Impure =
+    /// def filePathConcat02(): Bool \ IO =
     ///     let p1 = Basis.System.FilePath.filePathConcat("home" :: "coding" :: "src.flix" :: Nil);
     ///     println("filePathConcat02: ${p1}");
     ///     Basis.System.FilePath.getFileName(p1) == Some(Basis.System.FilePath.filePath("src.flix"))
