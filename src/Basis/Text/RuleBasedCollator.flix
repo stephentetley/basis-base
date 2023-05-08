@@ -35,15 +35,16 @@ mod Basis.Text.RuleBasedCollator {
     use Interop.Flix.Setter.Setter
 
 
-    pub type alias CollatorProperty = Basis.Text.Collator.CollatorProperty
+    pub type alias CollatorProperty[r: Region] = Basis.Text.Collator.CollatorProperty[r]
 
     ///
     /// Get a Collator from the rules.
-    /// Apply the setters in `fs` to further configure the Collator.
+    /// Apply the setters in `props` to further configure the Collator.
     ///
-    /// > fs: List[CollatorProperty] <
-    pub def new(rules: String, props: List[CollatorProperty]): Result[String, RuleBasedCollator] =
-        Interop.Text.RuleBasedCollator.new(rules, props)
+    pub def new(rc: Region[r], rules: String, props: List[CollatorProperty[r]]): Result[String, RuleBasedCollator] \ r =
+        let combine = (f, f1) -> a -> {f(a); f1(a)};
+        let fn = List.foldLeft(combine, _ -> checked_ecast(()), props);
+        Interop.Text.RuleBasedCollator.new(rc, rules, fn)
     
         
 

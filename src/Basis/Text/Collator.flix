@@ -88,15 +88,13 @@ mod Basis.Text.Collator {
             case n                                              => bug!("unmarshallCollatorStrength: ${n}")
         }
 
-    pub type alias CollatorProperty = Interop.Text.Collator.CollatorProperty
+    pub type alias CollatorProperty[r: Region] = Interop.Text.CollatorInit[r]
 
-    pub def decomposition(x: DecompositionMode): CollatorProperty = 
-        use Interop.Text.Collator.CollatorProperty.Decomposition;
-        Decomposition(marshallDecompositionMode(x))
+    pub def decomposition(x: DecompositionMode): CollatorProperty[r] = 
+        Interop.Text.Collator.setDecomposition!(marshallDecompositionMode(x))
 
-    pub def strength(x: CollatorStrength): CollatorProperty = 
-        use Interop.Text.Collator.CollatorProperty.Strength;
-        Strength(marshallCollatorStrength(x))
+    pub def strength(x: CollatorStrength): CollatorProperty[r] = 
+        Interop.Text.Collator.setStrength!(marshallCollatorStrength(x))
 
 
 
@@ -104,12 +102,16 @@ mod Basis.Text.Collator {
     /// Get a Collator with the locale of the JVM.
     /// Apply the setters in `fs` to further configure the Collator.
     ///
-    pub def getInstance(props: List[CollatorProperty]): Result[String, Collator] \ IO =
-        Interop.Text.Collator.getInstance(props)
+    pub def getInstance(rc: Region[r], props: List[CollatorProperty[r]]): Collator \ {r, IO} =
+        let combine = (f, f1) -> a -> {f(a); f1(a)};
+        let fn = List.foldLeft(combine, _ -> checked_ecast(()), props);
+        Interop.Text.Collator.getInstance(rc, fn)
 
         
-    pub def getInstanceWithLocale(loc: Locale, props: List[CollatorProperty]): Result[String, Collator] =
-        Interop.Text.Collator.getInstanceWithLocale(loc, props)
+    pub def getInstanceWithLocale(rc: Region[r], loc: Locale, props: List[CollatorProperty[r]]): Collator \ r =
+        let combine = (f, f1) -> a -> {f(a); f1(a)};
+        let fn = List.foldLeft(combine, _ -> checked_ecast(()), props);
+        Interop.Text.Collator.getInstanceWithLocale(rc, loc, fn)
 
 
 

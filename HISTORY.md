@@ -1,10 +1,15 @@
+
+### v0.3.0
+   Updated dependencies.
+   Updated `Collator` to use new "immutable after init" scheme use in `interop-base`.
+
 ### v0.2.2
-   Updated dependecies.
+   Updated dependencies.
    Removed & in effects signatures.
 
 ### v0.2.1
    Version bump to use updated `graded-lib` dependency.
-   Removed Boxable instances.
+   Removed `Boxable` instances.
    
 ### v0.2.0
    Updated to use `mod` rather than `mod`.
