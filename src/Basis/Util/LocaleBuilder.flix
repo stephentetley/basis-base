@@ -29,10 +29,7 @@ mod Basis.Util.LocaleBuilder {
 
     pub def buildLocale(rc: Region[r], ma: LocaleBuilder[a, r, ef, a]): Result[String, Locale] \ {ef, r} =
         let lb = Interop.Util.LocaleBuilder.new(rc);
-        match Graded.Builder.runBuilder(ma, lb) {
-            case Ok(_)    => Interop.Util.LocaleBuilder.build(lb) |> Ok
-            case Err(msg) => Err(msg)
-        }
+        Graded.Builder.runBuilder(ma, lb) |> Result.map(_ -> Interop.Util.LocaleBuilder.build(lb))
 
 
     pub def addUnicodeLocaleAttribute!(attr: String): LocaleBuilder[ka, r, r, Unit] = 
