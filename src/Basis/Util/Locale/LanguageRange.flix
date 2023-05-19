@@ -16,36 +16,10 @@
 
 mod Basis.Util.Locale {
 
-    /// TODO change to alias
+    /// 
     pub type alias LanguageRange = Interop.Util.Locale.LanguageRange
 
-    // instance ToString[LanguageRange] {
-    //     pub def toString(rng: LanguageRange): String = 
-    //         let LanguageRange(rng1) = rng;
-    //         Interop.Util.Locale.LanguageRange.toString(rng1)
-    // }
 
-    // instance Eq[LanguageRange] {
-    //     pub def eq(x: LanguageRange, y: LanguageRange): Bool = 
-    //         let LanguageRange(x1) = x;
-    //         let LanguageRange(y1) = y;
-    //         Interop.Util.Locale.LanguageRange.equals(x1, y1)
-    // }
-
-    // instance Hash[LanguageRange] {
-    //     pub def hash(rng: LanguageRange): Int32 = 
-    //         let LanguageRange(rng1) = rng;
-    //         Interop.Util.Locale.LanguageRange.hashCode(rng1)
-    // }
-
-    // instance Interop.Flix.Marshal[LanguageRange] {
-    //     pub def toJavaObject(rng: LanguageRange): ##java.lang.Object = 
-    //         let LanguageRange(rng1) = rng;
-    //         Interop.Flix.Marshal.toJavaObject(rng1)
-        
-    //     pub def fromJavaObject(o: ##java.lang.Object): LanguageRange = 
-    //         LanguageRange(Interop.Flix.Marshal.fromJavaObject(o))
-    // }
 
 }
 
