@@ -31,10 +31,8 @@ mod Basis.Text.RuleBasedCollator {
     use Basis.Text.Collator.DecompositionMode
     use Interop.Text.RuleBasedCollator.{RuleBasedCollator}
     use Interop.Util.Locale
-    use Interop.Flix.Setter
-    use Interop.Flix.Setter.Setter
-
-
+  
+/*
     pub type alias CollatorProperty[r: Region] = Basis.Text.Collator.CollatorProperty[r]
 
     ///
@@ -69,6 +67,6 @@ mod Basis.Text.RuleBasedCollator {
     pub def getStrength(c: RuleBasedCollator): CollatorStrength =
         Interop.Text.SubCollator.toCollator(c) |> Basis.Text.Collator.getStrength
             
-
+*/
 
 }

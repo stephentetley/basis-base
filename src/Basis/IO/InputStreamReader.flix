@@ -35,14 +35,14 @@ mod Basis.IO.InputStreamReader {
     pub def toReader(rd: InputStreamReader[r]): Reader[r] = 
         Interop.IO.SubReader.toReader(rd)
 
-    pub def newInputStreamReader(rc: Region[r1], ins: InputStream[r], cs: Charset): InputStreamReader[r1] \ { Read(r), Write(r1) } = 
+    pub def newInputStreamReader(rc: Region[r1], ins: InputStream[r], cs: Charset): InputStreamReader[r1] \ {r, r1} = 
         Interop.IO.InputStreamReader.newInputStreamReader(rc, ins, cs)
 
 
-    pub def getEncoding(rd: InputStreamReader[r]): String \ Read(r) = 
+    pub def getEncoding(rd: InputStreamReader[r]): String \ r = 
         Interop.IO.InputStreamReader.getEncoding(rd)
 
-    pub def close!(rd: InputStreamReader[r]): Result[String, Unit] \ Write(r) = 
+    pub def close!(rd: InputStreamReader[r]): Result[String, Unit] \ r = 
         Interop.IO.InputStreamReader.close!(rd)
 
 }

@@ -16,67 +16,72 @@
 
 mod Basis.Util {
 
-    pub type alias LocaleBuilder = Interop.Util.LocaleBuilder
+    pub type alias LocaleBuilder[ka: Type, r: Region, ef: Eff, a: Type] = Graded.Builder[ka, Interop.Util.LocaleBuilder[r], ef, a]
 
 }
 
 
-mod Basis.Util.Locale.Builder {
+mod Basis.Util.LocaleBuilder {
 
-    use Basis.Util.Locale.Builder
+    use Basis.Util.LocaleBuilder
     use Basis.Util.Locale
-    use Interop.Util.LocaleBuilder.LocaleBuilderAction
+    use Graded.Builder.{liftSetter!, liftSetterResult!}
 
-    pub def buildLocale(xs: List[LocaleBuilderAction]): Result[String, Locale] =
-        Interop.Util.LocaleBuilder.buildLocale(xs)
+    pub def buildLocale(rc: Region[r], ma: LocaleBuilder[a, r, ef, a]): Result[String, Locale] \ {ef, r} =
+        let lb = Interop.Util.LocaleBuilder.new(rc);
+        match Graded.Builder.runBuilder(ma, lb) {
+            case Ok(_)    => Interop.Util.LocaleBuilder.build(lb) |> Ok
+            case Err(msg) => Err(msg)
+        }
 
-    pub def addUnicodeLocaleAttribute(attr: String): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{AddUnicodeLocaleAttribute};
-        AddUnicodeLocaleAttribute(attr)
 
-    pub def clear(): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{Clear};
-        Clear()
+    pub def addUnicodeLocaleAttribute!(attr: String): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{addUnicodeLocaleAttribute!};
+        liftSetterResult!(addUnicodeLocaleAttribute!(attr)) |> GradedFunctor.ignore
 
-    pub def clearExtensions(): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{Clear};
-        Clear()
+    pub def clear(): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{clear!};
+        liftSetter!(clear!) |> GradedFunctor.ignore
 
-    pub def removeUnicodeLocaleAttribute(attr: String): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{RemoveUnicodeLocaleAttribute};
-        RemoveUnicodeLocaleAttribute(attr)
+    pub def clearExtensions!(): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{clearExtensions!};
+        liftSetter!(clearExtensions!) |> GradedFunctor.ignore
 
-    pub def setExtension(k: Char, v: String): LocaleBuilderAction =  
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetExtension};
-        SetExtension(k, v)
+    pub def removeUnicodeLocaleAttribute!(attr: String): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{removeUnicodeLocaleAttribute!};
+        liftSetterResult!(removeUnicodeLocaleAttribute!(attr)) |> GradedFunctor.ignore
 
-    pub def setUnicodeLocaleKeyword(k: String, ty: String): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetUnicodeLocaleKeyword};
-        SetUnicodeLocaleKeyword(k, ty)
+    pub def setExtension!(k: Char, v: String): LocaleBuilder[ka, r, r, Unit] =  
+        use Interop.Util.LocaleBuilder.{setExtension!};
+        liftSetterResult!(setExtension!(k, v)) |> GradedFunctor.ignore
 
-    pub def setLanguage(lang: String): LocaleBuilderAction =  
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLanguage};
-        SetLanguage(lang)
+    pub def setUnicodeLocaleKeyword!(k: String, ty: String): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{setUnicodeLocaleKeyword!};
+        liftSetterResult!(setUnicodeLocaleKeyword!(k, ty)) |> GradedFunctor.ignore
 
-    pub def setLanguageTag(tag: String): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLanguageTag};
-        SetLanguageTag(tag) 
+    pub def setLanguage!(lang: String): LocaleBuilder[ka, r, r, Unit] =  
+        use Interop.Util.LocaleBuilder.{setLanguage!};
+        liftSetterResult!(setLanguage!(lang)) |> GradedFunctor.ignore
 
-    pub def setLocale(loc: Locale): LocaleBuilderAction =  
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetLocale};
-        SetLocale(loc)
+    pub def setLanguageTag!(tag: String): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{setLanguageTag!};
+        liftSetterResult!(setLanguageTag!(tag)) |> GradedFunctor.ignore
 
-    pub def setRegion(rgn: String): LocaleBuilderAction =  
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetRegion};
-        SetRegion(rgn)
+    pub def setLocale!(loc: Locale): LocaleBuilder[ka, r, r, Unit] =  
+        use Interop.Util.LocaleBuilder.{setLocale!};
+        liftSetterResult!(setLocale!(loc)) |> GradedFunctor.ignore
 
-    pub def setScript(script: String): LocaleBuilderAction =  
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetScript};
-        SetScript(script)
+    pub def setRegion!(rgn: String): LocaleBuilder[ka, r, r, Unit] =  
+        use Interop.Util.LocaleBuilder.{setRegion!};
+        liftSetterResult!(setRegion!(rgn)) |> GradedFunctor.ignore
 
-    pub def setVariant(vrnt: String): LocaleBuilderAction = 
-        use Interop.Util.LocaleBuilder.LocaleBuilderAction.{SetVariant};
-        SetVariant(vrnt)
+    pub def setScript!(script: String): LocaleBuilder[ka, r, r, Unit] =  
+        use Interop.Util.LocaleBuilder.{setScript!};
+        liftSetterResult!(setScript!(script)) |> GradedFunctor.ignore
+
+    pub def setVariant!(vrnt: String): LocaleBuilder[ka, r, r, Unit] = 
+        use Interop.Util.LocaleBuilder.{setVariant!};
+        liftSetterResult!(setVariant!(vrnt)) |> GradedFunctor.ignore
 
 
 }   

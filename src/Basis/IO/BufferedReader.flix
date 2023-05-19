@@ -34,23 +34,23 @@ mod Basis.IO.BufferedReader {
         Interop.IO.SubReader.toReader(rd)
 
 
-    pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ { Read(r), Write(r1) } =
+    pub def newWithReader(rc: Region[r1], rd: Reader[r]): BufferedReader[r1] \ {r, r1} =
         Interop.IO.BufferedReader.newWithReader(rc, rd)
 
 
 
-    pub def close!(br: BufferedReader[r]): Result[String, Unit] \ Write(r) =
+    pub def close!(br: BufferedReader[r]): Result[String, Unit] \ r =
         Interop.IO.BufferedReader.close!(br)
 
-    pub def linesIterator!(rc: Region[r1], br: BufferedReader[r]): Result[String, Iterator[String, r and r1, r1]] =
+    pub def linesIterator!(rc: Region[r1], br: BufferedReader[r]): Result[String, Iterator[String, r + r1, r1]] =
         Interop.IO.BufferedReader.lines!(rc, br) |> Result.map(Interop.Util.Stream.Stream.iterator(rc))
 
-    pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ Read(r) = 
+    pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ r = 
         Interop.IO.BufferedReader.read!(br)
 
-    /// Note - this is an example of using the services of the super class in the current class.
+    /// Note - this is an example of using the methods of the super class in the current class.
     /// Because `Reader` is an abstract class in should probably not be expose in the basis API.
-    pub def skip!(n: Int64, br: BufferedReader[r]): Result[String, Int64] \ Read(r) = 
+    pub def skip!(n: Int64, br: BufferedReader[r]): Result[String, Int64] \ r = 
         toReader(br) |> Interop.IO.Reader.skip!(n)
     
 

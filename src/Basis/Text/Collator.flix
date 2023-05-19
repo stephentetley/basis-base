@@ -33,9 +33,7 @@ mod Basis.Text.Collator {
     use Basis.Text.Collator.CollatorStrength
     use Basis.Text.Collator.CollatorStrength.{Identical, Primary, Secondary, Tertiary}
     use Interop.Util.Locale
-    use Interop.Flix.Setter
-    use Interop.Flix.Setter.Setter
-
+  
 
     // Note - Java's Collator dates from 1.1 and predates enums (1.5), I think the use of 
     // enums here is safe.
@@ -87,7 +85,7 @@ mod Basis.Text.Collator {
             case n if n == Interop.Text.Collator.tertiary()     => Tertiary
             case n                                              => bug!("unmarshallCollatorStrength: ${n}")
         }
-
+/*
     pub type alias CollatorProperty[r: Region] = Interop.Text.CollatorInit[r]
 
     pub def decomposition(x: DecompositionMode): CollatorProperty[r] = 
@@ -137,5 +135,5 @@ mod Basis.Text.Collator {
         Interop.Text.Collator.getStrength(col) |> unmarshallCollatorStrength
 
 
-        
+*/      
 }

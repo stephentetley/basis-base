@@ -1,3 +1,7 @@
+### v0.4.0
+   Updated dependencies.
+   Removed `Read` and `Write` region annotations.
+   Updated "immutable after init" modules to use `GradedLib.Builder` rather than a fixed enum of init steps.
 
 ### v0.3.0
    Updated dependencies.

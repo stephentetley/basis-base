@@ -363,10 +363,10 @@ mod Basis.NIO.File.Path {
 
 */
 
-    pub def toFile(r: Region[r], path: Path): Result[String, Interop.IO.File[r]] \ Write(r) =
+    pub def toFile(r: Region[r], path: Path): Result[String, Interop.IO.File[r]] \ r =
         Interop.NIO.File.Path.toFile(r, path)
 
-    pub def fromFile(file: Interop.IO.File[r]): Result[String, Path] \ Read(r) =
+    pub def fromFile(file: Interop.IO.File[r]): Result[String, Path] \ r =
         Interop.IO.File.toPath(file)
 
 }

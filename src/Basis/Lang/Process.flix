@@ -37,7 +37,7 @@ mod Basis.Lang.Process {
         Basis.Lang.ProcessBuilder.command!(cmd, args)
 
 
-    pub def waitFor!(p: Process[r]): Result[String, Int32] \ { Write(r), IO } =
+    pub def waitFor!(p: Process[r]): Result[String, Int32] \ {IO, r} =
         Interop.Lang.Process.waitFor!(p)
 
 

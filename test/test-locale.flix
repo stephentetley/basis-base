@@ -16,6 +16,7 @@
 
 mod TestLocale { 
 
+    use GradedApplicative.{*>}
 
     @test
     def getIsoCountries01(): Unit \ IO = 
@@ -73,34 +74,35 @@ mod TestLocale {
         }
 
     @test
-    def builder01(): Unit \ IO =
-        use Basis.Util.Locale.Builder.{buildLocale, setLanguage};
+    def builder01(): Unit \ IO = region rc {
+        use Basis.Util.LocaleBuilder.{buildLocale, setLanguage!};
         println("TestLocale.builder01...");
-        match buildLocale(List#{setLanguage("da")}) {
+        match buildLocale(rc, setLanguage!("da")) {
             case Err(msg) => println("Err: ${msg}")
             case Ok(loc)  => println("locale is: ${loc}")
         }
-
+    }
 
     @test
-    def builder02(): Unit \ IO =
+    def builder02(): Unit \ IO = region rc {
         use GradedApplicative.{*>};
-        use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript};
+        use Basis.Util.LocaleBuilder.{buildLocale, setLanguage!, setScript!};
         println("TestLocale.builder02...");
-        match buildLocale(List#{setLanguage("da"), setScript("Latn")}) {
+        match buildLocale(rc, setLanguage!("da") *> setScript!("Latn")) {
             case Err(msg) => println("Err: ${msg}")
             case Ok(loc)  => println("locale is: ${loc}")
-        }    
+        }
+    }
 
     @test
-    def builder03(): Unit \ IO =
+    def builder03(): Unit \ IO = region rc {
         use GradedApplicative.{*>};
-        use Basis.Util.Locale.Builder.{buildLocale, setLanguage, setScript, setRegion};
+        use Basis.Util.LocaleBuilder.{buildLocale, setLanguage!, setScript!, setRegion!};
         println("TestLocale.builder03... expect Err");
-        match buildLocale(List#{setLanguage("da"), setScript("Latn"), setRegion("BAD_REGION")}) {
+        match buildLocale(rc, setLanguage!("da") *> setScript!("Latn") *> setRegion!("BAD_REGION")) {
             case Err(msg) => println("Err: ${msg}")
             case Ok(loc)  => println("locale is: ${loc}")
         } 
-
+    }
 
 }
