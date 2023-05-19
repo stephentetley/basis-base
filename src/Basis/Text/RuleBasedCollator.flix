@@ -26,23 +26,32 @@ mod Basis.Text {
 
 mod Basis.Text.RuleBasedCollator {
 
+    use Interop.Util.Locale
+    use Interop.Text.MutCollator
+    use Interop.Text.RuleBasedCollator.{RuleBasedCollator}
+
     use Basis.Text.RuleBasedCollator
+    use Basis.Text.CollatorBuilder
     use Basis.Text.Collator.CollatorStrength
     use Basis.Text.Collator.DecompositionMode
-    use Interop.Text.RuleBasedCollator.{RuleBasedCollator}
-    use Interop.Util.Locale
   
-/*
-    pub type alias CollatorProperty[r: Region] = Basis.Text.Collator.CollatorProperty[r]
+
+    /// TODO change Interop.Text.CollatorInit[e: Eff, r: Region] = MutCollator[r] -> Result[String, Unit] \ {ef, r}
+    def mkInit(ma: CollatorBuilder[a, r, ef, a], col: MutCollator[r]): Unit \ r = 
+        unchecked_cast((
+            match Graded.Builder.runBuilder(ma, col) {
+            case Ok(_)  => ()
+            case Err(_) => ()
+        }) as _ \ r)
+
 
     ///
     /// Get a Collator from the rules.
     /// Apply the setters in `props` to further configure the Collator.
     ///
-    pub def new(rc: Region[r], rules: String, props: List[CollatorProperty[r]]): Result[String, RuleBasedCollator] \ r =
-        let combine = (f, f1) -> a -> {f(a); f1(a)};
-        let fn = List.foldLeft(combine, _ -> checked_ecast(()), props);
-        Interop.Text.RuleBasedCollator.new(rc, rules, fn)
+    pub def new(rc: Region[r], rules: String, init: CollatorBuilder[a, r, ef, a]): Result[String, RuleBasedCollator] \ {ef, r} =
+        let fn = mkInit(init);
+        unchecked_cast(Interop.Text.RuleBasedCollator.new(rc, rules, fn) as _ \ {ef, r})
     
         
 
@@ -67,6 +76,6 @@ mod Basis.Text.RuleBasedCollator {
     pub def getStrength(c: RuleBasedCollator): CollatorStrength =
         Interop.Text.SubCollator.toCollator(c) |> Basis.Text.Collator.getStrength
             
-*/
+
 
 }
