@@ -1,3 +1,6 @@
+### v0.4.1
+   Updated dependencies.
+
 ### v0.4.0
    Updated dependencies.
    Removed `Read` and `Write` region annotations.
