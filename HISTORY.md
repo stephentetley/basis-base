@@ -1,3 +1,6 @@
+### v0.4.2
+   Updated dependencies.
+
 ### v0.4.1
    Updated dependencies.
 

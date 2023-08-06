@@ -43,16 +43,16 @@ mod Basis.NIO.File.Files {
         Interop.NIO.File.Files.readString(path, cs)
 
     // UTF_8
-    pub def writeStringUtf8!(path: Path, opts: List[OpenOption], s: String): Result[String, Unit] \ IO = region rc {
-        let s1 = Interop.Lang.CharSequence.fromString(rc, s);
+    pub def writeStringUtf8!(path: Path, opts: List[OpenOption], s: String): Result[String, Unit] \ IO = 
+        let s1 = Interop.Lang.CharSequence.fromString(s);
         Interop.NIO.File.Files.writeStringUtf8!(path, s1, opts) |> Result.map(_ -> ())
-    }
+
 
     // 
-    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], s: String): Result[String, Unit] \ IO = region rc {
-        let s1 = Interop.Lang.CharSequence.fromString(rc, s);
+    pub def writeStringWithCharset!(path: Path, cs: Charset, opts: List[OpenOption], s: String): Result[String, Unit] \ IO =
+        let s1 = Interop.Lang.CharSequence.fromString(s);
         Interop.NIO.File.Files.writeString!(path, s1, cs, opts) |> Result.map(_ -> ())
-    }
+
     
     // UTF_8
     pub def writeStringBuilderUtf8!(path: Path, opts: List[OpenOption], sb: StringBuilder[r]): Result[String, Unit] \ {IO, r} =

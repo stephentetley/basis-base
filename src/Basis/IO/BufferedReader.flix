@@ -43,7 +43,8 @@ mod Basis.IO.BufferedReader {
         Interop.IO.BufferedReader.close!(br)
 
     pub def linesIterator!(rc: Region[r1], br: BufferedReader[r]): Result[String, Iterator[String, r + r1, r1]] =
-        Interop.IO.BufferedReader.lines!(rc, br) |> Result.map(Interop.Util.Stream.Stream.iterator(rc))
+        Interop.IO.BufferedReader.lines!(rc, br) 
+            |> Result.map(Interop.Util.Stream.Stream.iterator(rc, Interop.Lang.StringZ.fromJavaObject))
 
     pub def read!(br: BufferedReader[r]): Result[String, Option[Int32]] \ r = 
         Interop.IO.BufferedReader.read!(br)
