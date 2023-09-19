@@ -28,7 +28,6 @@ mod Basis.Text {
 mod Basis.Text.Collator {
     
     use Graded.Builder.{liftSetter!}
-    use Interop.Util.Locale
     use Interop.Text.MutCollator
     use Interop.Text.Collator.{Collator}
     

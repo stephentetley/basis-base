@@ -1,3 +1,7 @@
+### v0.5.0
+   Removed `Locale` and `Charset` and related modules.
+   Updated dependencies.
+
 ### v0.4.2
    Updated dependencies.
 

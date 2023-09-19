@@ -17,7 +17,6 @@
 
 mod Basis.NIO.File.Files {
 
-    use Basis.NIO.Charset.Charset
     use Basis.NIO.File.Path
     use Basis.NIO.File.LinkOption.LinkOption
     use Basis.NIO.File.OpenOption

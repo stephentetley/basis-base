@@ -17,6 +17,7 @@
 
 mod Basis.Text.Normalizer {
 
+    use Interop.Text.NormalizerForm.{NormalizerForm}
     use Basis.Text.Normalizer.NormalizerForm
     use Basis.Text.Normalizer.NormalizerForm.{Nfc, Nfd, Nfkc, Nfkd}
 
@@ -28,7 +29,7 @@ mod Basis.Text.Normalizer {
         case Nfkd
     }
 
-    def marshal(x: NormalizerForm): Interop.Text.NormalizerForm =
+    pub def marshal(x: NormalizerForm): Interop.Text.NormalizerForm =
         match x {
             case Nfc    => Interop.Text.NormalizerForm.nfc()
             case Nfd    => Interop.Text.NormalizerForm.nfd()
@@ -38,11 +39,10 @@ mod Basis.Text.Normalizer {
 
 
     pub def normalize(nform: NormalizerForm, src: String): Result[String, String] =
-        let nform1 = marshal(nform);
-        Interop.Text.Normalizer.normalize(nform1, src)
+        Interop.Text.Normalizer.normalize(marshal(nform), src)
 
     pub def isNormalized(nform: NormalizerForm, src: String): Result[String, Bool] =
-        let nform1 = marshal(nform);
-        Interop.Text.Normalizer.isNormalized(nform1, src)
+        Interop.Text.Normalizer.isNormalized(marshal(nform), src)
+
 
 }

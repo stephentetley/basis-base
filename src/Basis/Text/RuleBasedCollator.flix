@@ -26,7 +26,6 @@ mod Basis.Text {
 
 mod Basis.Text.RuleBasedCollator {
 
-    use Interop.Util.Locale
     use Interop.Text.MutCollator
     use Interop.Text.RuleBasedCollator.{RuleBasedCollator}
 

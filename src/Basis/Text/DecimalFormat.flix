@@ -26,11 +26,10 @@ mod Basis.Text {
 
 mod Basis.Text.DecimalFormat {
 
-    use Interop.Text.DecimalFormat.{DecimalFormat};
+    use Interop.Text.DecimalFormat.{DecimalFormat}
     
-    use Basis.Text.DecimalFormat;
-    use Basis.Util.Locale;
-    use Basis.Util.Currency;
+    use Basis.Text.DecimalFormat
+    use Basis.Util.Currency
 
 
 

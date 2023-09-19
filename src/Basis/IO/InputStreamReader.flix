@@ -28,7 +28,6 @@ mod Basis.IO.InputStreamReader {
     use Basis.IO.InputStreamReader
     use Basis.IO.InputStream
     use Basis.IO.Reader
-    use Basis.NIO.Charset.Charset
 
     /// Provide a `to` function to upcast.
     /// TODO should this be in the API?  

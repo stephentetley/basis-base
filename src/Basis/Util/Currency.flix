@@ -30,14 +30,13 @@ mod Basis.Util {
 
 mod Basis.Util.Currency {
 
-    use Basis.Util.Currency;
-
-    use Basis.Util.Locale;
+    use Basis.Util.Currency
+    use Interop.Util.Currency.{Currency}
     
 
     pub def getAvailableCurrencies(): List[Currency] \ IO = region r {
         Interop.Util.Currency.getAvailableCurrencies(r)
-            |> Interop.Util.SetZ.toFlixList
+            |> Interop.Util.SetZ.toFlixList(o -> Currency(unchecked_cast(o as ##java.util.Currency)))
     }
 
 

@@ -26,11 +26,10 @@ mod Basis.Lang {
 
 mod Basis.Lang.Process {
 
-    use Basis.NIO.Charset.Charset;
 
-    use Basis.Lang.Process;
-    use Basis.Lang.ProcessBuilder;
-    use Basis.Lang.ProcessBuilder.{ProcessBuilder};
+    use Basis.Lang.Process
+    use Basis.Lang.ProcessBuilder
+    use Basis.Lang.ProcessBuilder.{ProcessBuilder}
 
 
     pub def processBuilder(cmd: String, args: List[String]): ProcessBuilder[r, ka, r, Unit] =
